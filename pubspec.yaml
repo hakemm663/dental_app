@@ -59,7 +59,10 @@ dependencies:
   easy_localization: ^3.0.8
   # Customize Flutter's default white native splash screen with background color and splash image. Supports dark mode, full screen, and more.
   flutter_native_splash: ^2.4.7
-
+  # An SVG rendering and widget library for Flutter, which allows painting and displaying Scalable Vector Graphics 1.1 files. 
+  flutter_svg: ^2.2.4
+  # A flutter plugin for adapting screen and font size.Let your UI display a reasonable layout on different screen sizes!
+  flutter_screenutil: ^5.9.3
   
 
 dev_dependencies:
