@@ -42,3 +42,5 @@ android {
 flutter {
     source = "../.."
 }
+
+layout.buildDirectory = file("E:/flutter/dental_app/build/app")
