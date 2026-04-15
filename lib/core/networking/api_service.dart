@@ -10,8 +10,5 @@ part 'api_service.g.dart';
 abstract class ApiService {
   factory ApiService(Dio dio, {String baseUrl}) = _ApiService;
   @POST(ApiConstans.login)
-  Future<LoginResponse> login(
-    @Body() LoginRequestBody body,
-  );
-
+  Future<LoginResponse> login(@Body() LoginRequestBody loginRequestBody);
 }
