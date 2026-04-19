@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import 'api_constans.dart';
 import 'api_error_model.dart';
 
-// TODO: wallahy I will refactor this .. Omar Ahmed
+// TODO: wallahy I will refactor this ..Mohamed Hakem
 enum DataSource {
   NO_CONTENT,
   BAD_REQUEST,
@@ -149,6 +149,8 @@ class ErrorHandler implements Exception {
       apiErrorModel = DataSource.DEFAULT.getFailure();
     }
   }
+
+  ApiErrorModel? get failure => null;
 }
 
 ApiErrorModel _handleError(DioException error) {
@@ -185,6 +187,6 @@ ApiErrorModel _handleError(DioException error) {
 }
 
 class ApiInternalStatus {
-  static const int SUCCESS = 0;
-  static const int FAILURE = 1;
+  static const int success = 0;
+  static const int failure = 1;
 }
