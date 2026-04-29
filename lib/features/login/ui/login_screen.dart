@@ -4,6 +4,7 @@ import 'package:docdoc/core/widgets/app_text_button.dart';
 import 'package:docdoc/core/widgets/app_text_form_field.dart';
 import 'package:docdoc/features/login/ui/widgets/already_have_account_text.dart';
 import 'package:docdoc/features/login/ui/widgets/terms_and_conditions_text.dart';
+import 'package:docdoc/core/routing/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -83,7 +84,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       AppTextButton(
                         buttonText: "Login",
                         textStyle: TextStyles.font16WhiteSemiBold,
-                        onPressed: () {},
+                        onPressed: () {
+                          if (formKey.currentState!.validate()) {
+                            Navigator.of(context)
+                                .pushReplacementNamed(Routes.homeScreen);
+                          }
+                        },
                       ),
                       verticalSpace(16),
                       const TermsAndConditionsText(),
