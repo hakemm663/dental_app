@@ -1,72 +1,108 @@
 import 'package:dio/dio.dart';
-import 'package:docdoc/core/networking/api_constans.dart';
-import 'package:docdoc/features/login/data/models/login_request_body.dart';
-import 'package:docdoc/features/login/data/models/login_response.dart';
-import 'package:retrofit/retrofit.dart';
+import 'api_constants.dart';
 
-part 'api_service.g.dart';
+class ApiService {
+  final Dio _dio;
 
-@RestApi(baseUrl: ApiConstans.apiBaseUrl)
-abstract class ApiService {
-  factory ApiService(Dio dio, {String baseUrl}) = _ApiService;
-  
-  // Auth
-  @POST(ApiConstans.login)
-  Future<LoginResponse> login(@Body() LoginRequestBody loginRequestBody);
-  
-  // Home
-  @GET('/home/index')
-  Future<Map<String, dynamic>> getHomeData();
-  
-  // Governorate
-  @GET('/governrate/index')
-  Future<Map<String, dynamic>> getAllGovernrates();
-  
-  // City
-  @GET('/city/index')
-  Future<Map<String, dynamic>> getAllCities();
-  
-  @GET('/city/show/{governorateId}')
-  Future<Map<String, dynamic>> getCitiesByGovernorate(
-    @Path('governorateId') int governorateId,
-  );
-  
-  // Specialization
-  @GET('/specialization/index')
-  Future<Map<String, dynamic>> getAllSpecializations();
-  
-  @GET('/specialization/show/{id}')
-  Future<Map<String, dynamic>> getSpecialization(@Path('id') int id);
-  
-  // Doctor
-  @GET('/doctor/index')
-  Future<Map<String, dynamic>> getAllDoctors();
-  
-  @GET('/doctor/show/{id}')
-  Future<Map<String, dynamic>> getDoctorDetails(@Path('id') int id);
-  
-  @GET('/doctor/doctor-filter')
-  Future<Map<String, dynamic>> filterDoctors(
-    @Query('city') int? cityId,
-    @Query('specialization') int? specializationId,
-  );
-  
-  @GET('/doctor/doctor-search')
-  Future<Map<String, dynamic>> searchDoctors(@Query('name') String name);
-  
-  // User
-  @GET('/user/profile')
-  Future<Map<String, dynamic>> getUserProfile();
-  
-  @POST('/user/update')
-  Future<Map<String, dynamic>> updateProfile(@Body() Map<String, dynamic> body);
-  
-  // Appointment
-  @GET('/appointment/index')
-  Future<Map<String, dynamic>> getAllAppointments();
-  
-  @POST('/appointment/store')
-  Future<Map<String, dynamic>> createAppointment(
-    @Body() Map<String, dynamic> body,
-  );
+  ApiService(this._dio);
+
+  // ── Auth ──────────────────────────────────────────────────────────────────
+
+  Future<Response> login({
+    required String email,
+    required String password,
+  }) =>
+      _dio.post(
+        ApiConstants.login,
+        data: FormData.fromMap({'email': email, 'password': password}),
+      );
+
+  Future<Response> register({
+    required String name,
+    required String email,
+    required String phone,
+    required int gender,
+    required String password,
+    required String passwordConfirmation,
+  }) =>
+      _dio.post(
+        ApiConstants.register,
+        data: FormData.fromMap({
+          'name': name,
+          'email': email,
+          'phone': phone,
+          'gender': gender,
+          'password': password,
+          'password_confirmation': passwordConfirmation,
+        }),
+      );
+
+  Future<Response> logout() => _dio.post(ApiConstants.logout);
+
+  // ── User ──────────────────────────────────────────────────────────────────
+
+  Future<Response> getUserProfile() => _dio.get(ApiConstants.userProfile);
+
+  Future<Response> updateProfile(Map<String, dynamic> fields) =>
+      _dio.post(
+        ApiConstants.updateProfile,
+        data: FormData.fromMap(fields),
+      );
+
+  // ── Home ──────────────────────────────────────────────────────────────────
+
+  Future<Response> getHomeData() => _dio.get(ApiConstants.home);
+
+  // ── Governorate ───────────────────────────────────────────────────────────
+
+  Future<Response> getAllGovernorates() =>
+      _dio.get(ApiConstants.governorates);
+
+  // ── City ──────────────────────────────────────────────────────────────────
+
+  Future<Response> getAllCities() => _dio.get(ApiConstants.cities);
+
+  Future<Response> getCitiesByGovernorate(int governorateId) =>
+      _dio.get(ApiConstants.citiesByGovernorate(governorateId));
+
+  // ── Specialization ────────────────────────────────────────────────────────
+
+  Future<Response> getAllSpecializations() =>
+      _dio.get(ApiConstants.specializations);
+
+  // ── Doctor ────────────────────────────────────────────────────────────────
+
+  Future<Response> getAllDoctors() => _dio.get(ApiConstants.doctors);
+
+  Future<Response> getDoctorDetails(int id) =>
+      _dio.get(ApiConstants.doctorDetails(id));
+
+  Future<Response> filterDoctors({int? cityId, int? specializationId}) =>
+      _dio.get(
+        ApiConstants.filterDoctors,
+        queryParameters: {
+          if (cityId != null) 'city': cityId,
+          if (specializationId != null) 'specialization': specializationId,
+        },
+      );
+
+  Future<Response> searchDoctors(String name) =>
+      _dio.get(ApiConstants.searchDoctors, queryParameters: {'name': name});
+
+  // ── Appointment ───────────────────────────────────────────────────────────
+
+  Future<Response> getAllAppointments() =>
+      _dio.get(ApiConstants.appointments);
+
+  Future<Response> storeAppointment({
+    required int doctorId,
+    String? notes,
+  }) =>
+      _dio.post(
+        ApiConstants.storeAppointment,
+        data: FormData.fromMap({
+          'doctor_id': doctorId,
+          if (notes != null) 'notes': notes,
+        }),
+      );
 }

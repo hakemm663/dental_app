@@ -1,27 +1,26 @@
 class LoginResponse {
-  String? message;
-  UserData? userData;
-  bool? status;
-  int? code;
+  final String? message;
+  final String? token;
+  final String? username;
+  final bool? status;
+  final int? code;
 
-  LoginResponse({this.message, this.userData, this.status, this.code});
+  const LoginResponse({
+    this.message,
+    this.token,
+    this.username,
+    this.status,
+    this.code,
+  });
 
-  factory LoginResponse.fromJson(Map<String, dynamic> json) => LoginResponse(
-        message: json['message'],
-        userData: json['data'] == null ? null : UserData.fromJson(json['data']),
-        status: json['status'],
-        code: json['code'],
-      );
-}
-
-class UserData {
-  String? token;
-  String? userName;
-
-  UserData({this.token, this.userName});
-
-  factory UserData.fromJson(Map<String, dynamic> json) => UserData(
-        token: json['token'],
-        userName: json['username'],
-      );
+  factory LoginResponse.fromJson(Map<String, dynamic> json) {
+    final data = json['data'] as Map<String, dynamic>?;
+    return LoginResponse(
+      message: json['message'] as String?,
+      token: data?['token'] as String?,
+      username: data?['username'] as String?,
+      status: json['status'] as bool?,
+      code: json['code'] as int?,
+    );
+  }
 }
