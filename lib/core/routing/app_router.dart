@@ -1,4 +1,3 @@
-import 'package:docdoc/features/splash/presentation/splash_screen.dart';
 import 'package:docdoc/features/register/presentation/register_screen.dart';
 import 'package:docdoc/features/forgot_password/presentation/forgot_password_screen.dart';
 import 'package:docdoc/features/forgot_password/presentation/verify_code_screen.dart';
@@ -29,8 +28,6 @@ class AppRouter {
     final arguments = settings.arguments;
 
     switch (settings.name) {
-      case Routes.splashScreen:
-        return MaterialPageRoute(builder: (_) => const SplashScreen());
       case Routes.onBoardingScreen:
         return MaterialPageRoute(builder: (_) => const OnboardingScreen());
       case Routes.loginScreen:
