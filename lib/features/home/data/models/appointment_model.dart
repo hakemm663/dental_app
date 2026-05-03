@@ -1,22 +1,13 @@
-import 'package:json_annotation/json_annotation.dart';
-
-part 'appointment_model.g.dart';
-
-@JsonSerializable()
 class AppointmentModel {
   final int id;
-  @JsonKey(name: 'doctor_id')
   final int doctorId;
-  @JsonKey(name: 'user_id')
   final int userId;
-  @JsonKey(name: 'start_time')
   final String startTime;
   final String? notes;
   final String? status;
-  @JsonKey(name: 'created_at')
   final String? createdAt;
 
-  AppointmentModel({
+  const AppointmentModel({
     required this.id,
     required this.doctorId,
     required this.userId,
@@ -27,7 +18,13 @@ class AppointmentModel {
   });
 
   factory AppointmentModel.fromJson(Map<String, dynamic> json) =>
-      _$AppointmentModelFromJson(json);
-
-  Map<String, dynamic> toJson() => _$AppointmentModelToJson(this);
+      AppointmentModel(
+        id: json['id'] as int,
+        doctorId: json['doctor_id'] as int,
+        userId: json['user_id'] as int,
+        startTime: json['start_time'] as String,
+        notes: json['notes'] as String?,
+        status: json['status'] as String?,
+        createdAt: json['created_at'] as String?,
+      );
 }

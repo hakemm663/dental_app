@@ -1,20 +1,27 @@
-import 'package:docdoc/features/login/ui/login_screen.dart';
+import 'package:docdoc/features/splash/presentation/splash_screen.dart';
+import 'package:docdoc/features/register/presentation/register_screen.dart';
+import 'package:docdoc/features/forgot_password/presentation/forgot_password_screen.dart';
+import 'package:docdoc/features/forgot_password/presentation/verify_code_screen.dart';
+import 'package:docdoc/features/forgot_password/presentation/new_password_screen.dart';
+import 'package:docdoc/features/forgot_password/presentation/password_changed_screen.dart';
+import 'package:docdoc/features/login/presentation/login_screen.dart';
 import 'package:docdoc/features/onboarding/onboarding_screen.dart';
-import 'package:docdoc/features/home/ui/screens/home_screen.dart';
-import 'package:docdoc/features/home/ui/screens/doctor_details_screen.dart';
-import 'package:docdoc/features/home/ui/screens/book_appointment_screen.dart';
-import 'package:docdoc/features/home/ui/screens/appointments_screen.dart';
-import 'package:docdoc/features/home/ui/screens/profile_screen.dart';
+import 'package:docdoc/features/home/presentation/screens/home_screen.dart';
+import 'package:docdoc/features/home/presentation/screens/doctor_details_screen.dart';
+import 'package:docdoc/features/home/presentation/screens/book_appointment_screen.dart';
+import 'package:docdoc/features/home/presentation/screens/appointments_screen.dart';
+import 'package:docdoc/features/home/presentation/screens/profile_screen.dart';
 import 'package:docdoc/features/home/data/models/doctor_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:docdoc/core/routing/routes.dart';
-import 'package:docdoc/features/login/logic/cubit/login_cubit.dart';
-import 'package:docdoc/features/home/logic/cubit/home_cubit.dart';
-import 'package:docdoc/features/home/logic/cubit/doctors_cubit.dart';
-import 'package:docdoc/features/home/logic/cubit/doctor_details_cubit.dart';
-import 'package:docdoc/features/home/logic/cubit/appointment_cubit.dart';
-import 'package:docdoc/features/home/logic/cubit/profile_cubit.dart';
+import 'package:docdoc/features/register/presentation/cubit/register_cubit.dart';
+import 'package:docdoc/features/login/presentation/cubit/login_cubit.dart';
+import 'package:docdoc/features/home/presentation/cubit/home_cubit.dart';
+import 'package:docdoc/features/home/presentation/cubit/doctors_cubit.dart';
+import 'package:docdoc/features/home/presentation/cubit/doctor_details_cubit.dart';
+import 'package:docdoc/features/home/presentation/cubit/appointment_cubit.dart';
+import 'package:docdoc/features/home/presentation/cubit/profile_cubit.dart';
 import 'package:docdoc/core/di/dependency_injection.dart';
 
 class AppRouter {
@@ -22,6 +29,8 @@ class AppRouter {
     final arguments = settings.arguments;
 
     switch (settings.name) {
+      case Routes.splashScreen:
+        return MaterialPageRoute(builder: (_) => const SplashScreen());
       case Routes.onBoardingScreen:
         return MaterialPageRoute(builder: (_) => const OnboardingScreen());
       case Routes.loginScreen:
@@ -30,6 +39,29 @@ class AppRouter {
             create: (context) => getIt<LoginCubit>(),
             child: const LoginScreen(),
           ),
+        );
+      case Routes.signUpScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<RegisterCubit>(),
+            child: const RegisterScreen(),
+          ),
+        );
+      case Routes.forgotPassword:
+        return MaterialPageRoute(
+          builder: (_) => const ForgotPasswordScreen(),
+        );
+      case Routes.verifyCode:
+        return MaterialPageRoute(
+          builder: (_) => const VerifyCodeScreen(),
+        );
+      case Routes.newPassword:
+        return MaterialPageRoute(
+          builder: (_) => const NewPasswordScreen(),
+        );
+      case Routes.passwordChanged:
+        return MaterialPageRoute(
+          builder: (_) => const PasswordChangedScreen(),
         );
       case Routes.homeScreen:
         return MaterialPageRoute(
@@ -74,10 +106,9 @@ class AppRouter {
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
-            body: Center(child: Text('No route define for ${settings.name}')),
+            body: Center(child: Text('No route defined for ${settings.name}')),
           ),
         );
     }
   }
 }
-

@@ -1,30 +1,20 @@
-import 'package:json_annotation/json_annotation.dart';
-
-part 'doctor_model.g.dart';
-
-@JsonSerializable()
 class DoctorModel {
   final int id;
   final String name;
   final String? image;
   final String? phone;
   final String? email;
-  @JsonKey(name: 'specialization_id')
   final int? specializationId;
-  @JsonKey(name: 'governorate_id')
   final int? governorateId;
-  @JsonKey(name: 'city_id')
   final int? cityId;
   final String? address;
   final String? bio;
-  @JsonKey(name: 'start_time')
   final String? startTime;
-  @JsonKey(name: 'end_time')
   final String? endTime;
   final double? fees;
   final double? rating;
 
-  DoctorModel({
+  const DoctorModel({
     required this.id,
     required this.name,
     this.image,
@@ -41,8 +31,20 @@ class DoctorModel {
     this.rating,
   });
 
-  factory DoctorModel.fromJson(Map<String, dynamic> json) =>
-      _$DoctorModelFromJson(json);
-
-  Map<String, dynamic> toJson() => _$DoctorModelToJson(this);
+  factory DoctorModel.fromJson(Map<String, dynamic> json) => DoctorModel(
+        id: json['id'] as int,
+        name: json['name'] as String,
+        image: json['image'] as String?,
+        phone: json['phone'] as String?,
+        email: json['email'] as String?,
+        specializationId: json['specialization_id'] as int?,
+        governorateId: json['governorate_id'] as int?,
+        cityId: json['city_id'] as int?,
+        address: json['address'] as String?,
+        bio: json['bio'] as String?,
+        startTime: json['start_time'] as String?,
+        endTime: json['end_time'] as String?,
+        fees: (json['fees'] as num?)?.toDouble(),
+        rating: (json['rating'] as num?)?.toDouble(),
+      );
 }

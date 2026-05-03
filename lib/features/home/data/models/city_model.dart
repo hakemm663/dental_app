@@ -1,22 +1,17 @@
-import 'package:json_annotation/json_annotation.dart';
-
-part 'city_model.g.dart';
-
-@JsonSerializable()
 class CityModel {
   final int id;
   final String name;
-  @JsonKey(name: 'governorate_id')
   final int governorateId;
 
-  CityModel({
+  const CityModel({
     required this.id,
     required this.name,
     required this.governorateId,
   });
 
-  factory CityModel.fromJson(Map<String, dynamic> json) =>
-      _$CityModelFromJson(json);
-
-  Map<String, dynamic> toJson() => _$CityModelToJson(this);
+  factory CityModel.fromJson(Map<String, dynamic> json) => CityModel(
+        id: json['id'] as int,
+        name: json['name'] as String,
+        governorateId: json['governorate_id'] as int,
+      );
 }
