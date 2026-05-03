@@ -35,6 +35,10 @@ class RegisterCubit extends Cubit<RegisterState> {
           await SharedPrefHelper.setSecuredString(
               SharedPrefKeys.userToken, data.token!);
         }
+        if (data.username != null) {
+          await SharedPrefHelper.setData(
+              SharedPrefKeys.userName, data.username!);
+        }
         emit(RegisterSuccess());
       case Failure(:final errMsg):
         emit(RegisterError(errMsg));

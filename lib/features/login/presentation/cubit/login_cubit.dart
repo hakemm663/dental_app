@@ -22,6 +22,10 @@ class LoginCubit extends Cubit<LoginState> {
           await SharedPrefHelper.setSecuredString(
               SharedPrefKeys.userToken, data.token!);
         }
+        if (data.username != null) {
+          await SharedPrefHelper.setData(
+              SharedPrefKeys.userName, data.username!);
+        }
         emit(LoginSuccess(data));
       case Failure(:final errMsg):
         emit(LoginError(errMsg));
