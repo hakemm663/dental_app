@@ -10,6 +10,9 @@ class DoctorsCubit extends Cubit<DoctorsState> {
   final FilterDoctorsUseCase _filterDoctorsUseCase;
   final SearchDoctorsUseCase _searchDoctorsUseCase;
 
+  // Full result cache so rating-only changes don't refetch from network
+  List<DoctorModel> _allFetched = [];
+
   DoctorsCubit(
     this._getDoctorsUseCase,
     this._filterDoctorsUseCase,
@@ -21,6 +24,7 @@ class DoctorsCubit extends Cubit<DoctorsState> {
     final result = await _getDoctorsUseCase();
     switch (result) {
       case Success(:final data):
+        _allFetched = data;
         emit(DoctorsState.success(doctors: data));
       case Failure(:final errMsg):
         emit(DoctorsState.error(message: errMsg));
@@ -35,6 +39,63 @@ class DoctorsCubit extends Cubit<DoctorsState> {
     );
     switch (result) {
       case Success(:final data):
+        _allFetched = data;
+        emit(DoctorsState.success(doctors: data));
+      case Failure(:final errMsg):
+        emit(DoctorsState.error(message: errMsg));
+    }
+  }
+
+  Future<void> applyFilters({
+    int? specializationId,
+    double? minRating,
+  }) async {
+    // Fetch from backend when specialization changes
+    if (specializationId != null) {
+      emit(const DoctorsState.loading());
+      final result = await _filterDoctorsUseCase(
+        specializationId: specializationId,
+      );
+      switch (result) {
+        case Success(:final data):
+          _allFetched = data;
+        case Failure(:final errMsg):
+          emit(DoctorsState.error(message: errMsg));
+          return;
+      }
+    } else if (_allFetched.isEmpty) {
+      // No specialization filter and cache is empty — fetch all
+      emit(const DoctorsState.loading());
+      final result = await _getDoctorsUseCase();
+      switch (result) {
+        case Success(:final data):
+          _allFetched = data;
+        case Failure(:final errMsg):
+          emit(DoctorsState.error(message: errMsg));
+          return;
+      }
+    }
+
+    // Apply rating filter client-side
+    final filtered = minRating != null
+        ? _allFetched
+            .where((d) => d.rating != null && d.rating! >= minRating)
+            .toList()
+        : _allFetched;
+
+    emit(DoctorsState.success(
+      doctors: filtered,
+      activeSpecializationId: specializationId,
+      activeMinRating: minRating,
+    ));
+  }
+
+  Future<void> clearFilters() async {
+    emit(const DoctorsState.loading());
+    final result = await _getDoctorsUseCase();
+    switch (result) {
+      case Success(:final data):
+        _allFetched = data;
         emit(DoctorsState.success(doctors: data));
       case Failure(:final errMsg):
         emit(DoctorsState.error(message: errMsg));

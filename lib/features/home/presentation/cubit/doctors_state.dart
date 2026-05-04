@@ -4,47 +4,34 @@ class DoctorsState {
   final List<DoctorModel> doctors;
   final bool isLoading;
   final String? errorMessage;
+  final int? activeSpecializationId;
+  final double? activeMinRating;
 
   const DoctorsState({
     required this.doctors,
     required this.isLoading,
     this.errorMessage,
+    this.activeSpecializationId,
+    this.activeMinRating,
   });
 
   const DoctorsState.initial()
-      : this(
-          doctors: const [],
-          isLoading: false,
-        );
+      : this(doctors: const [], isLoading: false);
 
   const DoctorsState.loading()
-      : this(
-          doctors: const [],
-          isLoading: true,
-        );
+      : this(doctors: const [], isLoading: true);
 
-  DoctorsState.success({required List<DoctorModel> doctors})
-      : this(
+  DoctorsState.success({
+    required List<DoctorModel> doctors,
+    int? activeSpecializationId,
+    double? activeMinRating,
+  }) : this(
           doctors: doctors,
           isLoading: false,
+          activeSpecializationId: activeSpecializationId,
+          activeMinRating: activeMinRating,
         );
 
   DoctorsState.error({required String message})
-      : this(
-          doctors: const [],
-          isLoading: false,
-          errorMessage: message,
-        );
-
-  DoctorsState copyWith({
-    List<DoctorModel>? doctors,
-    bool? isLoading,
-    String? errorMessage,
-  }) {
-    return DoctorsState(
-      doctors: doctors ?? this.doctors,
-      isLoading: isLoading ?? this.isLoading,
-      errorMessage: errorMessage ?? this.errorMessage,
-    );
-  }
+      : this(doctors: const [], isLoading: false, errorMessage: message);
 }
