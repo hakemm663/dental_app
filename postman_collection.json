@@ -1,1 +1,1344 @@
-{"collection":{"info":{"_postman_id":"5d6daa54-c48a-4ddf-8e2e-d2391957756e","name":"VCare Live","description":"VCare App APIs Documentation  \nit include these modules :\n\nUser Auth Module\n\nGovernrate Module  \nCity Module  \nDoctors Specializatoins  \nDoctors  \nAppointment Module","schema":"https://schema.getpostman.com/json/collection/v2.1.0/collection.json","createdAt":"2026-03-31T05:44:09.000Z","updatedAt":"2026-04-14T20:59:51.000Z","lastUpdatedBy":"52433872","uid":"52433872-5d6daa54-c48a-4ddf-8e2e-d2391957756e"},"item":[{"name":"Auth Module","item":[{"name":"Register","event":[{"listen":"test","script":{"id":"798f2139-ff9c-4ac5-818d-9af1fc29d002","exec":["pm.test(\"Set token\", function () {\r","    var jsonData = pm.response.json();\r","    var token = jsonData.data.token;\r","    pm.collectionVariables.set(\"token\",token);\r","});"],"type":"text/javascript"}}],"id":"d9d4c2f1-6772-445b-b689-f25f24a803cc","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"method":"POST","header":[{"key":"Accept","value":"application/json","type":"text"}],"body":{"mode":"formdata","formdata":[{"key":"name","value":"diaa","type":"text","disabled":true},{"key":"email","value":"aa@aa.com","type":"text","disabled":true},{"key":"phone","value":"222","type":"text","disabled":true},{"key":"gender","value":"0","type":"text","disabled":true},{"key":"password","value":"passwordddd","type":"text","disabled":true},{"key":"password_confirmation","value":"passwordddd","type":"text","disabled":true}]},"url":{"raw":"{{url}}/auth/register","host":["{{url}}"],"path":["auth","register"]},"description":"This End-Point For user login\n\n- **Method** : POST\n- Form Body :  \n    \\- name  \n    \\- email  \n    \\- phone : required , must be numeric values (0-9) , doesn\\`t accept negative values.  \n    \\- gender  \n    \\- password : required\n    \n\nWhen user Logged in :  \nif user type is an admin -> the response have number of all projects statuses he has created  \nif user type is an manager-> the response have number of all projects statuses he had set as a\n\nmanager on it or he had assign it to an employee  \nif user type is an employee -> the response have number of all projects statuses was assigned to\n\nhim"},"response":[{"id":"c422dc96-3e1b-46b2-ab89-373e2a41c2e5","name":"Register Failed Example","originalRequest":{"method":"POST","header":[{"key":"Accept","value":"application/json","type":"text"}],"body":{"mode":"formdata","formdata":[{"key":"name","value":"diaa","type":"text","disabled":true},{"key":"email","value":"a@a.com","type":"text","disabled":true},{"key":"phone","value":"22","type":"text","disabled":true},{"key":"gender","value":"0","type":"text","disabled":true},{"key":"password","value":"password","type":"text","disabled":true},{"key":"password_confirmation","value":"password","type":"text","disabled":true}]},"url":{"raw":"{{url}}/auth/register","host":["{{url}}"],"path":["auth","register"]}},"status":"Unprocessable Entity","code":422,"_postman_previewlanguage":"json","header":[{"key":"Connection","value":"Keep-Alive"},{"key":"Keep-Alive","value":"timeout=5, max=100"},{"key":"x-powered-by","value":"PHP/8.0.28"},{"key":"cache-control","value":"no-cache, private"},{"key":"content-type","value":"application/json"},{"key":"x-ratelimit-limit","value":"60"},{"key":"x-ratelimit-remaining","value":"54"},{"key":"access-control-allow-origin","value":"*"},{"key":"content-length","value":"159"},{"key":"content-encoding","value":"br"},{"key":"vary","value":"Accept-Encoding"},{"key":"date","value":"Thu, 21 Sep 2023 12:56:39 GMT"},{"key":"server","value":"LiteSpeed"},{"key":"platform","value":"hostinger"},{"key":"content-security-policy","value":"upgrade-insecure-requests"},{"key":"alt-svc","value":"h3=\":443\"; ma=2592000, h3-29=\":443\"; ma=2592000, h3-Q050=\":443\"; ma=2592000, h3-Q046=\":443\"; ma=2592000, h3-Q043=\":443\"; ma=2592000, quic=\":443\"; ma=2592000; v=\"43,46\""}],"cookie":[],"responseTime":null,"body":"{\n    \"message\": \"Unprocessable Entity\",\n    \"data\": {\n        \"name\": [\n            \"The name field is required.\"\n        ],\n        \"email\": [\n            \"The email field is required.\"\n        ],\n        \"phone\": [\n            \"The phone field is required.\"\n        ],\n        \"gender\": [\n            \"The sex field is required.\"\n        ],\n        \"password\": [\n            \"The password field is required.\"\n        ]\n    },\n    \"status\": false,\n    \"code\": 422\n}","createdAt":"2026-03-31T05:44:10.000Z","updatedAt":"2026-03-31T05:44:10.000Z","uid":"52433872-c422dc96-3e1b-46b2-ab89-373e2a41c2e5"},{"id":"b26dda54-21eb-43f4-8a36-700e1f5e5f3d","name":"Register Success Example","originalRequest":{"method":"POST","header":[{"key":"Accept","value":"application/json","type":"text"}],"body":{"mode":"formdata","formdata":[{"key":"name","value":"diaa","type":"text"},{"key":"email","value":"aa@aa.com","type":"text"},{"key":"phone","value":"222","type":"text"},{"key":"gender","value":"0","type":"text"},{"key":"password","value":"password","type":"text"},{"key":"password_confirmation","value":"password","type":"text"}]},"url":{"raw":"{{url}}/auth/register","host":["{{url}}"],"path":["auth","register"]}},"status":"OK","code":200,"_postman_previewlanguage":"json","header":[{"key":"Connection","value":"Keep-Alive"},{"key":"Keep-Alive","value":"timeout=5, max=100"},{"key":"x-powered-by","value":"PHP/8.0.28"},{"key":"cache-control","value":"no-cache, private"},{"key":"content-type","value":"application/json"},{"key":"x-ratelimit-limit","value":"60"},{"key":"x-ratelimit-remaining","value":"58"},{"key":"access-control-allow-origin","value":"*"},{"key":"content-length","value":"384"},{"key":"content-encoding","value":"br"},{"key":"vary","value":"Accept-Encoding"},{"key":"date","value":"Thu, 21 Sep 2023 12:57:16 GMT"},{"key":"server","value":"LiteSpeed"},{"key":"platform","value":"hostinger"},{"key":"content-security-policy","value":"upgrade-insecure-requests"},{"key":"alt-svc","value":"h3=\":443\"; ma=2592000, h3-29=\":443\"; ma=2592000, h3-Q050=\":443\"; ma=2592000, h3-Q046=\":443\"; ma=2592000, h3-Q043=\":443\"; ma=2592000, quic=\":443\"; ma=2592000; v=\"43,46\""}],"cookie":[],"responseTime":null,"body":"{\n    \"message\": \"Loggedin Successfuly.\",\n    \"data\": {\n        \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3ZjYXJlLmludGVncmF0aW9uMjUuY29tL2FwaS9hdXRoL3JlZ2lzdGVyIiwiaWF0IjoxNjk1MzAxMDM2LCJleHAiOjE2OTUzMDQ2MzYsIm5iZiI6MTY5NTMwMTAzNiwianRpIjoiZHI2SW9ISEhxRXU1ZTlrWiIsInN1YiI6IjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.zWa9orDPpQrHjPvdC_G1atG-DUU2UUkEv8HycBCmd7E\",\n        \"username\": \"diaa\"\n    },\n    \"status\": true,\n    \"code\": 200\n}","createdAt":"2026-03-31T05:44:10.000Z","updatedAt":"2026-03-31T05:44:10.000Z","uid":"52433872-b26dda54-21eb-43f4-8a36-700e1f5e5f3d"}],"createdAt":"2026-03-31T05:44:10.000Z","updatedAt":"2026-03-31T05:44:10.000Z","uid":"52433872-d9d4c2f1-6772-445b-b689-f25f24a803cc"},{"name":"Login","event":[{"listen":"test","script":{"id":"798f2139-ff9c-4ac5-818d-9af1fc29d002","exec":["pm.test(\"Set token\", function () {\r","    var jsonData = pm.response.json();\r","    var token = jsonData.data.token;\r","    pm.collectionVariables.set(\"token\",token);\r","});"],"type":"text/javascript"}}],"id":"b076b8b7-3c39-4da4-8395-5d8b11056b91","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"method":"POST","header":[{"key":"Accept","value":"application/json","type":"text"}],"body":{"mode":"formdata","formdata":[{"key":"email","value":"aa@aa.com","type":"text"},{"key":"password","value":"password","type":"text"}]},"url":{"raw":"{{url}}/auth/login","host":["{{url}}"],"path":["auth","login"]},"description":"This End-Point For user login\n\n- **Method** : POST\n    \n- Form Body :  \n    \\- phone : required , must be numeric values (0-9) , doesn\\`t accept negative values.  \n    \\- password : required\n    \n\nWhen user Logged in :  \nif user type is an admin -> the response have number of all projects statuses he has created  \nif user type is an manager-> the response have number of all projects statuses he had set as a\n\nmanager on it or he had assign it to an employee  \nif user type is an employee -> the response have number of all projects statuses was assigned to\n\nhim"},"response":[{"id":"feeda4d6-201d-4f9e-a621-e372ab7c1281","name":"Login  Example Success","originalRequest":{"method":"POST","header":[{"key":"Accept","value":"application/json","type":"text"}],"body":{"mode":"formdata","formdata":[{"key":"email","value":"a@a.com","type":"text"},{"key":"password","value":"password","type":"text"}]},"url":{"raw":"{{url}}/auth/login","host":["{{url}}"],"path":["auth","login"]}},"status":"OK","code":200,"_postman_previewlanguage":"json","header":[{"key":"Connection","value":"Keep-Alive"},{"key":"Keep-Alive","value":"timeout=5, max=100"},{"key":"x-powered-by","value":"PHP/8.0.28"},{"key":"cache-control","value":"no-cache, private"},{"key":"content-type","value":"application/json"},{"key":"x-ratelimit-limit","value":"60"},{"key":"x-ratelimit-remaining","value":"59"},{"key":"access-control-allow-origin","value":"*"},{"key":"content-length","value":"380"},{"key":"content-encoding","value":"br"},{"key":"vary","value":"Accept-Encoding"},{"key":"date","value":"Thu, 21 Sep 2023 12:59:37 GMT"},{"key":"server","value":"LiteSpeed"},{"key":"platform","value":"hostinger"},{"key":"content-security-policy","value":"upgrade-insecure-requests"},{"key":"alt-svc","value":"h3=\":443\"; ma=2592000, h3-29=\":443\"; ma=2592000, h3-Q050=\":443\"; ma=2592000, h3-Q046=\":443\"; ma=2592000, h3-Q043=\":443\"; ma=2592000, quic=\":443\"; ma=2592000; v=\"43,46\""}],"cookie":[],"responseTime":null,"body":"{\n    \"message\": \"Loggedin Successfuly.\",\n    \"data\": {\n        \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3ZjYXJlLmludGVncmF0aW9uMjUuY29tL2FwaS9hdXRoL2xvZ2luIiwiaWF0IjoxNjk1MzAxMTc3LCJleHAiOjE2OTUzMDQ3NzcsIm5iZiI6MTY5NTMwMTE3NywianRpIjoiU3RWbThhSHNkN24zWG5TayIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.EmLXqTsiAcE0N-87EZ_xNT-ePpyr8Wj7tBscoG41IOs\",\n        \"username\": \"diaa\"\n    },\n    \"status\": true,\n    \"code\": 200\n}","createdAt":"2026-03-31T05:44:10.000Z","updatedAt":"2026-03-31T05:44:10.000Z","uid":"52433872-feeda4d6-201d-4f9e-a621-e372ab7c1281"}],"createdAt":"2026-03-31T05:44:10.000Z","updatedAt":"2026-03-31T05:44:10.000Z","uid":"52433872-b076b8b7-3c39-4da4-8395-5d8b11056b91"},{"name":"Logout","id":"eb388e3d-77a7-427f-aafa-af3609b55231","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"auth":{"type":"bearer","bearer":[{"key":"token","value":"{{token}}","type":"string"}]},"method":"POST","header":[{"key":"Accept","value":"application/json","type":"text"}],"url":{"raw":"{{url}}/auth/logout","host":["{{url}}"],"path":["auth","logout"]},"description":"This End-Point For User Logout  \n**User Must be Authenticated**"},"response":[{"id":"b9be7b13-a913-45db-91c2-671d507a49db","name":"Logout Success","originalRequest":{"method":"POST","header":[{"key":"Accept","value":"application/json","type":"text"}],"url":{"raw":"{{url}}/auth/logout","host":["{{url}}"],"path":["auth","logout"]}},"status":"OK","code":200,"_postman_previewlanguage":"json","header":[{"key":"Host","value":"127.0.0.1:8000"},{"key":"Date","value":"Sun, 27 Aug 2023 13:20:27 GMT"},{"key":"Date","value":"Sun, 27 Aug 2023 13:20:27 GMT"},{"key":"Connection","value":"close"},{"key":"X-Powered-By","value":"PHP/8.2.4"},{"key":"Cache-Control","value":"no-cache, private"},{"key":"Content-Type","value":"application/json"},{"key":"X-RateLimit-Limit","value":"60"},{"key":"X-RateLimit-Remaining","value":"59"},{"key":"Access-Control-Allow-Origin","value":"*"}],"cookie":[],"responseTime":null,"body":"{\n    \"message\": \"Loggedout Successfuly\",\n    \"data\": [],\n    \"status\": true,\n    \"code\": 200\n}","createdAt":"2026-03-31T05:44:10.000Z","updatedAt":"2026-03-31T05:44:10.000Z","uid":"52433872-b9be7b13-a913-45db-91c2-671d507a49db"}],"createdAt":"2026-03-31T05:44:10.000Z","updatedAt":"2026-03-31T05:44:10.000Z","uid":"52433872-eb388e3d-77a7-427f-aafa-af3609b55231"}],"id":"957a4db9-9cba-4549-a916-b43e2b137d55","description":"This User Authentication Module\n\ninclude :  \nRegister  \nLogin  \nLogout","createdAt":"2026-03-31T05:44:10.000Z","updatedAt":"2026-03-31T05:44:10.000Z","uid":"52433872-957a4db9-9cba-4549-a916-b43e2b137d55"},{"name":"User Module","item":[{"name":"User profile","id":"c41b0dcc-854e-464d-a514-c07eca9d37b6","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"auth":{"type":"bearer","bearer":[{"key":"token","value":"{{token}}","type":"string"}]},"method":"GET","header":[{"key":"Accept","value":"application/json","type":"text"}],"url":{"raw":"{{url}}/user/profile","host":["{{url}}"],"path":["user","profile"]}},"response":[],"createdAt":"2026-03-31T05:44:10.000Z","updatedAt":"2026-03-31T05:44:10.000Z","uid":"52433872-c41b0dcc-854e-464d-a514-c07eca9d37b6"},{"name":"Update Profile","id":"31ff7838-0d40-4b06-a91a-9c7ca62f22e1","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"auth":{"type":"bearer","bearer":[{"key":"token","value":"{{token}}","type":"string"}]},"method":"POST","header":[{"key":"Accept","value":"application/json","type":"text"}],"body":{"mode":"formdata","formdata":[{"key":"name","value":"","type":"text"},{"key":"email","value":"","type":"text"},{"key":"phone","value":"","type":"text"},{"key":"gender","value":"","type":"text"},{"key":"password","value":"","type":"text"}]},"url":{"raw":"{{url}}/user/update","host":["{{url}}"],"path":["user","update"]}},"response":[],"createdAt":"2026-03-31T05:44:10.000Z","updatedAt":"2026-03-31T05:44:10.000Z","uid":"52433872-31ff7838-0d40-4b06-a91a-9c7ca62f22e1"}],"id":"601d448b-492e-4e61-ba57-de00c5f4e851","createdAt":"2026-03-31T05:44:10.000Z","updatedAt":"2026-03-31T05:44:10.000Z","uid":"52433872-601d448b-492e-4e61-ba57-de00c5f4e851"},{"name":"Home Module","item":[{"name":"Home Page","id":"3bc7a553-0eb2-484b-8624-f41054a63ee3","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"auth":{"type":"bearer","bearer":[{"key":"token","value":"{{token}}","type":"string"}]},"method":"GET","header":[{"key":"Accept","value":"application/json","type":"text"}],"url":{"raw":"{{url}}/home/index","host":["{{url}}"],"path":["home","index"]}},"response":[],"createdAt":"2026-03-31T05:44:10.000Z","updatedAt":"2026-03-31T05:44:10.000Z","uid":"52433872-3bc7a553-0eb2-484b-8624-f41054a63ee3"}],"id":"3519a44f-0883-41a6-910f-6d73cb21db50","createdAt":"2026-03-31T05:44:10.000Z","updatedAt":"2026-03-31T05:44:10.000Z","uid":"52433872-3519a44f-0883-41a6-910f-6d73cb21db50"},{"name":"Governrate Module","item":[{"name":"Get All Governrates","id":"3daaa3a0-4b73-44bc-94a4-c84056e05946","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"auth":{"type":"bearer","bearer":[{"key":"token","value":"{{token}}","type":"string"}]},"method":"GET","header":[{"key":"Accept","value":"application/json","type":"text"}],"url":{"raw":"{{url}}/governrate/index","host":["{{url}}"],"path":["governrate","index"]}},"response":[],"createdAt":"2026-03-31T05:44:10.000Z","updatedAt":"2026-03-31T05:44:10.000Z","uid":"52433872-3daaa3a0-4b73-44bc-94a4-c84056e05946"}],"id":"b6cc41b5-4396-46f3-b030-c528b25ff283","createdAt":"2026-03-31T05:44:10.000Z","updatedAt":"2026-03-31T05:44:10.000Z","uid":"52433872-b6cc41b5-4396-46f3-b030-c528b25ff283"},{"name":"City Module","item":[{"name":"Get All City","id":"74546f37-810f-4f15-8af7-065ff2d04b02","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"auth":{"type":"bearer","bearer":[{"key":"token","value":"{{token}}","type":"string"}]},"method":"GET","header":[{"key":"Accept","value":"application/json","type":"text"}],"url":{"raw":"{{url}}/city/index","host":["{{url}}"],"path":["city","index"]}},"response":[],"createdAt":"2026-03-31T05:44:10.000Z","updatedAt":"2026-03-31T05:44:10.000Z","uid":"52433872-74546f37-810f-4f15-8af7-065ff2d04b02"},{"name":"Show cities based on gov.","id":"3692afbf-1c57-4cde-8bbc-3f93ecdfa3b2","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"auth":{"type":"bearer","bearer":[{"key":"token","value":"{{token}}","type":"string"}]},"method":"GET","header":[{"key":"Accept","value":"application/json","type":"text"}],"url":{"raw":"{{url}}/city/show/7","host":["{{url}}"],"path":["city","show","7"]}},"response":[],"createdAt":"2026-03-31T05:44:10.000Z","updatedAt":"2026-03-31T05:44:10.000Z","uid":"52433872-3692afbf-1c57-4cde-8bbc-3f93ecdfa3b2"}],"id":"07cbf46b-39af-4e01-8631-8f3e60a2ed5f","createdAt":"2026-03-31T05:44:10.000Z","updatedAt":"2026-03-31T05:44:10.000Z","uid":"52433872-07cbf46b-39af-4e01-8631-8f3e60a2ed5f"},{"name":"Specialization Module","item":[{"name":"Get All Specialization","id":"016f129b-0707-462a-a720-6ecb42ea5eb9","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"auth":{"type":"bearer","bearer":[{"key":"token","value":"{{token}}","type":"string"}]},"method":"GET","header":[{"key":"Accept","value":"application/json","type":"text"}],"url":{"raw":"{{url}}/specialization/index","host":["{{url}}"],"path":["specialization","index"]}},"response":[],"createdAt":"2026-03-31T05:44:10.000Z","updatedAt":"2026-03-31T05:44:10.000Z","uid":"52433872-016f129b-0707-462a-a720-6ecb42ea5eb9"},{"name":"Show Specialization","id":"4b2de808-1f08-43a2-ba1c-40f39489737b","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"auth":{"type":"bearer","bearer":[{"key":"token","value":"{{token}}","type":"string"}]},"method":"GET","header":[{"key":"Accept","value":"application/json","type":"text"}],"url":{"raw":"{{url}}/specialization/show/1","host":["{{url}}"],"path":["specialization","show","1"]}},"response":[],"createdAt":"2026-03-31T05:44:10.000Z","updatedAt":"2026-03-31T05:44:10.000Z","uid":"52433872-4b2de808-1f08-43a2-ba1c-40f39489737b"}],"id":"01c8615d-99ce-4763-8c44-d682e866416d","createdAt":"2026-03-31T05:44:10.000Z","updatedAt":"2026-03-31T05:44:10.000Z","uid":"52433872-01c8615d-99ce-4763-8c44-d682e866416d"},{"name":"Doctor Module","item":[{"name":"Get All Doctor","id":"7b37f045-3fa0-48e9-b4f2-ab6681977f0b","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"auth":{"type":"bearer","bearer":[{"key":"token","value":"{{token}}","type":"string"}]},"method":"GET","header":[{"key":"Accept","value":"application/json","type":"text"}],"url":{"raw":"{{url}}/doctor/index","host":["{{url}}"],"path":["doctor","index"]}},"response":[],"createdAt":"2026-03-31T05:44:10.000Z","updatedAt":"2026-03-31T05:44:10.000Z","uid":"52433872-7b37f045-3fa0-48e9-b4f2-ab6681977f0b"},{"name":"Show Doctor","id":"3971b876-4ff2-4254-b34f-d6aeff985df4","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"auth":{"type":"bearer","bearer":[{"key":"token","value":"{{token}}","type":"string"}]},"method":"GET","header":[{"key":"Accept","value":"application/json","type":"text"}],"url":{"raw":"{{url}}/doctor/show/3","host":["{{url}}"],"path":["doctor","show","3"]}},"response":[],"createdAt":"2026-03-31T05:44:10.000Z","updatedAt":"2026-03-31T05:44:10.000Z","uid":"52433872-3971b876-4ff2-4254-b34f-d6aeff985df4"},{"name":"Filter Doctor","id":"a80bf8e1-1e96-4cce-963a-6febddd58f78","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"auth":{"type":"bearer","bearer":[{"key":"token","value":"{{token}}","type":"string"}]},"method":"GET","header":[{"key":"Accept","value":"application/json","type":"text"}],"url":{"raw":"{{url}}/doctor/doctor-filter?city=7","host":["{{url}}"],"path":["doctor","doctor-filter"],"query":[{"key":"city","value":"7","type":"text"}]}},"response":[],"createdAt":"2026-03-31T05:44:10.000Z","updatedAt":"2026-03-31T05:44:10.000Z","uid":"52433872-a80bf8e1-1e96-4cce-963a-6febddd58f78"},{"name":"Doctor Search","id":"a7b6108d-23e1-4206-8bb7-0a6439b6a1ac","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"auth":{"type":"bearer","bearer":[{"key":"token","value":"{{token}}","type":"string"}]},"method":"GET","header":[{"key":"Accept","value":"application/json","type":"text"}],"url":{"raw":"{{url}}/doctor/doctor-search?name=Finn","host":["{{url}}"],"path":["doctor","doctor-search"],"query":[{"key":"name","value":"Finn"}]}},"response":[],"createdAt":"2026-03-31T05:44:10.000Z","updatedAt":"2026-03-31T05:44:10.000Z","uid":"52433872-a7b6108d-23e1-4206-8bb7-0a6439b6a1ac"}],"id":"e945c6a4-bf29-42ee-a410-1ba088464778","createdAt":"2026-03-31T05:44:10.000Z","updatedAt":"2026-03-31T05:44:10.000Z","uid":"52433872-e945c6a4-bf29-42ee-a410-1ba088464778"},{"name":"Appointment Module","item":[{"name":"Get all appointments","id":"d0b0aa3e-2892-4046-b2b4-7794a5846ac5","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"auth":{"type":"bearer","bearer":[{"key":"token","value":"{{token}}","type":"string"}]},"method":"GET","header":[{"key":"Accept","value":"application/json","type":"text"}],"body":{"mode":"formdata","formdata":[]},"url":{"raw":"{{url}}/appointment/index","host":["{{url}}"],"path":["appointment","index"]}},"response":[],"createdAt":"2026-03-31T05:44:10.000Z","updatedAt":"2026-03-31T05:44:10.000Z","uid":"52433872-d0b0aa3e-2892-4046-b2b4-7794a5846ac5"},{"name":"Store Appointment","id":"c0c1e2f6-eac1-4b26-aaf1-432cd39107d8","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"auth":{"type":"bearer","bearer":[{"key":"token","value":"{{token}}","type":"string"}]},"method":"POST","header":[{"key":"Accept","value":"application/json","type":"text"}],"body":{"mode":"formdata","formdata":[{"key":"doctor_id","value":"5","type":"text"},{"key":"start_time","value":"2023-10-10 14:00","type":"text","disabled":true},{"key":"notes","value":"","type":"text"}]},"url":{"raw":"{{url}}/appointment/store","host":["{{url}}"],"path":["appointment","store"]}},"response":[],"createdAt":"2026-03-31T05:44:10.000Z","updatedAt":"2026-03-31T05:44:10.000Z","uid":"52433872-c0c1e2f6-eac1-4b26-aaf1-432cd39107d8"}],"id":"c8b65dae-5699-4e36-88cc-f15d41cf6e87","createdAt":"2026-03-31T05:44:10.000Z","updatedAt":"2026-03-31T05:44:10.000Z","uid":"52433872-c8b65dae-5699-4e36-88cc-f15d41cf6e87"}],"event":[{"listen":"prerequest","script":{"id":"10c5c0e4-2775-45aa-b52e-c5d7b1cd4112","type":"text/javascript","exec":[""]}},{"listen":"test","script":{"id":"d7f2d50f-c507-4575-b415-02b71545fb9c","type":"text/javascript","exec":[""]}}],"variable":[{"key":"url","value":"https://vcare.integration25.com/api"},{"key":"token","value":""}]}}
+{
+  "info": {
+    "_postman_id": "5d6daa54-c48a-4ddf-8e2e-d2391957756e",
+    "name": "VCare Live",
+    "description": "VCare App APIs Documentation  \nit include these modules :\n\nUser Auth Module\n\nGovernrate Module  \nCity Module  \nDoctors Specializatoins  \nDoctors  \nAppointment Module",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52433872",
+    "_collection_link": "https://go.postman.co/collection/52433872-5d6daa54-c48a-4ddf-8e2e-d2391957756e?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Auth Module",
+      "item": [
+        {
+          "name": "Register",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Register successful and token captured\", function () {",
+                  "    pm.expect(pm.response.code, \"status\").to.be.oneOf([200, 201]);",
+                  "    const jsonData = pm.response.json();",
+                  "    const token = jsonData && jsonData.data && jsonData.data.token;",
+                  "    if (token) {",
+                  "        pm.collectionVariables.set(\"token\", token);",
+                  "        // Extract the email/password actually sent (resolved after variable substitution)",
+                  "        try {",
+                  "            const sent = pm.request.body.toString(); // urlencoded string",
+                  "            const params = new URLSearchParams(sent);",
+                  "            const sentEmail = params.get(\"email\");",
+                  "            const sentPassword = params.get(\"password\");",
+                  "            if (sentEmail) pm.collectionVariables.set(\"email\", sentEmail);",
+                  "            if (sentPassword) pm.collectionVariables.set(\"password\", sentPassword);",
+                  "        } catch (e) {",
+                  "            console.warn(\"[VCare] Could not persist registered email/password:\", e);",
+                  "        }",
+                  "        console.log(\"[VCare] Register OK. Token saved.\");",
+                  "    } else {",
+                  "        console.warn(\"[VCare] Register response did not contain data.token:\", jsonData);",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "name",
+                  "value": "Flutter Tester",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "flutter_{{$timestamp}}@example.com",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "010{{$randomInt}}{{$randomInt}}",
+                  "type": "text"
+                },
+                {
+                  "key": "gender",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "Password123",
+                  "type": "text"
+                },
+                {
+                  "key": "password_confirmation",
+                  "value": "Password123",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/auth/register",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "description": "This End-Point For user login\n\n- **Method** : POST\n- Form Body :  \n    \\- name  \n    \\- email  \n    \\- phone : required , must be numeric values (0-9) , doesn\\`t accept negative values.  \n    \\- gender  \n    \\- password : required\n    \n\nWhen user Logged in :  \nif user type is an admin -> the response have number of all projects statuses he has created  \nif user type is an manager-> the response have number of all projects statuses he had set as a\n\nmanager on it or he had assign it to an employee  \nif user type is an employee -> the response have number of all projects statuses was assigned to\n\nhim"
+          },
+          "response": [
+            {
+              "name": "Register Failed Example",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "diaa",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "email",
+                      "value": "a@a.com",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "phone",
+                      "value": "22",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "gender",
+                      "value": "0",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "password",
+                      "value": "password",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "password_confirmation",
+                      "value": "password",
+                      "type": "text",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{url}}/auth/register",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "register"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Connection",
+                  "value": "Keep-Alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5, max=100"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "PHP/8.0.28"
+                },
+                {
+                  "key": "cache-control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "x-ratelimit-limit",
+                  "value": "60"
+                },
+                {
+                  "key": "x-ratelimit-remaining",
+                  "value": "54"
+                },
+                {
+                  "key": "access-control-allow-origin",
+                  "value": "*"
+                },
+                {
+                  "key": "content-length",
+                  "value": "159"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "date",
+                  "value": "Thu, 21 Sep 2023 12:56:39 GMT"
+                },
+                {
+                  "key": "server",
+                  "value": "LiteSpeed"
+                },
+                {
+                  "key": "platform",
+                  "value": "hostinger"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "upgrade-insecure-requests"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=2592000, h3-29=\":443\"; ma=2592000, h3-Q050=\":443\"; ma=2592000, h3-Q046=\":443\"; ma=2592000, h3-Q043=\":443\"; ma=2592000, quic=\":443\"; ma=2592000; v=\"43,46\""
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Unprocessable Entity\",\n    \"data\": {\n        \"name\": [\n            \"The name field is required.\"\n        ],\n        \"email\": [\n            \"The email field is required.\"\n        ],\n        \"phone\": [\n            \"The phone field is required.\"\n        ],\n        \"gender\": [\n            \"The sex field is required.\"\n        ],\n        \"password\": [\n            \"The password field is required.\"\n        ]\n    },\n    \"status\": false,\n    \"code\": 422\n}"
+            },
+            {
+              "name": "Register Success Example",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "diaa",
+                      "type": "text"
+                    },
+                    {
+                      "key": "email",
+                      "value": "aa@aa.com",
+                      "type": "text"
+                    },
+                    {
+                      "key": "phone",
+                      "value": "222",
+                      "type": "text"
+                    },
+                    {
+                      "key": "gender",
+                      "value": "0",
+                      "type": "text"
+                    },
+                    {
+                      "key": "password",
+                      "value": "password",
+                      "type": "text"
+                    },
+                    {
+                      "key": "password_confirmation",
+                      "value": "password",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{url}}/auth/register",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "register"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Connection",
+                  "value": "Keep-Alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5, max=100"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "PHP/8.0.28"
+                },
+                {
+                  "key": "cache-control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "x-ratelimit-limit",
+                  "value": "60"
+                },
+                {
+                  "key": "x-ratelimit-remaining",
+                  "value": "58"
+                },
+                {
+                  "key": "access-control-allow-origin",
+                  "value": "*"
+                },
+                {
+                  "key": "content-length",
+                  "value": "384"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "date",
+                  "value": "Thu, 21 Sep 2023 12:57:16 GMT"
+                },
+                {
+                  "key": "server",
+                  "value": "LiteSpeed"
+                },
+                {
+                  "key": "platform",
+                  "value": "hostinger"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "upgrade-insecure-requests"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=2592000, h3-29=\":443\"; ma=2592000, h3-Q050=\":443\"; ma=2592000, h3-Q046=\":443\"; ma=2592000, h3-Q043=\":443\"; ma=2592000, quic=\":443\"; ma=2592000; v=\"43,46\""
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Loggedin Successfuly.\",\n    \"data\": {\n        \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3ZjYXJlLmludGVncmF0aW9uMjUuY29tL2FwaS9hdXRoL3JlZ2lzdGVyIiwiaWF0IjoxNjk1MzAxMDM2LCJleHAiOjE2OTUzMDQ2MzYsIm5iZiI6MTY5NTMwMTAzNiwianRpIjoiZHI2SW9ISEhxRXU1ZTlrWiIsInN1YiI6IjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.zWa9orDPpQrHjPvdC_G1atG-DUU2UUkEv8HycBCmd7E\",\n        \"username\": \"diaa\"\n    },\n    \"status\": true,\n    \"code\": 200\n}"
+            }
+          ]
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Login successful, token captured\", function () {",
+                  "    pm.expect(pm.response.code).to.eql(200);",
+                  "    const body = pm.response.json();",
+                  "    const token = body && body.data && body.data.token;",
+                  "    pm.expect(token, \"token present in response.data.token\").to.be.a(\"string\");",
+                  "    pm.collectionVariables.set(\"token\", token);",
+                  "    try {",
+                  "        const sent = pm.request.body.toString();",
+                  "        const params = new URLSearchParams(sent);",
+                  "        const e = params.get(\"email\");",
+                  "        const p = params.get(\"password\");",
+                  "        if (e) pm.collectionVariables.set(\"email\", e);",
+                  "        if (p) pm.collectionVariables.set(\"password\", p);",
+                  "    } catch (err) {}",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "email",
+                  "value": "{{email}}",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "{{password}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/auth/login",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "This End-Point For user login\n\n- **Method** : POST\n    \n- Form Body :  \n    \\- phone : required , must be numeric values (0-9) , doesn\\`t accept negative values.  \n    \\- password : required\n    \n\nWhen user Logged in :  \nif user type is an admin -> the response have number of all projects statuses he has created  \nif user type is an manager-> the response have number of all projects statuses he had set as a\n\nmanager on it or he had assign it to an employee  \nif user type is an employee -> the response have number of all projects statuses was assigned to\n\nhim"
+          },
+          "response": [
+            {
+              "name": "Login  Example Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "email",
+                      "value": "a@a.com",
+                      "type": "text"
+                    },
+                    {
+                      "key": "password",
+                      "value": "password",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{url}}/auth/login",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Connection",
+                  "value": "Keep-Alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5, max=100"
+                },
+                {
+                  "key": "x-powered-by",
+                  "value": "PHP/8.0.28"
+                },
+                {
+                  "key": "cache-control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "x-ratelimit-limit",
+                  "value": "60"
+                },
+                {
+                  "key": "x-ratelimit-remaining",
+                  "value": "59"
+                },
+                {
+                  "key": "access-control-allow-origin",
+                  "value": "*"
+                },
+                {
+                  "key": "content-length",
+                  "value": "380"
+                },
+                {
+                  "key": "content-encoding",
+                  "value": "br"
+                },
+                {
+                  "key": "vary",
+                  "value": "Accept-Encoding"
+                },
+                {
+                  "key": "date",
+                  "value": "Thu, 21 Sep 2023 12:59:37 GMT"
+                },
+                {
+                  "key": "server",
+                  "value": "LiteSpeed"
+                },
+                {
+                  "key": "platform",
+                  "value": "hostinger"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "upgrade-insecure-requests"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=2592000, h3-29=\":443\"; ma=2592000, h3-Q050=\":443\"; ma=2592000, h3-Q046=\":443\"; ma=2592000, h3-Q043=\":443\"; ma=2592000, quic=\":443\"; ma=2592000; v=\"43,46\""
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Loggedin Successfuly.\",\n    \"data\": {\n        \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3ZjYXJlLmludGVncmF0aW9uMjUuY29tL2FwaS9hdXRoL2xvZ2luIiwiaWF0IjoxNjk1MzAxMTc3LCJleHAiOjE2OTUzMDQ3NzcsIm5iZiI6MTY5NTMwMTE3NywianRpIjoiU3RWbThhSHNkN24zWG5TayIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.EmLXqTsiAcE0N-87EZ_xNT-ePpyr8Wj7tBscoG41IOs\",\n        \"username\": \"diaa\"\n    },\n    \"status\": true,\n    \"code\": 200\n}"
+            }
+          ]
+        }
+      ],
+      "description": "This User Authentication Module\n\ninclude :  \nRegister  \nLogin  \nLogout"
+    },
+    {
+      "name": "User Module",
+      "item": [
+        {
+          "name": "User profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/user/profile",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "user",
+                "profile"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Updated Name",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "updated{{$timestamp}}@test.com",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "0101{{$randomInt}}",
+                  "type": "text"
+                },
+                {
+                  "key": "gender",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "{{password}}",
+                  "type": "text"
+                },
+                {
+                  "key": "password_confirmation",
+                  "value": "{{password}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/user/update",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "user",
+                "update"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Home Module",
+      "item": [
+        {
+          "name": "Home Page",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/home/index",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "home",
+                "index"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Governrate Module",
+      "item": [
+        {
+          "name": "Get All Governrates",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/governrate/index",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "governrate",
+                "index"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "City Module",
+      "item": [
+        {
+          "name": "Get All City",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/city/index",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "city",
+                "index"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Show cities based on gov.",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/city/show/7",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "city",
+                "show",
+                "7"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Specialization Module",
+      "item": [
+        {
+          "name": "Get All Specialization",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/specialization/index",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "specialization",
+                "index"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Show Specialization",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/specialization/show/1",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "specialization",
+                "show",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Doctor Module",
+      "item": [
+        {
+          "name": "Get All Doctor",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/doctor/index",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "doctor",
+                "index"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Show Doctor",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/doctor/show/3",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "doctor",
+                "show",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Filter Doctor",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/doctor/doctor-filter?city=7",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "doctor",
+                "doctor-filter"
+              ],
+              "query": [
+                {
+                  "key": "city",
+                  "value": "7",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Doctor Search",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/doctor/doctor-search?name=Finn",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "doctor",
+                "doctor-search"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Finn"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Appointment Module",
+      "item": [
+        {
+          "name": "Get all appointments",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "{{url}}/appointment/index",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "appointment",
+                "index"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Store Appointment",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "doctor_id",
+                  "value": "5",
+                  "type": "text"
+                },
+                {
+                  "key": "start_time",
+                  "value": "2026-10-10 14:00",
+                  "type": "text"
+                },
+                {
+                  "key": "notes",
+                  "value": "Test appointment from Postman",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/appointment/store",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "appointment",
+                "store"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Logout",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{url}}/auth/logout",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "auth",
+            "logout"
+          ]
+        },
+        "description": "This End-Point For User Logout  \n**User Must be Authenticated**"
+      },
+      "response": [
+        {
+          "name": "Logout Success",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/auth/logout",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8000"
+            },
+            {
+              "key": "Date",
+              "value": "Sun, 27 Aug 2023 13:20:27 GMT"
+            },
+            {
+              "key": "Date",
+              "value": "Sun, 27 Aug 2023 13:20:27 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            },
+            {
+              "key": "X-Powered-By",
+              "value": "PHP/8.2.4"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, private"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "X-RateLimit-Limit",
+              "value": "60"
+            },
+            {
+              "key": "X-RateLimit-Remaining",
+              "value": "59"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"message\": \"Loggedout Successfuly\",\n    \"data\": [],\n    \"status\": true,\n    \"code\": 200\n}"
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// VCare Live — Collection-level pre-request script",
+          "// Skips auth on public endpoints and auto-refreshes token when missing/invalid.",
+          "",
+          "const rawUrl = pm.request.url.toString();",
+          "const isAuthEndpoint = /\\/auth\\/(login|register|logout)\\b/.test(rawUrl);",
+          "",
+          "if (isAuthEndpoint) {",
+          "    // Do nothing — auth endpoints handle their own flow.",
+          "    return;",
+          "}",
+          "",
+          "const baseUrl = pm.collectionVariables.get(\"url\");",
+          "const email = pm.collectionVariables.get(\"email\");",
+          "const password = pm.collectionVariables.get(\"password\");",
+          "const token = pm.collectionVariables.get(\"token\");",
+          "",
+          "if (!baseUrl) {",
+          "    console.error(\"[VCare] Collection variable `url` is not set.\");",
+          "    return;",
+          "}",
+          "",
+          "if (token) {",
+          "    // Token already available; proceed.",
+          "    return;",
+          "}",
+          "",
+          "if (!email || !password) {",
+          "    console.warn(\"[VCare] No token and no credentials. Run Register or Login first to populate the `token` collection variable.\");",
+          "    return;",
+          "}",
+          "",
+          "// Attempt auto-login",
+          "pm.sendRequest({",
+          "    url: baseUrl + \"/auth/login\",",
+          "    method: \"POST\",",
+          "    header: { \"Accept\": \"application/json\" },",
+          "    body: {",
+          "        mode: \"urlencoded\",",
+          "        urlencoded: [",
+          "            { key: \"email\", value: email },",
+          "            { key: \"password\", value: password }",
+          "        ]",
+          "    }",
+          "}, function (err, res) {",
+          "    if (err) {",
+          "        console.error(\"[VCare] Auto-login network error:\", err);",
+          "        return;",
+          "    }",
+          "    try {",
+          "        const body = res.json();",
+          "        const fetched = body && body.data && body.data.token;",
+          "        if (fetched) {",
+          "            pm.collectionVariables.set(\"token\", fetched);",
+          "            console.log(\"[VCare] Auto-login succeeded, token set.\");",
+          "        } else {",
+          "            console.warn(\"[VCare] Auto-login response had no token:\", body && body.message);",
+          "        }",
+          "    } catch (e) {",
+          "        console.error(\"[VCare] Auto-login parse error:\", e);",
+          "    }",
+          "});"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "url",
+      "value": "https://vcare.integration25.com/api"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "email",
+      "value": ""
+    },
+    {
+      "key": "password",
+      "value": ""
+    }
+  ]
+}

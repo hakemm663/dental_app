@@ -1,3 +1,4 @@
+import 'package:docdoc/core/helpers/specialty_icon_resolver.dart';
 import 'package:docdoc/core/theming/colors.dart';
 import 'package:docdoc/core/theming/styles.dart';
 import 'package:docdoc/features/home/data/models/specialization_model.dart';
@@ -75,26 +76,6 @@ class _SpecialityItem extends StatelessWidget {
 
   const _SpecialityItem({required this.spec, this.onTap});
 
-  IconData _iconFor(String name) {
-    final n = name.toLowerCase();
-    if (n.contains('neuro')) return Icons.psychology_outlined;
-    if (n.contains('pedi') || n.contains('child')) {
-      return Icons.child_care_outlined;
-    }
-    if (n.contains('radio')) return Icons.medical_information_outlined;
-    if (n.contains('cardio') || n.contains('heart')) {
-      return Icons.favorite_outline;
-    }
-    if (n.contains('dental') || n.contains('dent')) {
-      return Icons.health_and_safety_outlined;
-    }
-    if (n.contains('eye') || n.contains('ophth')) {
-      return Icons.remove_red_eye_outlined;
-    }
-    if (n.contains('skin') || n.contains('derma')) return Icons.face_outlined;
-    return Icons.medical_services_outlined;
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -109,7 +90,7 @@ class _SpecialityItem extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             child: Icon(
-              _iconFor(spec.name),
+              specialtyIconFor(spec.name),
               color: ColorsManager.mainBlue,
               size: 32.r,
             ),

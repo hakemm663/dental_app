@@ -57,7 +57,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _onSearchTap() {
-    // TODO: navigate to search screen when available
+    _pushAndResetDoctors(Routes.recommendationDoctors);
+  }
+
+  /// Push a screen that may apply doctor filters and reset the list on return.
+  Future<void> _pushAndResetDoctors(String route) async {
+    await Navigator.of(context).pushNamed(route);
+    if (!mounted) return;
+    context.read<DoctorsCubit>().getAllDoctors();
   }
 
   @override
@@ -74,11 +81,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    HomeHeader(userName: userName),
+                    HomeHeader(
+                      userName: userName,
+                      onNotificationTap: () =>
+                          Navigator.of(context).pushNamed(Routes.notifications),
+                    ),
                     SizedBox(height: 24.h),
-                    HomeBanner(onFindNearbyTap: () {
-                      // TODO: navigate to nearby doctors search
-                    }),
+                    HomeBanner(
+                      onFindNearbyTap: () =>
+                          Navigator.of(context).pushNamed(Routes.findNearby),
+                    ),
                     SizedBox(height: 28.h),
                     BlocBuilder<HomeCubit, HomeState>(
                       builder: (context, state) {
@@ -100,10 +112,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           padding: EdgeInsets.only(bottom: 28.h),
                           child: SpecialitySection(
                             specializations: state.specializations,
+                            onSeeAll: () =>
+                                _pushAndResetDoctors(Routes.specialitiesScreen),
                             onSpecialityTap: (SpecializationModel spec) {
                               context
                                   .read<DoctorsCubit>()
-                                  .filterDoctors(specializationId: spec.id);
+                                  .applyFilters(specializationId: spec.id);
+                              _pushAndResetDoctors(Routes.recommendationDoctors);
                             },
                           ),
                         );
@@ -117,9 +132,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: TextStyles.font18DarkBlueBold
                               .copyWith(fontSize: 20.sp),
                         ),
-                        Text(
-                          'See All',
-                          style: TextStyles.font13BlueSemiBold,
+                        GestureDetector(
+                          onTap: () =>
+                              _pushAndResetDoctors(Routes.recommendationDoctors),
+                          child: Text(
+                            'See All',
+                            style: TextStyles.font13BlueSemiBold,
+                          ),
                         ),
                       ],
                     ),
@@ -157,6 +176,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             final doctor = state.doctors[index];
                             return DoctorRecommendationCard(
                               doctor: doctor,
+                              specialityLabel:
+                                  doctor.specializationName ?? 'General',
                               onTap: () => Navigator.of(context).pushNamed(
                                 Routes.doctorDetails,
                                 arguments: doctor.id,

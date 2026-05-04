@@ -11,4 +11,8 @@ class Routes {
   static const String bookAppointment = '/bookAppointment';
   static const String appointments = '/appointments';
   static const String profile = '/profile';
+  static const String specialitiesScreen = '/specialitiesScreen';
+  static const String recommendationDoctors = '/recommendationDoctors';
+  static const String notifications = '/notifications';
+  static const String findNearby = '/findNearby';
 }
