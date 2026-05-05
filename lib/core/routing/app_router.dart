@@ -8,6 +8,7 @@ import 'package:docdoc/features/onboarding/onboarding_screen.dart';
 import 'package:docdoc/features/home/presentation/screens/home_screen.dart';
 import 'package:docdoc/features/home/presentation/screens/doctor_details_screen.dart';
 import 'package:docdoc/features/home/presentation/screens/book_appointment_screen.dart';
+import 'package:docdoc/features/home/presentation/screens/booking_confirmed_screen.dart';
 import 'package:docdoc/features/home/presentation/screens/appointments_screen.dart';
 import 'package:docdoc/features/home/presentation/screens/profile_screen.dart';
 import 'package:docdoc/features/home/presentation/screens/specialities_screen.dart';
@@ -104,10 +105,11 @@ class AppRouter {
           ),
         );
       case Routes.findNearby:
+        final focusDoctorId = arguments is int ? arguments : null;
         return MaterialPageRoute(
           builder: (_) => BlocProvider.value(
             value: getIt<DoctorsCubit>(),
-            child: const FindNearbyScreen(),
+            child: FindNearbyScreen(focusDoctorId: focusDoctorId),
           ),
         );
       case Routes.doctorDetails:
@@ -128,6 +130,11 @@ class AppRouter {
             value: getIt<AppointmentCubit>(),
             child: BookAppointmentScreen(doctor: doctor),
           ),
+        );
+      case Routes.bookingConfirmed:
+        final args = arguments as BookingConfirmedArgs;
+        return MaterialPageRoute(
+          builder: (_) => BookingConfirmedScreen(args: args),
         );
       case Routes.appointments:
         return MaterialPageRoute(

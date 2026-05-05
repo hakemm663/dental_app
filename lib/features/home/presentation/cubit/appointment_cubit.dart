@@ -25,11 +25,13 @@ class AppointmentCubit extends Cubit<AppointmentState> {
 
   Future<void> storeAppointment({
     required int doctorId,
+    required String startTime,
     String? notes,
   }) async {
     emit(const AppointmentState.creating());
     final result = await _storeAppointmentUseCase(
       doctorId: doctorId,
+      startTime: startTime,
       notes: notes,
     );
     switch (result) {

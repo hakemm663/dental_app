@@ -23,11 +23,13 @@ class StoreAppointmentUseCase {
 
   Future<ApiResult<AppointmentModel>> call({
     required int doctorId,
+    required String startTime,
     String? notes,
   }) async {
     try {
       return Success(await _repo.storeAppointment(
         doctorId: doctorId,
+        startTime: startTime,
         notes: notes,
       ));
     } catch (error) {
