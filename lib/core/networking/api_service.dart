@@ -96,12 +96,14 @@ class ApiService {
 
   Future<Response> storeAppointment({
     required int doctorId,
+    required String startTime,
     String? notes,
   }) =>
       _dio.post(
         ApiConstants.storeAppointment,
         data: FormData.fromMap({
           'doctor_id': doctorId,
+          'start_time': startTime,
           if (notes != null) 'notes': notes,
         }),
       );

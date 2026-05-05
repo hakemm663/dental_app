@@ -10,7 +10,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:latlong2/latlong.dart';
 
 class FindNearbyScreen extends StatefulWidget {
-  const FindNearbyScreen({super.key});
+  /// Optional doctor to focus on. When set, the map centers on this
+  /// doctor's marker on first load and pre-opens the bottom card.
+  final int? focusDoctorId;
+
+  const FindNearbyScreen({super.key, this.focusDoctorId});
 
   @override
   State<FindNearbyScreen> createState() => _FindNearbyScreenState();
@@ -27,6 +31,18 @@ class _FindNearbyScreenState extends State<FindNearbyScreen> {
   void initState() {
     super.initState();
     context.read<DoctorsCubit>().getAllDoctors();
+  }
+
+  DoctorModel? _pickFocus(List<DoctorModel> doctors) {
+    final withCoords =
+        doctors.where((d) => d.latitude != null && d.longitude != null);
+    if (withCoords.isEmpty) return null;
+    if (widget.focusDoctorId != null) {
+      for (final d in withCoords) {
+        if (d.id == widget.focusDoctorId) return d;
+      }
+    }
+    return withCoords.first;
   }
 
   @override
@@ -47,8 +63,15 @@ class _FindNearbyScreenState extends State<FindNearbyScreen> {
             return !prevHasCoords && currHasCoords;
           },
           listener: (context, state) {
-            final first = state.doctors.firstWhere((d) => d.latitude != null);
-            _mapController.move(LatLng(first.latitude!, first.longitude!), 13);
+            final focus = _pickFocus(state.doctors);
+            if (focus == null) return;
+            _mapController.move(
+              LatLng(focus.latitude!, focus.longitude!),
+              13,
+            );
+            if (widget.focusDoctorId != null && focus.id == widget.focusDoctorId) {
+              setState(() => _selectedDoctor = focus);
+            }
           },
           child: Stack(
             children: [
@@ -57,15 +80,13 @@ class _FindNearbyScreenState extends State<FindNearbyScreen> {
                   final doctors = state.doctors
                       .where((d) => d.latitude != null && d.longitude != null)
                       .toList();
+                  final focus = _pickFocus(state.doctors);
 
                   return FlutterMap(
                     mapController: _mapController,
                     options: MapOptions(
-                      initialCenter: doctors.isNotEmpty
-                          ? LatLng(
-                              doctors.first.latitude!,
-                              doctors.first.longitude!,
-                            )
+                      initialCenter: focus != null
+                          ? LatLng(focus.latitude!, focus.longitude!)
                           : _defaultCenter,
                       initialZoom: 13,
                     ),

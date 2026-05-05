@@ -285,7 +285,7 @@ class _ChatButton extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.all(10.r),
           decoration: BoxDecoration(
-            border: Border.all(color: ColorsManager.mainBlue, width: 1.5),
+            border: Border.all(color: ColorsManager.white, width: 1.5),
             borderRadius: BorderRadius.circular(12.r),
           ),
           child: Icon(
@@ -377,7 +377,10 @@ class _AboutTab extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(e.place, style: TextStyles.font14DarkBlueMedium),
+                            Text(
+                              e.place,
+                              style: TextStyles.font14DarkBlueMedium,
+                            ),
                             Text(
                               e.isCurrent
                                   ? '${e.fromYear} - sekarang'
@@ -446,8 +449,10 @@ class _LocationTab extends StatelessWidget {
                 child: hasCoords
                     ? FlutterMap(
                         options: MapOptions(
-                          initialCenter:
-                              LatLng(doctor.latitude!, doctor.longitude!),
+                          initialCenter: LatLng(
+                            doctor.latitude!,
+                            doctor.longitude!,
+                          ),
                           initialZoom: 14,
                           interactionOptions: const InteractionOptions(
                             flags: InteractiveFlag.none,
@@ -463,7 +468,9 @@ class _LocationTab extends StatelessWidget {
                             markers: [
                               Marker(
                                 point: LatLng(
-                                    doctor.latitude!, doctor.longitude!),
+                                  doctor.latitude!,
+                                  doctor.longitude!,
+                                ),
                                 child: Icon(
                                   Icons.location_pin,
                                   color: Colors.red,
@@ -475,7 +482,8 @@ class _LocationTab extends StatelessWidget {
                           const RichAttributionWidget(
                             attributions: [
                               TextSourceAttribution(
-                                  'OpenStreetMap contributors'),
+                                'OpenStreetMap contributors',
+                              ),
                             ],
                           ),
                         ],
@@ -512,16 +520,14 @@ class _ReviewsTab extends StatelessWidget {
         }
         if (state.reviews.isEmpty) {
           return Center(
-            child:
-                Text('No reviews yet', style: TextStyles.font14GrayRegular),
+            child: Text('No reviews yet', style: TextStyles.font14GrayRegular),
           );
         }
         return ListView.separated(
           itemCount: state.reviews.length,
           separatorBuilder: (_, _) =>
               Divider(height: 24.h, color: ColorsManager.lighterGray),
-          itemBuilder: (_, index) =>
-              _ReviewItem(review: state.reviews[index]),
+          itemBuilder: (_, index) => _ReviewItem(review: state.reviews[index]),
         );
       },
     );
@@ -547,9 +553,14 @@ class _ReviewItem extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(review.reviewerName, style: TextStyles.font14DarkBlueBold),
-                  Text(_relativeDate(review.createdAt),
-                      style: TextStyles.font12GrayRegular),
+                  Text(
+                    review.reviewerName,
+                    style: TextStyles.font14DarkBlueBold,
+                  ),
+                  Text(
+                    _relativeDate(review.createdAt),
+                    style: TextStyles.font12GrayRegular,
+                  ),
                 ],
               ),
               SizedBox(height: 4.h),
@@ -660,10 +671,9 @@ class _BookButton extends StatelessWidget {
         buttonText: 'Make An Appointment',
         textStyle: TextStyles.font16WhiteSemiBold,
         borderRadius: 16,
-        onPressed: () => Navigator.of(context).pushNamed(
-          Routes.bookAppointment,
-          arguments: doctor,
-        ),
+        onPressed: () => Navigator.of(
+          context,
+        ).pushNamed(Routes.bookAppointment, arguments: doctor),
       ),
     );
   }

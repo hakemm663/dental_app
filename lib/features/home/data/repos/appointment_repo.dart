@@ -17,10 +17,12 @@ class AppointmentRepo {
 
   Future<AppointmentModel> storeAppointment({
     required int doctorId,
+    required String startTime,
     String? notes,
   }) async {
     final response = await _apiService.storeAppointment(
       doctorId: doctorId,
+      startTime: startTime,
       notes: notes,
     );
     return AppointmentModel.fromJson(
