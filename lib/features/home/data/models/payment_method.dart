@@ -1,11 +1,12 @@
 enum CardBrand {
-  mastercard('Master Card'),
-  amex('American Express'),
-  capitalOne('Capital One'),
-  barclays('Barclays');
+  mastercard('Master Card', 'assets/icons/mastercard.png'),
+  amex('American Express', 'assets/icons/Group 1000004778.png'),
+  capitalOne('Capital One', 'assets/icons/Group 1000004780.png'),
+  barclays('Barclays', 'assets/icons/Group 1000004781.png');
 
   final String label;
-  const CardBrand(this.label);
+  final String assetPath;
+  const CardBrand(this.label, this.assetPath);
 }
 
 sealed class PaymentMethod {

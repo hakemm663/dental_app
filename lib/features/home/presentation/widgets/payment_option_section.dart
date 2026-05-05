@@ -236,32 +236,16 @@ class _BrandIcon extends StatelessWidget {
 
   const _BrandIcon({required this.brand});
 
-  // TODO(assets): swap to real brand SVG/PNG assets when designer provides them.
-  Color get _bg => switch (brand) {
-        CardBrand.mastercard => const Color(0xFFFFF3E0),
-        CardBrand.amex => const Color(0xFF1F4E9F),
-        CardBrand.capitalOne => const Color(0xFFE3E7EE),
-        CardBrand.barclays => const Color(0xFF1AA9E1),
-      };
-
-  Color get _fg => switch (brand) {
-        CardBrand.mastercard => const Color(0xFFE65100),
-        CardBrand.amex => Colors.white,
-        CardBrand.capitalOne => const Color(0xFF1A2B5C),
-        CardBrand.barclays => Colors.white,
-      };
-
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 36.r,
-      height: 36.r,
-      decoration: BoxDecoration(
-        color: _bg,
-        borderRadius: BorderRadius.circular(8.r),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(8.r),
+      child: Image.asset(
+        brand.assetPath,
+        width: 36.r,
+        height: 36.r,
+        fit: BoxFit.cover,
       ),
-      alignment: Alignment.center,
-      child: Icon(Icons.credit_card_rounded, color: _fg, size: 20.r),
     );
   }
 }
