@@ -9,6 +9,7 @@ import 'package:docdoc/features/home/presentation/screens/booking_confirmed_scre
 import 'package:docdoc/features/home/presentation/widgets/booking_stepper.dart';
 import 'package:docdoc/features/home/presentation/widgets/booking_summary_view.dart';
 import 'package:docdoc/features/home/presentation/widgets/booking_total_sheet.dart';
+import 'package:docdoc/features/home/data/models/appointment_type.dart';
 import 'package:docdoc/features/home/presentation/widgets/date_time_step.dart';
 import 'package:docdoc/features/home/presentation/widgets/payment_option_section.dart';
 import 'package:flutter/material.dart';
@@ -87,6 +88,10 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
     context.read<AppointmentCubit>().storeAppointment(
       doctorId: widget.doctor.id,
       startTime: _startTimePayload,
+      paymentMethod: _selectedPayment!,
+      appointmentType: _selectedType,
+      subtotal: _subtotal,
+      tax: _tax,
     );
   }
 
@@ -174,7 +179,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
           selectedDay: _selectedDay,
           selectedTime: _selectedTime ?? '',
           appointmentType: _selectedType,
-          paymentMethod: _selectedPayment ?? const PayPalPayment(),
+          paymentMethod: _selectedPayment!,
           onChangePayment: _onChangePayment,
         ),
       },

@@ -1,3 +1,5 @@
+import 'package:docdoc/core/networking/api_error_handler.dart';
+import 'package:docdoc/core/networking/api_result.dart';
 import 'package:docdoc/core/networking/api_service.dart';
 import 'package:docdoc/features/home/data/models/appointment_model.dart';
 import 'package:docdoc/features/home/data/models/user_model.dart';
@@ -7,40 +9,74 @@ class AppointmentRepo {
 
   const AppointmentRepo(this._apiService);
 
-  Future<List<AppointmentModel>> getAllAppointments() async {
-    final response = await _apiService.getAllAppointments();
-    final data = (response.data as Map<String, dynamic>)['data'] as List;
-    return data
-        .map((e) => AppointmentModel.fromJson(e as Map<String, dynamic>))
-        .toList();
+  Future<ApiResult<List<AppointmentModel>>> getAllAppointments() async {
+    try {
+      final response = await _apiService.getAllAppointments();
+      final data = (response.data as Map<String, dynamic>)['data'] as List;
+      return Success(
+        data.map((e) => AppointmentModel.fromJson(e as Map<String, dynamic>)).toList(),
+      );
+    } catch (error) {
+      return Failure(ApiErrorHandler.handle(error));
+    }
   }
 
-  Future<AppointmentModel> storeAppointment({
+  Future<ApiResult<AppointmentModel>> storeAppointment({
     required int doctorId,
     required String startTime,
     String? notes,
+    String? paymentMethod,
+    String? cardBrand,
+    double? subtotal,
+    double? tax,
+    double? total,
+    String? appointmentType,
   }) async {
-    final response = await _apiService.storeAppointment(
-      doctorId: doctorId,
-      startTime: startTime,
-      notes: notes,
-    );
-    return AppointmentModel.fromJson(
-      (response.data as Map<String, dynamic>)['data'] as Map<String, dynamic>,
-    );
+    try {
+      final response = await _apiService.storeAppointment(
+        doctorId: doctorId,
+        startTime: startTime,
+        notes: notes,
+        paymentMethod: paymentMethod,
+        cardBrand: cardBrand,
+        subtotal: subtotal,
+        tax: tax,
+        total: total,
+        appointmentType: appointmentType,
+      );
+      return Success(
+        AppointmentModel.fromJson(
+          (response.data as Map<String, dynamic>)['data'] as Map<String, dynamic>,
+        ),
+      );
+    } catch (error) {
+      return Failure(ApiErrorHandler.handle(error));
+    }
   }
 
-  Future<UserModel> getUserProfile() async {
-    final response = await _apiService.getUserProfile();
-    return UserModel.fromJson(
-      (response.data as Map<String, dynamic>)['data'] as Map<String, dynamic>,
-    );
+  Future<ApiResult<UserModel>> getUserProfile() async {
+    try {
+      final response = await _apiService.getUserProfile();
+      return Success(
+        UserModel.fromJson(
+          (response.data as Map<String, dynamic>)['data'] as Map<String, dynamic>,
+        ),
+      );
+    } catch (error) {
+      return Failure(ApiErrorHandler.handle(error));
+    }
   }
 
-  Future<UserModel> updateProfile(Map<String, dynamic> fields) async {
-    final response = await _apiService.updateProfile(fields);
-    return UserModel.fromJson(
-      (response.data as Map<String, dynamic>)['data'] as Map<String, dynamic>,
-    );
+  Future<ApiResult<UserModel>> updateProfile(Map<String, dynamic> fields) async {
+    try {
+      final response = await _apiService.updateProfile(fields);
+      return Success(
+        UserModel.fromJson(
+          (response.data as Map<String, dynamic>)['data'] as Map<String, dynamic>,
+        ),
+      );
+    } catch (error) {
+      return Failure(ApiErrorHandler.handle(error));
+    }
   }
 }

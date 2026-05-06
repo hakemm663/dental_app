@@ -1,3 +1,4 @@
+import 'package:docdoc/core/networking/api_error_handler.dart';
 import 'package:docdoc/core/networking/api_result.dart';
 import 'package:docdoc/features/home/data/models/notification_model.dart';
 import 'package:docdoc/features/home/data/repos/notifications_repo.dart';
@@ -11,7 +12,7 @@ class GetNotificationsUseCase {
     try {
       return Success(await _repo.getNotifications());
     } catch (error) {
-      return Failure(error.toString());
+      return Failure(ApiErrorHandler.handle(error));
     }
   }
 }
@@ -26,7 +27,7 @@ class MarkAllNotificationsReadUseCase {
       await _repo.markAllAsRead();
       return const Success(null);
     } catch (error) {
-      return Failure(error.toString());
+      return Failure(ApiErrorHandler.handle(error));
     }
   }
 }

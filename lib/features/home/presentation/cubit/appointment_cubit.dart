@@ -1,5 +1,7 @@
 import 'package:docdoc/core/networking/api_result.dart';
 import 'package:docdoc/features/home/data/models/appointment_model.dart';
+import 'package:docdoc/features/home/data/models/appointment_type.dart';
+import 'package:docdoc/features/home/data/models/payment_method.dart';
 import 'package:docdoc/features/home/domain/use_cases/appointment_use_cases.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -26,6 +28,10 @@ class AppointmentCubit extends Cubit<AppointmentState> {
   Future<void> storeAppointment({
     required int doctorId,
     required String startTime,
+    required PaymentMethod paymentMethod,
+    required AppointmentType appointmentType,
+    required double subtotal,
+    required double tax,
     String? notes,
   }) async {
     emit(const AppointmentState.creating());
@@ -33,6 +39,12 @@ class AppointmentCubit extends Cubit<AppointmentState> {
       doctorId: doctorId,
       startTime: startTime,
       notes: notes,
+      paymentMethod: paymentMethod.wireKey,
+      cardBrand: paymentMethod is CreditCardPayment ? paymentMethod.brand.wireKey : null,
+      subtotal: subtotal,
+      tax: tax,
+      total: subtotal + tax,
+      appointmentType: appointmentType.wireKey,
     );
     switch (result) {
       case Success(:final data):

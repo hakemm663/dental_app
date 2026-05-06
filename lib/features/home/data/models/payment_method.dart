@@ -1,11 +1,12 @@
 enum CardBrand {
-  mastercard('Master Card'),
-  amex('American Express'),
-  capitalOne('Capital One'),
-  barclays('Barclays');
+  mastercard('Master Card', 'mastercard'),
+  amex('American Express', 'amex'),
+  capitalOne('Capital One', 'capital_one'),
+  barclays('Barclays', 'barclays');
 
   final String label;
-  const CardBrand(this.label);
+  final String wireKey;
+  const CardBrand(this.label, this.wireKey);
 }
 
 sealed class PaymentMethod {
@@ -15,6 +16,12 @@ sealed class PaymentMethod {
         CreditCardPayment(:final brand) => brand.label,
         BankTransferPayment() => 'Bank Transfer',
         PayPalPayment() => 'Paypal',
+      };
+
+  String get wireKey => switch (this) {
+        CreditCardPayment() => 'credit_card',
+        BankTransferPayment() => 'bank_transfer',
+        PayPalPayment() => 'paypal',
       };
 }
 

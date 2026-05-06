@@ -7,13 +7,7 @@ class GetUserProfileUseCase {
 
   const GetUserProfileUseCase(this._repo);
 
-  Future<ApiResult<UserModel>> call() async {
-    try {
-      return Success(await _repo.getUserProfile());
-    } catch (error) {
-      return Failure(error.toString());
-    }
-  }
+  Future<ApiResult<UserModel>> call() => _repo.getUserProfile();
 }
 
 class UpdateProfileUseCase {
@@ -21,11 +15,6 @@ class UpdateProfileUseCase {
 
   const UpdateProfileUseCase(this._repo);
 
-  Future<ApiResult<UserModel>> call(Map<String, dynamic> fields) async {
-    try {
-      return Success(await _repo.updateProfile(fields));
-    } catch (error) {
-      return Failure(error.toString());
-    }
-  }
+  Future<ApiResult<UserModel>> call(Map<String, dynamic> fields) =>
+      _repo.updateProfile(fields);
 }

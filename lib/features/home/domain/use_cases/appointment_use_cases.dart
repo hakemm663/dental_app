@@ -7,13 +7,7 @@ class GetAppointmentsUseCase {
 
   const GetAppointmentsUseCase(this._repo);
 
-  Future<ApiResult<List<AppointmentModel>>> call() async {
-    try {
-      return Success(await _repo.getAllAppointments());
-    } catch (error) {
-      return Failure(error.toString());
-    }
-  }
+  Future<ApiResult<List<AppointmentModel>>> call() => _repo.getAllAppointments();
 }
 
 class StoreAppointmentUseCase {
@@ -25,15 +19,22 @@ class StoreAppointmentUseCase {
     required int doctorId,
     required String startTime,
     String? notes,
-  }) async {
-    try {
-      return Success(await _repo.storeAppointment(
+    String? paymentMethod,
+    String? cardBrand,
+    double? subtotal,
+    double? tax,
+    double? total,
+    String? appointmentType,
+  }) =>
+      _repo.storeAppointment(
         doctorId: doctorId,
         startTime: startTime,
         notes: notes,
-      ));
-    } catch (error) {
-      return Failure(error.toString());
-    }
-  }
+        paymentMethod: paymentMethod,
+        cardBrand: cardBrand,
+        subtotal: subtotal,
+        tax: tax,
+        total: total,
+        appointmentType: appointmentType,
+      );
 }

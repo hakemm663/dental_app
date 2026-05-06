@@ -98,6 +98,12 @@ class ApiService {
     required int doctorId,
     required String startTime,
     String? notes,
+    String? paymentMethod,
+    String? cardBrand,
+    double? subtotal,
+    double? tax,
+    double? total,
+    String? appointmentType,
   }) =>
       _dio.post(
         ApiConstants.storeAppointment,
@@ -105,6 +111,12 @@ class ApiService {
           'doctor_id': doctorId,
           'start_time': startTime,
           if (notes != null) 'notes': notes,
+          if (paymentMethod != null) 'payment_method': paymentMethod,
+          if (cardBrand != null) 'card_brand': cardBrand,
+          if (subtotal != null) 'subtotal': subtotal,
+          if (tax != null) 'tax': tax,
+          if (total != null) 'total': total,
+          if (appointmentType != null) 'appointment_type': appointmentType,
         }),
       );
 }
