@@ -51,8 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
       case HomeNavTab.profile:
         Navigator.of(context).pushNamed(Routes.profile);
       case HomeNavTab.chat:
-        // TODO: navigate to chat screen when available
-        break;
+        Navigator.of(context).pushNamed(Routes.inboxScreen);
     }
   }
 

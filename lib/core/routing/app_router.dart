@@ -15,7 +15,12 @@ import 'package:docdoc/features/home/presentation/screens/specialities_screen.da
 import 'package:docdoc/features/home/presentation/screens/recommendation_doctors_screen.dart';
 import 'package:docdoc/features/home/presentation/screens/notifications_screen.dart';
 import 'package:docdoc/features/home/presentation/screens/find_nearby_screen.dart';
-import 'package:docdoc/features/home/data/models/doctor_model.dart';
+import 'package:docdoc/features/inbox/presentation/cubit/inbox_cubit.dart';
+import 'package:docdoc/features/inbox/presentation/cubit/chat_cubit.dart';
+import 'package:docdoc/features/inbox/presentation/screens/inbox_screen.dart';
+import 'package:docdoc/features/inbox/presentation/screens/chat_screen.dart';
+import 'package:docdoc/features/inbox/presentation/screens/video_call_screen.dart';
+import 'package:docdoc/features/inbox/presentation/screens/camera_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:docdoc/core/routing/routes.dart';
@@ -149,6 +154,30 @@ class AppRouter {
             value: getIt<ProfileCubit>(),
             child: const ProfileScreen(),
           ),
+        );
+      case Routes.inboxScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => getIt<InboxCubit>(),
+            child: const InboxScreen(),
+          ),
+        );
+      case Routes.chatScreen:
+        final conversation = arguments as ConversationModel;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => getIt<ChatCubit>(),
+            child: ChatScreen(conversation: conversation),
+          ),
+        );
+      case Routes.videoCall:
+        final conversation = arguments as ConversationModel;
+        return MaterialPageRoute(
+          builder: (_) => VideoCallScreen(conversation: conversation),
+        );
+      case Routes.cameraScreen:
+        return MaterialPageRoute(
+          builder: (_) => const CameraScreen(),
         );
       default:
         return MaterialPageRoute(

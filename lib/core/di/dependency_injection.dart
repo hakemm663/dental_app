@@ -25,6 +25,10 @@ import 'package:docdoc/features/home/presentation/cubit/doctor_reviews_cubit.dar
 import 'package:docdoc/features/home/presentation/cubit/notifications_cubit.dart';
 import 'package:docdoc/features/home/presentation/cubit/appointment_cubit.dart';
 import 'package:docdoc/features/home/presentation/cubit/profile_cubit.dart';
+import 'package:docdoc/features/inbox/data/repos/inbox_repo.dart';
+import 'package:docdoc/features/inbox/domain/use_cases/inbox_use_cases.dart';
+import 'package:docdoc/features/inbox/presentation/cubit/inbox_cubit.dart';
+import 'package:docdoc/features/inbox/presentation/cubit/chat_cubit.dart';
 import 'package:get_it/get_it.dart';
 
 final getIt = GetIt.instance;
@@ -104,4 +108,21 @@ Future<void> setupGetIt() async {
       () => DoctorReviewsCubit(getIt()));
   getIt.registerFactory<NotificationsCubit>(
       () => NotificationsCubit(getIt(), getIt()));
+
+  // Inbox
+  getIt.registerLazySingleton<InboxRepo>(() => InboxRepo());
+  getIt.registerLazySingleton<GetConversationsUseCase>(
+      () => GetConversationsUseCase(getIt()));
+  getIt.registerLazySingleton<SearchConversationsUseCase>(
+      () => SearchConversationsUseCase(getIt()));
+  getIt.registerLazySingleton<GetMessagesUseCase>(
+      () => GetMessagesUseCase(getIt()));
+  getIt.registerLazySingleton<SendMessageUseCase>(
+      () => SendMessageUseCase(getIt()));
+  getIt.registerLazySingleton<GetDoctorsForNewMessageUseCase>(
+      () => GetDoctorsForNewMessageUseCase(getIt()));
+  getIt.registerFactory<InboxCubit>(
+      () => InboxCubit(getIt(), getIt(), getIt()));
+  getIt.registerFactory<ChatCubit>(
+      () => ChatCubit(getIt(), getIt()));
 }

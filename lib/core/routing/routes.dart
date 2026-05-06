@@ -16,4 +16,8 @@ class Routes {
   static const String recommendationDoctors = '/recommendationDoctors';
   static const String notifications = '/notifications';
   static const String findNearby = '/findNearby';
+  static const String inboxScreen = '/inboxScreen';
+  static const String chatScreen = '/chatScreen';
+  static const String videoCall = '/videoCall';
+  static const String cameraScreen = '/cameraScreen';
 }
