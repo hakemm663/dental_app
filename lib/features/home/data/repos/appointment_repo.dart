@@ -57,11 +57,7 @@ class AppointmentRepo {
   Future<ApiResult<UserModel>> getUserProfile() async {
     try {
       final response = await _apiService.getUserProfile();
-      return Success(
-        UserModel.fromJson(
-          (response.data as Map<String, dynamic>)['data'] as Map<String, dynamic>,
-        ),
-      );
+      return Success(UserModel.fromJson(_unwrapUser(response.data)));
     } catch (error) {
       return Failure(ApiErrorHandler.handle(error));
     }
@@ -70,13 +66,16 @@ class AppointmentRepo {
   Future<ApiResult<UserModel>> updateProfile(Map<String, dynamic> fields) async {
     try {
       final response = await _apiService.updateProfile(fields);
-      return Success(
-        UserModel.fromJson(
-          (response.data as Map<String, dynamic>)['data'] as Map<String, dynamic>,
-        ),
-      );
+      return Success(UserModel.fromJson(_unwrapUser(response.data)));
     } catch (error) {
       return Failure(ApiErrorHandler.handle(error));
     }
+  }
+
+  // /user/profile returns `data` as a one-element list; /user/update returns it as a map.
+  Map<String, dynamic> _unwrapUser(dynamic body) {
+    final data = (body as Map<String, dynamic>)['data'];
+    if (data is List) return data.first as Map<String, dynamic>;
+    return data as Map<String, dynamic>;
   }
 }

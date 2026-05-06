@@ -6,10 +6,14 @@ class DoctorModel {
   final String? image;
   final String? phone;
   final String? email;
+  final String? gender;
+  final String? degree;
   final int? specializationId;
   final String? specializationName;
   final int? governorateId;
+  final String? governorateName;
   final int? cityId;
+  final String? cityName;
   final String? address;
   final String? bio;
   final String? startTime;
@@ -28,10 +32,14 @@ class DoctorModel {
     this.image,
     this.phone,
     this.email,
+    this.gender,
+    this.degree,
     this.specializationId,
     this.specializationName,
     this.governorateId,
+    this.governorateName,
     this.cityId,
+    this.cityName,
     this.address,
     this.bio,
     this.startTime,
@@ -46,23 +54,32 @@ class DoctorModel {
   });
 
   factory DoctorModel.fromJson(Map<String, dynamic> json) {
+    final spec = json['specialization'] as Map<String, dynamic>?;
+    final city = json['city'] as Map<String, dynamic>?;
+    final gov = city?['governrate'] as Map<String, dynamic>?;
     final expList = json['experiences'] as List?;
+
     return DoctorModel(
       id: json['id'] as int,
       name: json['name'] as String,
-      image: json['image'] as String?,
+      image: json['photo'] as String? ?? json['image'] as String?,
       phone: json['phone'] as String?,
       email: json['email'] as String?,
-      specializationId: json['specialization_id'] as int?,
-      specializationName: json['specialization_name'] as String? ??
-          (json['specialization'] as Map<String, dynamic>?)?['name'] as String?,
-      governorateId: json['governorate_id'] as int?,
-      cityId: json['city_id'] as int?,
+      gender: json['gender'] as String?,
+      degree: json['degree'] as String?,
+      specializationId: spec?['id'] as int? ?? json['specialization_id'] as int?,
+      specializationName:
+          spec?['name'] as String? ?? json['specialization_name'] as String?,
+      governorateId: gov?['id'] as int? ?? json['governorate_id'] as int?,
+      governorateName: gov?['name'] as String?,
+      cityId: city?['id'] as int? ?? json['city_id'] as int?,
+      cityName: city?['name'] as String?,
       address: json['address'] as String?,
-      bio: json['bio'] as String?,
+      bio: json['description'] as String? ?? json['bio'] as String?,
       startTime: json['start_time'] as String?,
       endTime: json['end_time'] as String?,
-      fees: (json['fees'] as num?)?.toDouble(),
+      fees: (json['appoint_price'] as num?)?.toDouble() ??
+          (json['fees'] as num?)?.toDouble(),
       rating: (json['rating'] as num?)?.toDouble(),
       reviewsCount: json['reviews_count'] as int?,
       str: json['str'] as String?,
