@@ -7,11 +7,6 @@ class GetCitiesByGovernorateUseCase {
 
   const GetCitiesByGovernorateUseCase(this._homeRepo);
 
-  Future<ApiResult<List<CityModel>>> call(int governorateId) async {
-    try {
-      return Success(await _homeRepo.getCitiesByGovernorate(governorateId));
-    } catch (error) {
-      return Failure(error.toString());
-    }
-  }
+  Future<ApiResult<List<CityModel>>> call(int governorateId) =>
+      _homeRepo.getCitiesByGovernorate(governorateId);
 }

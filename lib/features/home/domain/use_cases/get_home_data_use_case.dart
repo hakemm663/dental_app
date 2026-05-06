@@ -22,19 +22,19 @@ class GetHomeDataUseCase {
   const GetHomeDataUseCase(this._homeRepo);
 
   Future<ApiResult<HomeData>> call() async {
-    try {
-      final results = await Future.wait([
-        _homeRepo.getAllGovernorates(),
-        _homeRepo.getAllCities(),
-        _homeRepo.getAllSpecializations(),
-      ]);
-      return Success(HomeData(
-        governorates: results[0] as List<GovernorateModel>,
-        cities: results[1] as List<CityModel>,
-        specializations: results[2] as List<SpecializationModel>,
-      ));
-    } catch (error) {
-      return Failure(error.toString());
-    }
+    final govResult = await _homeRepo.getAllGovernorates();
+    if (govResult case Failure(:final errMsg)) return Failure(errMsg);
+
+    final cityResult = await _homeRepo.getAllCities();
+    if (cityResult case Failure(:final errMsg)) return Failure(errMsg);
+
+    final specResult = await _homeRepo.getAllSpecializations();
+    if (specResult case Failure(:final errMsg)) return Failure(errMsg);
+
+    return Success(HomeData(
+      governorates: (govResult as Success<List<GovernorateModel>>).data,
+      cities: (cityResult as Success<List<CityModel>>).data,
+      specializations: (specResult as Success<List<SpecializationModel>>).data,
+    ));
   }
 }

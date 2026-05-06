@@ -4,7 +4,7 @@ import 'package:docdoc/core/theming/styles.dart';
 import 'package:docdoc/core/widgets/app_text_button.dart';
 import 'package:docdoc/features/home/data/models/doctor_model.dart';
 import 'package:docdoc/features/home/presentation/widgets/booking_summary_view.dart';
-import 'package:docdoc/features/home/presentation/widgets/date_time_step.dart';
+import 'package:docdoc/features/home/data/models/appointment_type.dart';
 import 'package:docdoc/features/home/presentation/widgets/doctor_info_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

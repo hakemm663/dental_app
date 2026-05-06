@@ -36,11 +36,23 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
             itemCount: state.appointments.length,
             itemBuilder: (context, index) {
               final appointment = state.appointments[index];
+              final doctor = appointment.doctor;
+              final price = appointment.price;
               return Card(
                 margin: const EdgeInsets.only(bottom: 12),
                 child: ListTile(
-                  title: Text('Doctor ID: ${appointment.doctorId}'),
-                  subtitle: Text(appointment.startTime),
+                  leading: doctor?.image != null
+                      ? CircleAvatar(
+                          backgroundImage: NetworkImage(doctor!.image!),
+                        )
+                      : const CircleAvatar(child: Icon(Icons.person)),
+                  title: Text(doctor?.name ?? 'Doctor'),
+                  subtitle: Text(
+                    [
+                      appointment.appointmentTime,
+                      if (price != null) '\$${price.toStringAsFixed(0)}',
+                    ].join('  •  '),
+                  ),
                   trailing: Text(appointment.status ?? 'pending'),
                 ),
               );

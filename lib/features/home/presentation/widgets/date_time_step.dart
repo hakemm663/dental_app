@@ -1,18 +1,9 @@
 import 'package:docdoc/core/theming/colors.dart';
 import 'package:docdoc/core/theming/styles.dart';
+import 'package:docdoc/features/home/data/models/appointment_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-
-enum AppointmentType {
-  inPerson('In Person', Icons.local_hospital_outlined),
-  videoCall('Video Call', Icons.videocam_outlined),
-  phoneCall('Phone Call', Icons.call_outlined);
-
-  final String label;
-  final IconData icon;
-  const AppointmentType(this.label, this.icon);
-}
 
 class DateTimeStep extends StatelessWidget {
   final DateTime selectedDay;

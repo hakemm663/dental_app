@@ -7,13 +7,7 @@ class GetDoctorsUseCase {
 
   const GetDoctorsUseCase(this._doctorRepo);
 
-  Future<ApiResult<List<DoctorModel>>> call() async {
-    try {
-      return Success(await _doctorRepo.getAllDoctors());
-    } catch (error) {
-      return Failure(error.toString());
-    }
-  }
+  Future<ApiResult<List<DoctorModel>>> call() => _doctorRepo.getAllDoctors();
 }
 
 class FilterDoctorsUseCase {
@@ -24,16 +18,8 @@ class FilterDoctorsUseCase {
   Future<ApiResult<List<DoctorModel>>> call({
     int? cityId,
     int? specializationId,
-  }) async {
-    try {
-      return Success(await _doctorRepo.filterDoctors(
-        cityId: cityId,
-        specializationId: specializationId,
-      ));
-    } catch (error) {
-      return Failure(error.toString());
-    }
-  }
+  }) =>
+      _doctorRepo.filterDoctors(cityId: cityId, specializationId: specializationId);
 }
 
 class SearchDoctorsUseCase {
@@ -41,13 +27,8 @@ class SearchDoctorsUseCase {
 
   const SearchDoctorsUseCase(this._doctorRepo);
 
-  Future<ApiResult<List<DoctorModel>>> call(String name) async {
-    try {
-      return Success(await _doctorRepo.searchDoctors(name));
-    } catch (error) {
-      return Failure(error.toString());
-    }
-  }
+  Future<ApiResult<List<DoctorModel>>> call(String name) =>
+      _doctorRepo.searchDoctors(name);
 }
 
 class GetDoctorDetailsUseCase {
@@ -55,11 +36,6 @@ class GetDoctorDetailsUseCase {
 
   const GetDoctorDetailsUseCase(this._doctorRepo);
 
-  Future<ApiResult<DoctorModel>> call(int doctorId) async {
-    try {
-      return Success(await _doctorRepo.getDoctorDetails(doctorId));
-    } catch (error) {
-      return Failure(error.toString());
-    }
-  }
+  Future<ApiResult<DoctorModel>> call(int doctorId) =>
+      _doctorRepo.getDoctorDetails(doctorId);
 }
