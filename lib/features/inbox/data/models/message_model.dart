@@ -9,6 +9,8 @@ class MessageModel {
   final bool isMe;
   final MessageType type;
   final String? imageUrl;
+  final String? fileName;
+  final int? fileSize;
 
   const MessageModel({
     required this.id,
@@ -19,5 +21,7 @@ class MessageModel {
     required this.isMe,
     this.type = MessageType.text,
     this.imageUrl,
+    this.fileName,
+    this.fileSize,
   });
 }

@@ -19,12 +19,6 @@ class _InboxScreenState extends State<InboxScreen> {
   final _searchController = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-    context.read<InboxCubit>().loadConversations();
-  }
-
-  @override
   void dispose() {
     _searchController.dispose();
     super.dispose();

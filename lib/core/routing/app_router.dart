@@ -157,8 +157,8 @@ class AppRouter {
         );
       case Routes.inboxScreen:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (_) => getIt<InboxCubit>(),
+          builder: (_) => BlocProvider.value(
+            value: getIt<InboxCubit>()..loadConversations(),
             child: const InboxScreen(),
           ),
         );

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:docdoc/core/networking/api_result.dart';
 import 'package:docdoc/features/inbox/data/models/message_model.dart';
 import 'package:docdoc/features/inbox/domain/use_cases/inbox_use_cases.dart';
@@ -8,30 +10,69 @@ part 'chat_state.dart';
 class ChatCubit extends Cubit<ChatState> {
   final GetMessagesUseCase _getMessagesUseCase;
   final SendMessageUseCase _sendMessageUseCase;
+  final SendImageMessageUseCase _sendImageMessageUseCase;
+  final SendAttachmentMessageUseCase _sendAttachmentMessageUseCase;
 
-  ChatCubit(this._getMessagesUseCase, this._sendMessageUseCase)
-      : super(const ChatState.initial());
+  StreamSubscription<List<MessageModel>>? _messagesSub;
 
-  Future<void> loadMessages(int conversationId) async {
+  ChatCubit(
+    this._getMessagesUseCase,
+    this._sendMessageUseCase,
+    this._sendImageMessageUseCase,
+    this._sendAttachmentMessageUseCase,
+  ) : super(const ChatState.initial());
+
+  void loadMessages(String conversationId) {
     emit(const ChatState.loading());
-    final result = await _getMessagesUseCase(conversationId);
-    switch (result) {
-      case Success(:final data):
-        emit(ChatState.loaded(messages: data));
-      case Failure(:final errMsg):
-        emit(ChatState.error(message: errMsg));
-    }
+    _messagesSub?.cancel();
+    _messagesSub = _getMessagesUseCase(conversationId).listen(
+      (messages) => emit(ChatState.loaded(messages: messages)),
+      onError: (Object error) =>
+          emit(ChatState.error(message: error.toString())),
+    );
   }
 
-  Future<void> sendMessage(int conversationId, String text) async {
+  Future<void> sendMessage(String conversationId, String text) async {
     final result = await _sendMessageUseCase(conversationId, text);
     switch (result) {
-      case Success(:final data):
-        emit(ChatState.loaded(
-          messages: [...state.messages, data],
-        ));
+      case Success():
+        break;
       case Failure():
         break;
     }
+  }
+
+  Future<void> sendImageMessage(
+      String conversationId, String imageUrl) async {
+    final result =
+        await _sendImageMessageUseCase(conversationId, imageUrl);
+    switch (result) {
+      case Success():
+        break;
+      case Failure():
+        break;
+    }
+  }
+
+  Future<void> sendAttachmentMessage(
+    String conversationId,
+    String fileUrl,
+    String fileName,
+    int fileSize,
+  ) async {
+    final result = await _sendAttachmentMessageUseCase(
+        conversationId, fileUrl, fileName, fileSize);
+    switch (result) {
+      case Success():
+        break;
+      case Failure():
+        break;
+    }
+  }
+
+  @override
+  Future<void> close() {
+    _messagesSub?.cancel();
+    return super.close();
   }
 }

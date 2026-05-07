@@ -1,7 +1,7 @@
 import 'package:docdoc/features/home/data/models/doctor_model.dart';
 
 class ConversationModel {
-  final int id;
+  final String id;
   final DoctorModel doctor;
   final String lastMessage;
   final DateTime lastMessageTime;

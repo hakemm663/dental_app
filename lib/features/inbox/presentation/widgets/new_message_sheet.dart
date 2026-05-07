@@ -1,3 +1,4 @@
+import 'package:docdoc/core/networking/api_result.dart';
 import 'package:docdoc/core/routing/routes.dart';
 import 'package:docdoc/core/theming/colors.dart';
 import 'package:docdoc/core/theming/styles.dart';
@@ -122,18 +123,21 @@ class _NewMessageSheetState extends State<NewMessageSheet> {
                     final doctor = doctors[index];
                     return DoctorContactTile(
                       doctor: doctor,
-                      onTap: () {
+                      onTap: () async {
                         Navigator.of(context).pop();
-                        final conversation = ConversationModel(
-                          id: doctor.id,
-                          doctor: doctor,
-                          lastMessage: '',
-                          lastMessageTime: DateTime.now(),
-                        );
-                        Navigator.of(context).pushNamed(
-                          Routes.chatScreen,
-                          arguments: conversation,
-                        );
+                        final result = await context
+                            .read<InboxCubit>()
+                            .getOrCreateConversation(doctor);
+                        if (!context.mounted) return;
+                        switch (result) {
+                          case Success(:final data):
+                            Navigator.of(context).pushNamed(
+                              Routes.chatScreen,
+                              arguments: data,
+                            );
+                          case Failure():
+                            break;
+                        }
                       },
                     );
                   },
