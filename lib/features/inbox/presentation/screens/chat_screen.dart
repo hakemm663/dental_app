@@ -1,4 +1,7 @@
+import 'package:docdoc/core/di/dependency_injection.dart';
 import 'package:docdoc/core/routing/routes.dart';
+import 'package:docdoc/core/services/firebase_storage_service.dart';
+import 'package:docdoc/core/services/media_picker_service.dart';
 import 'package:docdoc/core/theming/colors.dart';
 import 'package:docdoc/core/theming/styles.dart';
 import 'package:docdoc/features/inbox/data/models/conversation_model.dart';
@@ -22,6 +25,8 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final _scrollController = ScrollController();
+  final _mediaPicker = getIt<MediaPickerService>();
+  final _storageService = getIt<FirebaseStorageService>();
 
   @override
   void initState() {
@@ -45,6 +50,64 @@ class _ChatScreenState extends State<ChatScreen> {
         );
       }
     });
+  }
+
+  Future<void> _handleCameraTap() async {
+    final imagePath = await Navigator.of(context).pushNamed(
+      Routes.cameraScreen,
+    );
+    if (!mounted || imagePath is! String) return;
+    await _uploadAndSendImage(imagePath);
+  }
+
+  Future<void> _handleDocumentPick() async {
+    final result = await _mediaPicker.pickDocument();
+    if (!mounted || result == null) return;
+    await _uploadAndSendAttachment(result);
+  }
+
+  Future<void> _handleFilePick() async {
+    final result = await _mediaPicker.pickFile();
+    if (!mounted || result == null) return;
+
+    final url = await _storageService.uploadChatAttachment(
+      result.path,
+      widget.conversation.id,
+    );
+    if (!mounted) return;
+    context.read<ChatCubit>().sendAttachmentMessage(
+          widget.conversation.id,
+          url,
+          result.name,
+          result.size,
+        );
+  }
+
+  Future<void> _uploadAndSendImage(String filePath) async {
+    final url = await _storageService.uploadChatImage(
+      filePath,
+      widget.conversation.id,
+    );
+    if (!mounted) return;
+    context.read<ChatCubit>().sendImageMessage(
+          widget.conversation.id,
+          url,
+        );
+  }
+
+  Future<void> _uploadAndSendAttachment(String filePath) async {
+    final url = await _storageService.uploadChatAttachment(
+      filePath,
+      widget.conversation.id,
+    );
+    if (!mounted) return;
+    final fileName = filePath.split('/').last;
+    context.read<ChatCubit>().sendAttachmentMessage(
+          widget.conversation.id,
+          url,
+          fileName,
+          0,
+        );
   }
 
   @override
@@ -95,8 +158,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     .sendMessage(widget.conversation.id, text);
               },
               onAttachmentTap: () => _showAttachmentSheet(context),
-              onCameraTap: () =>
-                  Navigator.of(context).pushNamed(Routes.cameraScreen),
+              onCameraTap: _handleCameraTap,
             ),
           ],
         ),
@@ -114,10 +176,16 @@ class _ChatScreenState extends State<ChatScreen> {
       builder: (_) => AttachmentSheet(
         onCamera: () {
           Navigator.of(context).pop();
-          Navigator.of(context).pushNamed(Routes.cameraScreen);
+          _handleCameraTap();
         },
-        onDocument: () => Navigator.of(context).pop(),
-        onAttachFile: () => Navigator.of(context).pop(),
+        onDocument: () {
+          Navigator.of(context).pop();
+          _handleDocumentPick();
+        },
+        onAttachFile: () {
+          Navigator.of(context).pop();
+          _handleFilePick();
+        },
       ),
     );
   }

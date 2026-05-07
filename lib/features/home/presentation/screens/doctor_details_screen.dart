@@ -1,11 +1,13 @@
+import 'package:docdoc/core/di/dependency_injection.dart';
+import 'package:docdoc/core/networking/api_result.dart';
 import 'package:docdoc/core/routing/routes.dart';
 import 'package:docdoc/core/theming/colors.dart';
 import 'package:docdoc/core/theming/styles.dart';
 import 'package:docdoc/core/widgets/app_text_button.dart';
-import 'package:docdoc/features/home/data/models/doctor_model.dart';
 import 'package:docdoc/features/home/data/models/review_model.dart';
 import 'package:docdoc/features/home/presentation/cubit/doctor_details_cubit.dart';
 import 'package:docdoc/features/home/presentation/cubit/doctor_reviews_cubit.dart';
+import 'package:docdoc/features/inbox/presentation/cubit/inbox_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -229,7 +231,7 @@ class _DoctorSummary extends StatelessWidget {
             ],
           ),
         ),
-        const _ChatButton(),
+        _ChatButton(doctor: doctor),
       ],
     );
   }
@@ -272,7 +274,9 @@ class _DoctorAvatar extends StatelessWidget {
 }
 
 class _ChatButton extends StatelessWidget {
-  const _ChatButton();
+  final DoctorModel doctor;
+
+  const _ChatButton({required this.doctor});
 
   @override
   Widget build(BuildContext context) {
@@ -281,7 +285,22 @@ class _ChatButton extends StatelessWidget {
       borderRadius: BorderRadius.circular(12.r),
       child: InkWell(
         borderRadius: BorderRadius.circular(12.r),
-        onTap: () {},
+        onTap: () async {
+          final inboxCubit = getIt<InboxCubit>();
+          final result = await inboxCubit.getOrCreateConversation(doctor);
+          if (!context.mounted) return;
+          switch (result) {
+            case Success(:final data):
+              Navigator.of(context).pushNamed(
+                Routes.chatScreen,
+                arguments: data,
+              );
+            case Failure():
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Could not open chat')),
+              );
+          }
+        },
         child: Container(
           padding: EdgeInsets.all(10.r),
           decoration: BoxDecoration(

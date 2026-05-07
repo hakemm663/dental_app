@@ -68,5 +68,11 @@
 		</array>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<key>NSCameraUsageDescription</key>
+		<string>DocDoc needs camera access to take photos and make video calls</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>DocDoc needs microphone access for video and voice calls</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>DocDoc needs photo library access to share images in chat</string>
 	</dict>
 </plist>

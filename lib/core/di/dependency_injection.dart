@@ -25,15 +25,17 @@ import 'package:docdoc/features/home/presentation/cubit/doctor_reviews_cubit.dar
 import 'package:docdoc/features/home/presentation/cubit/notifications_cubit.dart';
 import 'package:docdoc/features/home/presentation/cubit/appointment_cubit.dart';
 import 'package:docdoc/features/home/presentation/cubit/profile_cubit.dart';
-import 'package:docdoc/features/inbox/data/repos/inbox_repo.dart';
+import 'package:docdoc/features/inbox/data/repos/firebase_chat_repo.dart';
 import 'package:docdoc/features/inbox/domain/use_cases/inbox_use_cases.dart';
 import 'package:docdoc/features/inbox/presentation/cubit/inbox_cubit.dart';
 import 'package:docdoc/features/inbox/presentation/cubit/chat_cubit.dart';
+import 'package:docdoc/core/di/services_di.dart';
 import 'package:get_it/get_it.dart';
 
 final getIt = GetIt.instance;
 
 Future<void> setupGetIt() async {
+  registerServices(getIt);
   // Networking
   getIt.registerLazySingleton<ApiService>(() => ApiService(DioFactory.getDio()));
 
@@ -110,7 +112,7 @@ Future<void> setupGetIt() async {
       () => NotificationsCubit(getIt(), getIt()));
 
   // Inbox
-  getIt.registerLazySingleton<InboxRepo>(() => InboxRepo());
+  getIt.registerLazySingleton<FirebaseChatRepo>(() => FirebaseChatRepo());
   getIt.registerLazySingleton<GetConversationsUseCase>(
       () => GetConversationsUseCase(getIt()));
   getIt.registerLazySingleton<SearchConversationsUseCase>(
@@ -119,10 +121,19 @@ Future<void> setupGetIt() async {
       () => GetMessagesUseCase(getIt()));
   getIt.registerLazySingleton<SendMessageUseCase>(
       () => SendMessageUseCase(getIt()));
+  getIt.registerLazySingleton<SendImageMessageUseCase>(
+      () => SendImageMessageUseCase(getIt()));
+  getIt.registerLazySingleton<SendAttachmentMessageUseCase>(
+      () => SendAttachmentMessageUseCase(getIt()));
   getIt.registerLazySingleton<GetDoctorsForNewMessageUseCase>(
       () => GetDoctorsForNewMessageUseCase(getIt()));
-  getIt.registerFactory<InboxCubit>(
-      () => InboxCubit(getIt(), getIt(), getIt()));
+  getIt.registerLazySingleton<GetOrCreateConversationUseCase>(
+      () => GetOrCreateConversationUseCase(getIt()));
+  getIt.registerLazySingleton<InboxCubit>(
+      () => InboxCubit(getIt(), getIt(), getIt(), getIt()));
   getIt.registerFactory<ChatCubit>(
-      () => ChatCubit(getIt(), getIt()));
+      () => ChatCubit(getIt(), getIt(), getIt(), getIt()));
+
+  // Seed Firestore with demo data on first launch
+  await getIt<FirebaseChatRepo>().seedInitialData();
 }

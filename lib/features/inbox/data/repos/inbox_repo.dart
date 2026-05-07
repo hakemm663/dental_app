@@ -2,7 +2,7 @@ import 'package:docdoc/features/home/data/models/doctor_model.dart';
 import 'package:docdoc/features/inbox/data/models/conversation_model.dart';
 import 'package:docdoc/features/inbox/data/models/message_model.dart';
 
-class InboxRepo {
+class MockInboxRepo {
   static final List<DoctorModel> _doctors = [
     const DoctorModel(
       id: 101,
@@ -50,7 +50,7 @@ class InboxRepo {
 
   final List<ConversationModel> _conversations = [
     ConversationModel(
-      id: 1,
+      id: '1',
       doctor: _doctors[0],
       lastMessage:
           "Fine, I'll do a check. Does the patient have a history of certain diseases?",
@@ -58,7 +58,7 @@ class InboxRepo {
       unreadCount: 2,
     ),
     ConversationModel(
-      id: 2,
+      id: '2',
       doctor: _doctors[1],
       lastMessage:
           "Fine, I'll do a check. Does the patient have a history of certain diseases?",
@@ -66,14 +66,14 @@ class InboxRepo {
       unreadCount: 2,
     ),
     ConversationModel(
-      id: 3,
+      id: '3',
       doctor: _doctors[2],
       lastMessage:
           "Fine, I'll do a check. Does the patient have a history of certain diseases?",
       lastMessageTime: DateTime.now().subtract(const Duration(hours: 2)),
     ),
     ConversationModel(
-      id: 4,
+      id: '4',
       doctor: _doctors[3],
       lastMessage:
           "Fine, I'll do a check. Does the patient have a history of certain diseases?",
@@ -82,8 +82,8 @@ class InboxRepo {
     ),
   ];
 
-  final Map<int, List<MessageModel>> _messages = {
-    1: [
+  final Map<String, List<MessageModel>> _messages = {
+    '1': [
       MessageModel(
         id: 1,
         conversationId: 1,
@@ -155,13 +155,13 @@ class InboxRepo {
         .toList();
   }
 
-  Future<List<MessageModel>> getMessages(int conversationId) async =>
+  Future<List<MessageModel>> getMessages(String conversationId) async =>
       List.unmodifiable(_messages[conversationId] ?? []);
 
-  Future<MessageModel> sendMessage(int conversationId, String text) async {
+  Future<MessageModel> sendMessage(String conversationId, String text) async {
     final message = MessageModel(
       id: _nextMessageId++,
-      conversationId: conversationId,
+      conversationId: int.tryParse(conversationId) ?? 0,
       text: text,
       senderId: 0,
       timestamp: DateTime.now(),

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:docdoc/core/networking/api_result.dart';
 import 'package:docdoc/features/home/data/models/doctor_model.dart';
 import 'package:docdoc/features/inbox/data/models/conversation_model.dart';
@@ -14,22 +16,28 @@ class InboxCubit extends Cubit<InboxState> {
   final GetConversationsUseCase _getConversationsUseCase;
   final SearchConversationsUseCase _searchConversationsUseCase;
   final GetDoctorsForNewMessageUseCase _getDoctorsForNewMessageUseCase;
+  final GetOrCreateConversationUseCase _getOrCreateConversationUseCase;
+
+  StreamSubscription<List<ConversationModel>>? _conversationsSub;
 
   InboxCubit(
     this._getConversationsUseCase,
     this._searchConversationsUseCase,
     this._getDoctorsForNewMessageUseCase,
+    this._getOrCreateConversationUseCase,
   ) : super(const InboxState.initial());
 
-  Future<void> loadConversations() async {
+  void loadConversations() {
     emit(const InboxState.loading());
-    final result = await _getConversationsUseCase();
-    switch (result) {
-      case Success(:final data):
-        emit(InboxState.loaded(conversations: data));
-      case Failure(:final errMsg):
-        emit(InboxState.error(message: errMsg));
-    }
+    _conversationsSub?.cancel();
+    _conversationsSub = _getConversationsUseCase().listen(
+      (conversations) => emit(InboxState.loaded(
+        conversations: conversations,
+        doctors: state.doctors,
+      )),
+      onError: (Object error) =>
+          emit(InboxState.error(message: error.toString())),
+    );
   }
 
   Future<void> searchConversations(String query) async {
@@ -53,5 +61,16 @@ class InboxCubit extends Cubit<InboxState> {
       case Failure():
         break;
     }
+  }
+
+  Future<ApiResult<ConversationModel>> getOrCreateConversation(
+      DoctorModel doctor) async {
+    return _getOrCreateConversationUseCase(doctor);
+  }
+
+  @override
+  Future<void> close() {
+    _conversationsSub?.cancel();
+    return super.close();
   }
 }
