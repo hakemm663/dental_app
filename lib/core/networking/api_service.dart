@@ -21,7 +21,7 @@ class ApiService {
     required String name,
     required String email,
     required String phone,
-    required int gender,
+    required String gender,
     required String password,
     required String passwordConfirmation,
   }) =>

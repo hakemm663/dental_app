@@ -4,11 +4,13 @@ class ChatState {
   final List<MessageModel> messages;
   final bool isLoading;
   final String? errorMessage;
+  final String? sendError;
 
   const ChatState({
     required this.messages,
     required this.isLoading,
     this.errorMessage,
+    this.sendError,
   });
 
   const ChatState.initial()
@@ -22,4 +24,17 @@ class ChatState {
 
   ChatState.error({required String message})
       : this(messages: const [], isLoading: false, errorMessage: message);
+
+  ChatState copyWith({
+    List<MessageModel>? messages,
+    bool? isLoading,
+    String? errorMessage,
+    String? sendError,
+  }) =>
+      ChatState(
+        messages: messages ?? this.messages,
+        isLoading: isLoading ?? this.isLoading,
+        errorMessage: errorMessage,
+        sendError: sendError,
+      );
 }

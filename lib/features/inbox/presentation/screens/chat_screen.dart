@@ -120,6 +120,7 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             _ChatAppBar(
               doctorName: doctor.name,
+              specialization: doctor.specializationName,
               onVideoCall: () => Navigator.of(context).pushNamed(
                 Routes.videoCall,
                 arguments: widget.conversation,
@@ -130,6 +131,14 @@ class _ChatScreenState extends State<ChatScreen> {
                 listener: (context, state) {
                   if (!state.isLoading && state.messages.isNotEmpty) {
                     _scrollToBottom();
+                  }
+                  if (state.sendError != null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(state.sendError!),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
                   }
                 },
                 builder: (context, state) {
@@ -193,9 +202,14 @@ class _ChatScreenState extends State<ChatScreen> {
 
 class _ChatAppBar extends StatelessWidget {
   final String doctorName;
+  final String? specialization;
   final VoidCallback onVideoCall;
 
-  const _ChatAppBar({required this.doctorName, required this.onVideoCall});
+  const _ChatAppBar({
+    required this.doctorName,
+    this.specialization,
+    required this.onVideoCall,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -233,10 +247,11 @@ class _ChatAppBar extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: 2.h),
-                Text(
-                  'Online',
-                  style: TextStyles.font12GrayRegular,
-                ),
+                if (specialization != null)
+                  Text(
+                    specialization!,
+                    style: TextStyles.font12GrayRegular,
+                  ),
               ],
             ),
           ),

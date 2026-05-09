@@ -58,15 +58,6 @@ class _ChatInputBarState extends State<ChatInputBar> {
         top: false,
         child: Row(
           children: [
-            GestureDetector(
-              onTap: () {},
-              child: Icon(
-                Icons.emoji_emotions_outlined,
-                color: ColorsManager.lightGray,
-                size: 24.r,
-              ),
-            ),
-            SizedBox(width: 8.w),
             Expanded(
               child: TextField(
                 controller: _controller,

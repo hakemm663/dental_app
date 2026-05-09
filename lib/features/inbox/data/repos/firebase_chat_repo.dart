@@ -6,11 +6,12 @@ import 'package:uuid/uuid.dart';
 
 class FirebaseChatRepo {
   final FirebaseFirestore _firestore;
+  final String _patientId;
   static const _uuid = Uuid();
-  static const int _currentPatientId = 0;
 
-  FirebaseChatRepo({FirebaseFirestore? firestore})
-      : _firestore = firestore ?? FirebaseFirestore.instance;
+  FirebaseChatRepo({required String patientId, FirebaseFirestore? firestore})
+      : _patientId = patientId,
+        _firestore = firestore ?? FirebaseFirestore.instance;
 
   CollectionReference<Map<String, dynamic>> get _conversations =>
       _firestore.collection('conversations');
@@ -20,7 +21,7 @@ class FirebaseChatRepo {
 
   Stream<List<ConversationModel>> getConversationsStream() {
     return _conversations
-        .where('patientId', isEqualTo: _currentPatientId)
+        .where('patientId', isEqualTo: _patientId)
         .orderBy('lastMessageTime', descending: true)
         .snapshots()
         .map((snapshot) => snapshot.docs
@@ -30,7 +31,7 @@ class FirebaseChatRepo {
 
   Future<List<ConversationModel>> searchConversations(String query) async {
     final snapshot = await _conversations
-        .where('patientId', isEqualTo: _currentPatientId)
+        .where('patientId', isEqualTo: _patientId)
         .orderBy('lastMessageTime', descending: true)
         .get();
 
@@ -57,7 +58,7 @@ class FirebaseChatRepo {
     final now = Timestamp.now();
 
     final data = {
-      'senderId': _currentPatientId,
+      'senderId': _patientId,
       'text': text,
       'type': 'text',
       'imageUrl': null,
@@ -74,10 +75,10 @@ class FirebaseChatRepo {
     });
 
     return MessageModel(
-      id: messageId.hashCode,
-      conversationId: conversationId.hashCode,
+      id: messageId,
+      conversationId: conversationId,
       text: text,
-      senderId: _currentPatientId,
+      senderId: _patientId,
       timestamp: now.toDate(),
       isMe: true,
     );
@@ -89,7 +90,7 @@ class FirebaseChatRepo {
     final now = Timestamp.now();
 
     final data = {
-      'senderId': _currentPatientId,
+      'senderId': _patientId,
       'text': '',
       'type': 'image',
       'imageUrl': imageUrl,
@@ -106,10 +107,10 @@ class FirebaseChatRepo {
     });
 
     return MessageModel(
-      id: messageId.hashCode,
-      conversationId: conversationId.hashCode,
+      id: messageId,
+      conversationId: conversationId,
       text: '',
-      senderId: _currentPatientId,
+      senderId: _patientId,
       timestamp: now.toDate(),
       isMe: true,
       type: MessageType.image,
@@ -127,7 +128,7 @@ class FirebaseChatRepo {
     final now = Timestamp.now();
 
     final data = {
-      'senderId': _currentPatientId,
+      'senderId': _patientId,
       'text': fileUrl,
       'type': 'attachment',
       'imageUrl': null,
@@ -144,10 +145,10 @@ class FirebaseChatRepo {
     });
 
     return MessageModel(
-      id: messageId.hashCode,
-      conversationId: conversationId.hashCode,
+      id: messageId,
+      conversationId: conversationId,
       text: fileUrl,
-      senderId: _currentPatientId,
+      senderId: _patientId,
       timestamp: now.toDate(),
       isMe: true,
       type: MessageType.attachment,
@@ -158,7 +159,7 @@ class FirebaseChatRepo {
 
   Future<ConversationModel> getOrCreateConversation(DoctorModel doctor) async {
     final existing = await _conversations
-        .where('patientId', isEqualTo: _currentPatientId)
+        .where('patientId', isEqualTo: _patientId)
         .where('doctorId', isEqualTo: doctor.id)
         .limit(1)
         .get();
@@ -176,11 +177,11 @@ class FirebaseChatRepo {
       'doctorImage': doctor.image,
       'doctorSpecialization': doctor.specializationName,
       'doctorAddress': doctor.address,
-      'patientId': _currentPatientId,
+      'patientId': _patientId,
       'lastMessage': '',
       'lastMessageTime': now,
       'unreadCount': 0,
-      'participants': [doctor.id, _currentPatientId],
+      'participants': [doctor.id, _patientId],
     };
 
     await docRef.set(data);
@@ -195,7 +196,7 @@ class FirebaseChatRepo {
 
   Future<List<DoctorModel>> getDoctorsForNewMessage() async {
     final snapshot = await _conversations
-        .where('patientId', isEqualTo: _currentPatientId)
+        .where('patientId', isEqualTo: _patientId)
         .get();
 
     final seen = <int>{};
@@ -216,111 +217,6 @@ class FirebaseChatRepo {
     }
 
     return doctors;
-  }
-
-  Future<void> seedInitialData() async {
-    final existing = await _conversations
-        .where('patientId', isEqualTo: _currentPatientId)
-        .limit(1)
-        .get();
-
-    if (existing.docs.isNotEmpty) return;
-
-    final doctors = [
-      const DoctorModel(
-        id: 101,
-        name: 'Dr. Randy Wigham',
-        specializationName: 'General Doctor',
-        image: 'https://i.pravatar.cc/150?img=11',
-        address: 'RSUD Gatot Subroto',
-      ),
-      const DoctorModel(
-        id: 102,
-        name: 'Dr. Jack Sulivan',
-        specializationName: 'General Doctor',
-        image: 'https://i.pravatar.cc/150?img=12',
-        address: 'RSUD Gatot Subroto',
-      ),
-      const DoctorModel(
-        id: 103,
-        name: 'Drg. Hanna Stanton',
-        specializationName: 'General Doctor',
-        image: 'https://i.pravatar.cc/150?img=5',
-        address: 'RSUD Gatot Subroto',
-      ),
-      const DoctorModel(
-        id: 104,
-        name: 'Dr. Emery Lubin',
-        specializationName: 'General Doctor',
-        image: 'https://i.pravatar.cc/150?img=8',
-        address: 'RSUD Gatot Subroto',
-      ),
-    ];
-
-    final batch = _firestore.batch();
-
-    for (final doctor in doctors) {
-      final convRef = _conversations.doc();
-      final convTime = Timestamp.fromDate(
-        DateTime.now().subtract(const Duration(hours: 2)),
-      );
-
-      batch.set(convRef, {
-        'doctorId': doctor.id,
-        'doctorName': doctor.name,
-        'doctorImage': doctor.image,
-        'doctorSpecialization': doctor.specializationName,
-        'doctorAddress': doctor.address,
-        'patientId': _currentPatientId,
-        'lastMessage':
-            "Fine, I'll do a check. Does the patient have a history of certain diseases?",
-        'lastMessageTime': convTime,
-        'unreadCount': doctor.id == 101 || doctor.id == 102 ? 2 : 0,
-        'participants': [doctor.id, _currentPatientId],
-      });
-
-      if (doctor.id == 101) {
-        final seedMessages = [
-          ('Hi, Dr. Randy 🙏', 0, true, 3, 0),
-          ('Good morning, how can I help you?', 101, false, 2, 50),
-          (
-            'Good morning doctor, I have a headache and body aches.',
-            0,
-            true,
-            2,
-            40
-          ),
-          ('Fine, how long has the complaint been?', 101, false, 2, 30),
-          ("It's been about the last 3 days.", 0, true, 2, 20),
-          (
-            "Fine, I'll do a check. Does the patient have a history of certain diseases?",
-            101,
-            false,
-            2,
-            10
-          ),
-        ];
-
-        for (final (text, senderId, isMe, hours, minutes) in seedMessages) {
-          final msgRef = convRef.collection('messages').doc(_uuid.v4());
-          batch.set(msgRef, {
-            'senderId': senderId,
-            'text': text,
-            'type': 'text',
-            'imageUrl': null,
-            'fileName': null,
-            'fileSize': null,
-            'timestamp': Timestamp.fromDate(
-              DateTime.now()
-                  .subtract(Duration(hours: hours, minutes: minutes)),
-            ),
-            'isMe': isMe,
-          });
-        }
-      }
-    }
-
-    await batch.commit();
   }
 
   ConversationModel _conversationFromDoc(
@@ -358,10 +254,10 @@ class FirebaseChatRepo {
     };
 
     return MessageModel(
-      id: doc.id.hashCode,
-      conversationId: doc.reference.parent.parent!.id.hashCode,
+      id: doc.id,
+      conversationId: doc.reference.parent.parent!.id,
       text: data['text'] as String? ?? '',
-      senderId: data['senderId'] as int,
+      senderId: '${data['senderId']}',
       timestamp: timestamp,
       isMe: data['isMe'] as bool? ?? false,
       type: type,

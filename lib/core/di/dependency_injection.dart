@@ -1,3 +1,5 @@
+import 'package:docdoc/core/helpers/constans.dart';
+import 'package:docdoc/core/helpers/shared_pref_helper.dart';
 import 'package:docdoc/core/networking/api_service.dart';
 import 'package:docdoc/core/networking/dio_factory.dart';
 import 'package:docdoc/features/login/data/repos/login_repo.dart';
@@ -112,7 +114,9 @@ Future<void> setupGetIt() async {
       () => NotificationsCubit(getIt(), getIt()));
 
   // Inbox
-  getIt.registerLazySingleton<FirebaseChatRepo>(() => FirebaseChatRepo());
+  final userEmail = await SharedPrefHelper.getSecuredString(SharedPrefKeys.userEmail);
+  getIt.registerLazySingleton<FirebaseChatRepo>(
+      () => FirebaseChatRepo(patientId: userEmail));
   getIt.registerLazySingleton<GetConversationsUseCase>(
       () => GetConversationsUseCase(getIt()));
   getIt.registerLazySingleton<SearchConversationsUseCase>(
@@ -133,7 +137,4 @@ Future<void> setupGetIt() async {
       () => InboxCubit(getIt(), getIt(), getIt(), getIt()));
   getIt.registerFactory<ChatCubit>(
       () => ChatCubit(getIt(), getIt(), getIt(), getIt()));
-
-  // Seed Firestore with demo data on first launch
-  await getIt<FirebaseChatRepo>().seedInitialData();
 }

@@ -1,10 +1,10 @@
 enum MessageType { text, image, attachment }
 
 class MessageModel {
-  final int id;
-  final int conversationId;
+  final String id;
+  final String conversationId;
   final String text;
-  final int senderId;
+  final String senderId;
   final DateTime timestamp;
   final bool isMe;
   final MessageType type;

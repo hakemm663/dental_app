@@ -37,8 +37,8 @@ class ChatCubit extends Cubit<ChatState> {
     switch (result) {
       case Success():
         break;
-      case Failure():
-        break;
+      case Failure(:final errMsg):
+        emit(state.copyWith(sendError: errMsg));
     }
   }
 
@@ -49,8 +49,8 @@ class ChatCubit extends Cubit<ChatState> {
     switch (result) {
       case Success():
         break;
-      case Failure():
-        break;
+      case Failure(:final errMsg):
+        emit(state.copyWith(sendError: errMsg));
     }
   }
 
@@ -65,8 +65,8 @@ class ChatCubit extends Cubit<ChatState> {
     switch (result) {
       case Success():
         break;
-      case Failure():
-        break;
+      case Failure(:final errMsg):
+        emit(state.copyWith(sendError: errMsg));
     }
   }
 
