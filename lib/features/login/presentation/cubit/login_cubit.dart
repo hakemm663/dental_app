@@ -26,6 +26,8 @@ class LoginCubit extends Cubit<LoginState> {
           await SharedPrefHelper.setData(
               SharedPrefKeys.userName, data.username!);
         }
+        await SharedPrefHelper.setSecuredString(
+            SharedPrefKeys.userEmail, email);
         emit(LoginSuccess(data));
       case Failure(:final errMsg):
         emit(LoginError(errMsg));

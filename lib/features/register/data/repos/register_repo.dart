@@ -17,11 +17,12 @@ class RegisterRepo {
     required String passwordConfirmation,
   }) async {
     try {
+      final genderString = gender == 1 ? 'male' : 'female';
       final response = await _apiService.register(
         name: name,
         email: email,
         phone: phone,
-        gender: gender,
+        gender: genderString,
         password: password,
         passwordConfirmation: passwordConfirmation,
       );

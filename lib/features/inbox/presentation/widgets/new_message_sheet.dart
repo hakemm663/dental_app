@@ -124,14 +124,14 @@ class _NewMessageSheetState extends State<NewMessageSheet> {
                     return DoctorContactTile(
                       doctor: doctor,
                       onTap: () async {
-                        Navigator.of(context).pop();
-                        final result = await context
-                            .read<InboxCubit>()
-                            .getOrCreateConversation(doctor);
-                        if (!context.mounted) return;
+                        final navigator = Navigator.of(context);
+                        final cubit = context.read<InboxCubit>();
+                        navigator.pop();
+                        final result =
+                            await cubit.getOrCreateConversation(doctor);
                         switch (result) {
                           case Success(:final data):
-                            Navigator.of(context).pushNamed(
+                            navigator.pushNamed(
                               Routes.chatScreen,
                               arguments: data,
                             );
