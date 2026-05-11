@@ -33,4 +33,6 @@ class ApiConstants {
   // Appointment
   static const String appointments = 'appointment/index';
   static const String storeAppointment = 'appointment/store';
+  static String cancelAppointment(int id) => 'appointment/cancel/$id';
+  static String rescheduleAppointment(int id) => 'appointment/reschedule/$id';
 }

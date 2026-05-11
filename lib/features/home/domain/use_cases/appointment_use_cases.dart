@@ -38,3 +38,28 @@ class StoreAppointmentUseCase {
         appointmentType: appointmentType,
       );
 }
+
+class CancelAppointmentUseCase {
+  final AppointmentRepo _repo;
+
+  const CancelAppointmentUseCase(this._repo);
+
+  Future<ApiResult<void>> call(int id) => _repo.cancelAppointment(id);
+}
+
+class RescheduleAppointmentUseCase {
+  final AppointmentRepo _repo;
+
+  const RescheduleAppointmentUseCase(this._repo);
+
+  Future<ApiResult<AppointmentModel>> call({
+    required int id,
+    required String startTime,
+    String? appointmentType,
+  }) =>
+      _repo.rescheduleAppointment(
+        id: id,
+        startTime: startTime,
+        appointmentType: appointmentType,
+      );
+}

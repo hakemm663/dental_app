@@ -54,6 +54,36 @@ class AppointmentRepo {
     }
   }
 
+  Future<ApiResult<void>> cancelAppointment(int id) async {
+    try {
+      await _apiService.cancelAppointment(id);
+      return const Success(null);
+    } catch (error) {
+      return Failure(ApiErrorHandler.handle(error));
+    }
+  }
+
+  Future<ApiResult<AppointmentModel>> rescheduleAppointment({
+    required int id,
+    required String startTime,
+    String? appointmentType,
+  }) async {
+    try {
+      final response = await _apiService.rescheduleAppointment(
+        id: id,
+        startTime: startTime,
+        appointmentType: appointmentType,
+      );
+      return Success(
+        AppointmentModel.fromJson(
+          (response.data as Map<String, dynamic>)['data'] as Map<String, dynamic>,
+        ),
+      );
+    } catch (error) {
+      return Failure(ApiErrorHandler.handle(error));
+    }
+  }
+
   Future<ApiResult<UserModel>> getUserProfile() async {
     try {
       final response = await _apiService.getUserProfile();

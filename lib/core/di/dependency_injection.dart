@@ -79,6 +79,10 @@ Future<void> setupGetIt() async {
       () => GetAppointmentsUseCase(getIt()));
   getIt.registerLazySingleton<StoreAppointmentUseCase>(
       () => StoreAppointmentUseCase(getIt()));
+  getIt.registerLazySingleton<CancelAppointmentUseCase>(
+      () => CancelAppointmentUseCase(getIt()));
+  getIt.registerLazySingleton<RescheduleAppointmentUseCase>(
+      () => RescheduleAppointmentUseCase(getIt()));
 
   // Profile use cases
   getIt.registerLazySingleton<GetUserProfileUseCase>(
@@ -101,7 +105,7 @@ Future<void> setupGetIt() async {
   getIt.registerLazySingleton<DoctorsCubit>(
       () => DoctorsCubit(getIt(), getIt(), getIt()));
   getIt.registerLazySingleton<AppointmentCubit>(
-      () => AppointmentCubit(getIt(), getIt()));
+      () => AppointmentCubit(getIt(), getIt(), getIt(), getIt()));
   getIt.registerLazySingleton<ProfileCubit>(
       () => ProfileCubit(getIt(), getIt()));
 

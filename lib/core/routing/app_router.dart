@@ -10,6 +10,9 @@ import 'package:docdoc/features/home/presentation/screens/doctor_details_screen.
 import 'package:docdoc/features/home/presentation/screens/book_appointment_screen.dart';
 import 'package:docdoc/features/home/presentation/screens/booking_confirmed_screen.dart';
 import 'package:docdoc/features/home/presentation/screens/appointments_screen.dart';
+import 'package:docdoc/features/home/presentation/screens/reschedule_appointment_screen.dart';
+import 'package:docdoc/features/home/presentation/screens/reschedule_confirmed_screen.dart';
+import 'package:docdoc/features/home/data/models/appointment_model.dart';
 import 'package:docdoc/features/home/presentation/screens/profile_screen.dart';
 import 'package:docdoc/features/home/presentation/screens/specialities_screen.dart';
 import 'package:docdoc/features/home/presentation/screens/recommendation_doctors_screen.dart';
@@ -147,6 +150,19 @@ class AppRouter {
             value: getIt<AppointmentCubit>(),
             child: const AppointmentsScreen(),
           ),
+        );
+      case Routes.rescheduleAppointment:
+        final appointment = arguments as AppointmentModel;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider.value(
+            value: getIt<AppointmentCubit>(),
+            child: RescheduleAppointmentScreen(appointment: appointment),
+          ),
+        );
+      case Routes.rescheduleConfirmed:
+        final args = arguments as RescheduleConfirmedArgs;
+        return MaterialPageRoute(
+          builder: (_) => RescheduleConfirmedScreen(args: args),
         );
       case Routes.profile:
         return MaterialPageRoute(
