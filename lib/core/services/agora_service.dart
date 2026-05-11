@@ -2,7 +2,10 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class AgoraService {
-  static const String appId = 'YOUR_AGORA_APP_ID';
+  static const String appId = String.fromEnvironment(
+    'AGORA_APP_ID',
+    defaultValue: '60000a4b6c3e47c59d1e55ca2e7fd079',
+  );
 
   RtcEngine? _engine;
 
@@ -25,10 +28,11 @@ class AgoraService {
   Future<void> joinChannel({
     required String channelName,
     required int uid,
+    String token = '',
   }) async {
     assert(_engine != null, 'AgoraService.initialize() must be called first');
     await _engine!.joinChannel(
-      token: '',
+      token: token,
       channelId: channelName,
       uid: uid,
       options: const ChannelMediaOptions(
@@ -40,6 +44,11 @@ class AgoraService {
         autoSubscribeVideo: true,
       ),
     );
+  }
+
+  Future<void> renewToken(String token) async {
+    if (_engine == null) return;
+    await _engine!.renewToken(token);
   }
 
   Future<void> leaveChannel() async {
