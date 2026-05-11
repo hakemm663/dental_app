@@ -119,4 +119,20 @@ class ApiService {
           if (appointmentType != null) 'appointment_type': appointmentType,
         }),
       );
+
+  Future<Response> cancelAppointment(int id) =>
+      _dio.post(ApiConstants.cancelAppointment(id));
+
+  Future<Response> rescheduleAppointment({
+    required int id,
+    required String startTime,
+    String? appointmentType,
+  }) =>
+      _dio.post(
+        ApiConstants.rescheduleAppointment(id),
+        data: FormData.fromMap({
+          'start_time': startTime,
+          if (appointmentType != null) 'appointment_type': appointmentType,
+        }),
+      );
 }

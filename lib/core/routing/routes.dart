@@ -20,4 +20,6 @@ class Routes {
   static const String chatScreen = '/chatScreen';
   static const String videoCall = '/videoCall';
   static const String cameraScreen = '/cameraScreen';
+  static const String rescheduleAppointment = '/rescheduleAppointment';
+  static const String rescheduleConfirmed = '/rescheduleConfirmed';
 }

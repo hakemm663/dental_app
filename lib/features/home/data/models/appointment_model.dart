@@ -10,6 +10,7 @@ class AppointmentModel {
   final String? notes;
   final String? status;
   final double? price;
+  final String? appointmentType;
 
   const AppointmentModel({
     required this.id,
@@ -20,6 +21,7 @@ class AppointmentModel {
     this.notes,
     this.status,
     this.price,
+    this.appointmentType,
   });
 
   int? get doctorId => doctor?.id;
@@ -37,6 +39,31 @@ class AppointmentModel {
       notes: json['notes'] as String?,
       status: json['status'] as String?,
       price: (json['appointment_price'] as num?)?.toDouble(),
+      appointmentType: json['appointment_type'] as String?,
+    );
+  }
+
+  AppointmentModel copyWith({
+    int? id,
+    DoctorModel? doctor,
+    UserModel? patient,
+    String? appointmentTime,
+    String? appointmentEndTime,
+    String? notes,
+    String? status,
+    double? price,
+    String? appointmentType,
+  }) {
+    return AppointmentModel(
+      id: id ?? this.id,
+      doctor: doctor ?? this.doctor,
+      patient: patient ?? this.patient,
+      appointmentTime: appointmentTime ?? this.appointmentTime,
+      appointmentEndTime: appointmentEndTime ?? this.appointmentEndTime,
+      notes: notes ?? this.notes,
+      status: status ?? this.status,
+      price: price ?? this.price,
+      appointmentType: appointmentType ?? this.appointmentType,
     );
   }
 }

@@ -13,6 +13,7 @@ class DateTimeStep extends StatelessWidget {
   final ValueChanged<String> onTimeSelected;
   final ValueChanged<AppointmentType> onTypeSelected;
   final List<String> timeSlots;
+  final int gridCrossAxisCount;
 
   const DateTimeStep({
     super.key,
@@ -23,6 +24,7 @@ class DateTimeStep extends StatelessWidget {
     required this.onTimeSelected,
     required this.onTypeSelected,
     required this.timeSlots,
+    this.gridCrossAxisCount = 3,
   });
 
   @override
@@ -38,6 +40,7 @@ class DateTimeStep extends StatelessWidget {
           timeSlots: timeSlots,
           selectedTime: selectedTime,
           onTimeSelected: onTimeSelected,
+          crossAxisCount: gridCrossAxisCount,
         ),
         SizedBox(height: 28.h),
         Text('Appointment Type', style: TextStyles.font18DarkBlueBold),
@@ -169,11 +172,13 @@ class _TimeGrid extends StatelessWidget {
   final List<String> timeSlots;
   final String? selectedTime;
   final ValueChanged<String> onTimeSelected;
+  final int crossAxisCount;
 
   const _TimeGrid({
     required this.timeSlots,
     required this.selectedTime,
     required this.onTimeSelected,
+    this.crossAxisCount = 3,
   });
 
   @override
@@ -182,7 +187,7 @@ class _TimeGrid extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
+        crossAxisCount: crossAxisCount,
         mainAxisSpacing: 10.h,
         crossAxisSpacing: 10.w,
         childAspectRatio: 2.8,
