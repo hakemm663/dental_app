@@ -1,5 +1,6 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:docdoc/core/services/agora_service.dart';
+import 'package:docdoc/core/services/agora_token_service.dart';
 import 'package:docdoc/core/theming/colors.dart';
 import 'package:docdoc/features/inbox/data/models/conversation_model.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ class VideoCallScreen extends StatefulWidget {
 
 class _VideoCallScreenState extends State<VideoCallScreen> {
   final AgoraService _agoraService = GetIt.instance<AgoraService>();
+  final AgoraTokenService _tokenService = GetIt.instance<AgoraTokenService>();
 
   bool _isMicMuted = false;
   bool _isCameraOff = false;
@@ -37,7 +39,8 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
     _eventHandler = RtcEngineEventHandler(
       onJoinChannelSuccess: (connection, elapsed) {
         if (mounted) {
-          setState(() => _connectionState = _ConnectionState.connecting);
+          setState(() => _connectionState = _ConnectionState.connected);
+          _agoraService.toggleSpeaker(true);
         }
       },
       onUserJoined: (connection, remoteUid, elapsed) {
@@ -64,6 +67,12 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
           setState(() => _connectionState = _ConnectionState.connected);
         }
       },
+      onTokenPrivilegeWillExpire: (connection, token) async {
+        final newToken = await _tokenService.generateToken(
+          channelName: _channelName,
+        );
+        _agoraService.renewToken(newToken);
+      },
       onError: (err, msg) {
         if (mounted) {
           setState(() => _connectionState = _ConnectionState.connecting);
@@ -80,10 +89,29 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
       return;
     }
 
-    await _agoraService.initialize();
-    _agoraService.registerEventHandler(_eventHandler);
-    await _agoraService.joinChannel(channelName: _channelName, uid: 0);
-    await _agoraService.toggleSpeaker(true);
+    try {
+      final token = await _tokenService.generateToken(
+        channelName: _channelName,
+      );
+      await _agoraService.initialize();
+      _agoraService.registerEventHandler(_eventHandler);
+      await _agoraService.joinChannel(
+        channelName: _channelName,
+        uid: 0,
+        token: token,
+      );
+    } catch (e) {
+      debugPrint('Agora init failed: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to start call: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        Navigator.of(context).pop();
+      }
+    }
   }
 
   Future<void> _endCall() async {

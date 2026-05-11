@@ -48,3 +48,7 @@ app.*.map.json
 android/key.properties
 android/app/*.jks
 android/app/*.keystore
+
+# Firebase Functions secrets
+functions/.env
+functions/.env.local
