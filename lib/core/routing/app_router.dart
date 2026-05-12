@@ -18,6 +18,8 @@ import 'package:docdoc/features/home/presentation/screens/specialities_screen.da
 import 'package:docdoc/features/home/presentation/screens/recommendation_doctors_screen.dart';
 import 'package:docdoc/features/home/presentation/screens/notifications_screen.dart';
 import 'package:docdoc/features/home/presentation/screens/find_nearby_screen.dart';
+import 'package:docdoc/features/home/presentation/screens/search_screen.dart';
+import 'package:docdoc/features/home/presentation/cubit/search_cubit.dart';
 import 'package:docdoc/features/inbox/presentation/cubit/inbox_cubit.dart';
 import 'package:docdoc/features/inbox/presentation/cubit/chat_cubit.dart';
 import 'package:docdoc/features/inbox/presentation/screens/inbox_screen.dart';
@@ -194,6 +196,16 @@ class AppRouter {
       case Routes.cameraScreen:
         return MaterialPageRoute(
           builder: (_) => const CameraScreen(),
+        );
+      case Routes.search:
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (_) => getIt<SearchCubit>()),
+              BlocProvider.value(value: getIt<HomeCubit>()),
+            ],
+            child: const SearchScreen(),
+          ),
         );
       default:
         return MaterialPageRoute(

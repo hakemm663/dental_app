@@ -7,6 +7,7 @@ import 'package:docdoc/features/home/presentation/widgets/upcoming_appointment_c
 import 'package:docdoc/features/home/presentation/widgets/completed_appointment_card.dart';
 import 'package:docdoc/features/home/presentation/widgets/cancelled_appointment_card.dart';
 import 'package:docdoc/features/home/presentation/widgets/cancel_appointment_dialog.dart';
+import 'package:docdoc/core/widgets/app_bar_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -71,7 +72,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen>
           children: [
             _AppointmentsAppBar(
               onBack: () => Navigator.of(context).pop(),
-              onSearch: () {},
+              onSearch: () => Navigator.of(context).pushNamed(Routes.search),
             ),
             _buildTabBar(),
             Expanded(
@@ -195,21 +196,9 @@ class _AppointmentsAppBar extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
       child: Row(
         children: [
-          Material(
-            color: ColorsManager.lighterGray,
-            borderRadius: BorderRadius.circular(10.r),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(10.r),
-              onTap: onBack,
-              child: Padding(
-                padding: EdgeInsets.all(8.r),
-                child: Icon(
-                  Icons.arrow_back_ios_new_rounded,
-                  size: 18.r,
-                  color: ColorsManager.darkBlue,
-                ),
-              ),
-            ),
+          AppBarIconButton(
+            icon: Icons.arrow_back_ios_new_rounded,
+            onTap: onBack,
           ),
           Expanded(
             child: Text(
@@ -218,21 +207,9 @@ class _AppointmentsAppBar extends StatelessWidget {
               style: TextStyles.font18DarkBlueBold,
             ),
           ),
-          Material(
-            color: ColorsManager.lighterGray,
-            borderRadius: BorderRadius.circular(10.r),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(10.r),
-              onTap: onSearch,
-              child: Padding(
-                padding: EdgeInsets.all(8.r),
-                child: Icon(
-                  Icons.search_rounded,
-                  size: 18.r,
-                  color: ColorsManager.darkBlue,
-                ),
-              ),
-            ),
+          AppBarIconButton(
+            icon: Icons.search_rounded,
+            onTap: onSearch,
           ),
         ],
       ),
