@@ -20,8 +20,11 @@ import 'package:docdoc/features/home/domain/use_cases/appointment_use_cases.dart
 import 'package:docdoc/features/home/domain/use_cases/profile_use_cases.dart';
 import 'package:docdoc/features/home/domain/use_cases/notifications_use_cases.dart';
 import 'package:docdoc/features/home/domain/use_cases/get_doctor_reviews_use_case.dart';
+import 'package:docdoc/features/home/data/repos/recent_searches_repo.dart';
+import 'package:docdoc/features/home/domain/use_cases/recent_searches_use_cases.dart';
 import 'package:docdoc/features/home/presentation/cubit/home_cubit.dart';
 import 'package:docdoc/features/home/presentation/cubit/doctors_cubit.dart';
+import 'package:docdoc/features/home/presentation/cubit/search_cubit.dart';
 import 'package:docdoc/features/home/presentation/cubit/doctor_details_cubit.dart';
 import 'package:docdoc/features/home/presentation/cubit/doctor_reviews_cubit.dart';
 import 'package:docdoc/features/home/presentation/cubit/notifications_cubit.dart';
@@ -57,6 +60,7 @@ Future<void> setupGetIt() async {
   getIt.registerLazySingleton<AppointmentRepo>(() => AppointmentRepo(getIt()));
   getIt.registerLazySingleton<NotificationsRepo>(() => NotificationsRepo());
   getIt.registerLazySingleton<ReviewsRepo>(() => ReviewsRepo());
+  getIt.registerLazySingleton<RecentSearchesRepo>(() => RecentSearchesRepo());
 
   // Home use cases
   getIt.registerLazySingleton<GetHomeDataUseCase>(
@@ -100,6 +104,16 @@ Future<void> setupGetIt() async {
   getIt.registerLazySingleton<GetDoctorReviewsUseCase>(
       () => GetDoctorReviewsUseCase(getIt()));
 
+  // Recent searches use cases
+  getIt.registerLazySingleton<GetRecentSearchesUseCase>(
+      () => GetRecentSearchesUseCase(getIt()));
+  getIt.registerLazySingleton<AddRecentSearchUseCase>(
+      () => AddRecentSearchUseCase(getIt()));
+  getIt.registerLazySingleton<RemoveRecentSearchUseCase>(
+      () => RemoveRecentSearchUseCase(getIt()));
+  getIt.registerLazySingleton<ClearRecentSearchesUseCase>(
+      () => ClearRecentSearchesUseCase(getIt()));
+
   // Cubits — singletons for shared state, factories for screen-scoped cubits
   getIt.registerLazySingleton<HomeCubit>(() => HomeCubit(getIt(), getIt()));
   getIt.registerLazySingleton<DoctorsCubit>(
@@ -110,6 +124,8 @@ Future<void> setupGetIt() async {
       () => ProfileCubit(getIt(), getIt()));
 
   // Factory cubits — fresh instance per screen entry
+  getIt.registerFactory<SearchCubit>(
+      () => SearchCubit(getIt(), getIt(), getIt(), getIt(), getIt()));
   getIt.registerFactory<DoctorDetailsCubit>(
       () => DoctorDetailsCubit(getIt()));
   getIt.registerFactory<DoctorReviewsCubit>(

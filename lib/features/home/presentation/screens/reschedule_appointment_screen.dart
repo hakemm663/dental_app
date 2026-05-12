@@ -1,6 +1,6 @@
 import 'package:docdoc/core/routing/routes.dart';
-import 'package:docdoc/core/theming/colors.dart';
 import 'package:docdoc/core/theming/styles.dart';
+import 'package:docdoc/core/widgets/app_bar_icon_button.dart';
 import 'package:docdoc/core/widgets/app_text_button.dart';
 import 'package:docdoc/features/home/data/models/appointment_model.dart';
 import 'package:docdoc/features/home/data/models/appointment_type.dart';
@@ -139,21 +139,9 @@ class _RescheduleAppBar extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
       child: Row(
         children: [
-          Material(
-            color: ColorsManager.lighterGray,
-            borderRadius: BorderRadius.circular(10.r),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(10.r),
-              onTap: onBack,
-              child: Padding(
-                padding: EdgeInsets.all(8.r),
-                child: Icon(
-                  Icons.arrow_back_ios_new_rounded,
-                  size: 18.r,
-                  color: ColorsManager.darkBlue,
-                ),
-              ),
-            ),
+          AppBarIconButton(
+            icon: Icons.arrow_back_ios_new_rounded,
+            onTap: onBack,
           ),
           Expanded(
             child: Text(

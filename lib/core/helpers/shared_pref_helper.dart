@@ -70,6 +70,18 @@ class SharedPrefHelper {
     return sharedPreferences.getString(key) ?? '';
   }
 
+  /// Gets a `List<String>` value from SharedPreferences with given [key].
+  static Future<List<String>> getStringList(String key) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    return sharedPreferences.getStringList(key) ?? [];
+  }
+
+  /// Saves a `List<String>` [value] with a [key] in the SharedPreferences.
+  static Future<void> setStringList(String key, List<String> value) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.setStringList(key, value);
+  }
+
   /// Saves a [value] with a [key] in the FlutterSecureStorage.
   static Future<void> setSecuredString(String key, String value) async {
     const flutterSecureStorage = FlutterSecureStorage();

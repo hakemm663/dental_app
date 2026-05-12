@@ -22,4 +22,5 @@ class Routes {
   static const String cameraScreen = '/cameraScreen';
   static const String rescheduleAppointment = '/rescheduleAppointment';
   static const String rescheduleConfirmed = '/rescheduleConfirmed';
+  static const String search = '/search';
 }
