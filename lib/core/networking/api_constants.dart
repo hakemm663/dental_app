@@ -30,6 +30,9 @@ class ApiConstants {
   static const String filterDoctors = 'doctor/doctor-filter';
   static const String searchDoctors = 'doctor/doctor-search';
 
+  // Medical Records
+  static const String medicalRecords = 'user/medical-records';
+
   // Appointment
   static const String appointments = 'appointment/index';
   static const String storeAppointment = 'appointment/store';

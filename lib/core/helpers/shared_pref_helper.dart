@@ -49,6 +49,14 @@ class SharedPrefHelper {
     return sharedPreferences.getBool(key) ?? false;
   }
 
+  /// Gets a bool value from SharedPreferences with given [key], or `null`
+  /// if no value has been stored. Use this when the absence of a value is
+  /// meaningfully different from a stored `false`.
+  static Future<bool?> getBoolOrNull(String key) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    return sharedPreferences.getBool(key);
+  }
+
   /// Gets a double value from SharedPreferences with given [key].
   static Future<double> getDouble(String key) async {
     debugPrint('SharedPrefHelper : getDouble with key : $key');

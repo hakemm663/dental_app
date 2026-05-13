@@ -23,4 +23,12 @@ class Routes {
   static const String rescheduleAppointment = '/rescheduleAppointment';
   static const String rescheduleConfirmed = '/rescheduleConfirmed';
   static const String search = '/search';
+  static const String personalInformation = '/personalInformation';
+  static const String medicalRecords = '/medicalRecords';
+  static const String paymentMethods = '/paymentMethods';
+  static const String settings = '/settings';
+  static const String notificationSettings = '/notificationSettings';
+  static const String securitySettings = '/securitySettings';
+  static const String languageSettings = '/languageSettings';
+  static const String faq = '/faq';
 }

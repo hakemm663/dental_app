@@ -10,8 +10,21 @@ import 'package:docdoc/features/home/presentation/screens/doctor_details_screen.
 import 'package:docdoc/features/home/presentation/screens/book_appointment_screen.dart';
 import 'package:docdoc/features/home/presentation/screens/booking_confirmed_screen.dart';
 import 'package:docdoc/features/home/presentation/screens/appointments_screen.dart';
+import 'package:docdoc/features/home/presentation/cubit/language_cubit.dart';
+import 'package:docdoc/features/home/presentation/cubit/medical_records_cubit.dart';
+import 'package:docdoc/features/home/presentation/cubit/notification_prefs_cubit.dart';
+import 'package:docdoc/features/home/presentation/cubit/payment_methods_cubit.dart';
+import 'package:docdoc/features/home/presentation/cubit/security_prefs_cubit.dart';
+import 'package:docdoc/features/home/presentation/screens/faq_screen.dart';
+import 'package:docdoc/features/home/presentation/screens/language_settings_screen.dart';
+import 'package:docdoc/features/home/presentation/screens/medical_records_screen.dart';
+import 'package:docdoc/features/home/presentation/screens/notification_settings_screen.dart';
+import 'package:docdoc/features/home/presentation/screens/payment_methods_screen.dart';
+import 'package:docdoc/features/home/presentation/screens/personal_information_screen.dart';
 import 'package:docdoc/features/home/presentation/screens/reschedule_appointment_screen.dart';
 import 'package:docdoc/features/home/presentation/screens/reschedule_confirmed_screen.dart';
+import 'package:docdoc/features/home/presentation/screens/security_settings_screen.dart';
+import 'package:docdoc/features/home/presentation/screens/settings_screen.dart';
 import 'package:docdoc/features/home/data/models/appointment_model.dart';
 import 'package:docdoc/features/home/presentation/screens/profile_screen.dart';
 import 'package:docdoc/features/home/presentation/screens/specialities_screen.dart';
@@ -165,6 +178,56 @@ class AppRouter {
         final args = arguments as RescheduleConfirmedArgs;
         return MaterialPageRoute(
           builder: (_) => RescheduleConfirmedScreen(args: args),
+        );
+      case Routes.personalInformation:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider.value(
+            value: getIt<ProfileCubit>(),
+            child: const PersonalInformationScreen(),
+          ),
+        );
+      case Routes.medicalRecords:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => getIt<MedicalRecordsCubit>(),
+            child: const MedicalRecordsScreen(),
+          ),
+        );
+      case Routes.paymentMethods:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => getIt<PaymentMethodsCubit>(),
+            child: const PaymentMethodsScreen(),
+          ),
+        );
+      case Routes.settings:
+        return MaterialPageRoute(
+          builder: (_) => const SettingsScreen(),
+        );
+      case Routes.notificationSettings:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => getIt<NotificationPrefsCubit>(),
+            child: const NotificationSettingsScreen(),
+          ),
+        );
+      case Routes.securitySettings:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => getIt<SecurityPrefsCubit>(),
+            child: const SecuritySettingsScreen(),
+          ),
+        );
+      case Routes.languageSettings:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => getIt<LanguageCubit>(),
+            child: const LanguageSettingsScreen(),
+          ),
+        );
+      case Routes.faq:
+        return MaterialPageRoute(
+          builder: (_) => const FaqScreen(),
         );
       case Routes.profile:
         return MaterialPageRoute(

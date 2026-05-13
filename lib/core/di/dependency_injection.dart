@@ -20,8 +20,14 @@ import 'package:docdoc/features/home/domain/use_cases/appointment_use_cases.dart
 import 'package:docdoc/features/home/domain/use_cases/profile_use_cases.dart';
 import 'package:docdoc/features/home/domain/use_cases/notifications_use_cases.dart';
 import 'package:docdoc/features/home/domain/use_cases/get_doctor_reviews_use_case.dart';
+import 'package:docdoc/features/home/data/repos/medical_records_repo.dart';
+import 'package:docdoc/features/home/data/repos/payment_methods_repo.dart';
 import 'package:docdoc/features/home/data/repos/recent_searches_repo.dart';
+import 'package:docdoc/features/home/data/repos/settings_repo.dart';
+import 'package:docdoc/features/home/domain/use_cases/medical_records_use_cases.dart';
+import 'package:docdoc/features/home/domain/use_cases/payment_methods_use_cases.dart';
 import 'package:docdoc/features/home/domain/use_cases/recent_searches_use_cases.dart';
+import 'package:docdoc/features/home/domain/use_cases/settings_use_cases.dart';
 import 'package:docdoc/features/home/presentation/cubit/home_cubit.dart';
 import 'package:docdoc/features/home/presentation/cubit/doctors_cubit.dart';
 import 'package:docdoc/features/home/presentation/cubit/search_cubit.dart';
@@ -29,7 +35,12 @@ import 'package:docdoc/features/home/presentation/cubit/doctor_details_cubit.dar
 import 'package:docdoc/features/home/presentation/cubit/doctor_reviews_cubit.dart';
 import 'package:docdoc/features/home/presentation/cubit/notifications_cubit.dart';
 import 'package:docdoc/features/home/presentation/cubit/appointment_cubit.dart';
+import 'package:docdoc/features/home/presentation/cubit/language_cubit.dart';
+import 'package:docdoc/features/home/presentation/cubit/medical_records_cubit.dart';
+import 'package:docdoc/features/home/presentation/cubit/notification_prefs_cubit.dart';
+import 'package:docdoc/features/home/presentation/cubit/payment_methods_cubit.dart';
 import 'package:docdoc/features/home/presentation/cubit/profile_cubit.dart';
+import 'package:docdoc/features/home/presentation/cubit/security_prefs_cubit.dart';
 import 'package:docdoc/features/inbox/data/repos/firebase_chat_repo.dart';
 import 'package:docdoc/features/inbox/domain/use_cases/inbox_use_cases.dart';
 import 'package:docdoc/features/inbox/presentation/cubit/inbox_cubit.dart';
@@ -94,6 +105,38 @@ Future<void> setupGetIt() async {
   getIt.registerLazySingleton<UpdateProfileUseCase>(
       () => UpdateProfileUseCase(getIt()));
 
+  // Medical records
+  getIt.registerLazySingleton<MedicalRecordsRepo>(
+      () => MedicalRecordsRepo(getIt()));
+  getIt.registerLazySingleton<GetMedicalRecordsUseCase>(
+      () => GetMedicalRecordsUseCase(getIt()));
+
+  // Payment methods
+  getIt.registerLazySingleton<PaymentMethodsRepo>(() => PaymentMethodsRepo());
+  getIt.registerLazySingleton<GetPaymentMethodsUseCase>(
+      () => GetPaymentMethodsUseCase(getIt()));
+  getIt.registerLazySingleton<AddPaymentMethodUseCase>(
+      () => AddPaymentMethodUseCase(getIt()));
+  getIt.registerLazySingleton<RemovePaymentMethodUseCase>(
+      () => RemovePaymentMethodUseCase(getIt()));
+  getIt.registerLazySingleton<SetDefaultPaymentMethodUseCase>(
+      () => SetDefaultPaymentMethodUseCase(getIt()));
+
+  // Settings
+  getIt.registerLazySingleton<SettingsRepo>(() => SettingsRepo());
+  getIt.registerLazySingleton<GetNotificationPrefsUseCase>(
+      () => GetNotificationPrefsUseCase(getIt()));
+  getIt.registerLazySingleton<SetNotificationPrefUseCase>(
+      () => SetNotificationPrefUseCase(getIt()));
+  getIt.registerLazySingleton<GetSecurityPrefsUseCase>(
+      () => GetSecurityPrefsUseCase(getIt()));
+  getIt.registerLazySingleton<SetSecurityPrefUseCase>(
+      () => SetSecurityPrefUseCase(getIt()));
+  getIt.registerLazySingleton<GetLanguageCodeUseCase>(
+      () => GetLanguageCodeUseCase(getIt()));
+  getIt.registerLazySingleton<SetLanguageCodeUseCase>(
+      () => SetLanguageCodeUseCase(getIt()));
+
   // Notification use cases
   getIt.registerLazySingleton<GetNotificationsUseCase>(
       () => GetNotificationsUseCase(getIt()));
@@ -122,6 +165,18 @@ Future<void> setupGetIt() async {
       () => AppointmentCubit(getIt(), getIt(), getIt(), getIt()));
   getIt.registerLazySingleton<ProfileCubit>(
       () => ProfileCubit(getIt(), getIt()));
+
+  // Profile & settings factory cubits
+  getIt.registerFactory<MedicalRecordsCubit>(
+      () => MedicalRecordsCubit(getIt()));
+  getIt.registerFactory<PaymentMethodsCubit>(
+      () => PaymentMethodsCubit(getIt(), getIt(), getIt(), getIt()));
+  getIt.registerFactory<NotificationPrefsCubit>(
+      () => NotificationPrefsCubit(getIt(), getIt()));
+  getIt.registerFactory<SecurityPrefsCubit>(
+      () => SecurityPrefsCubit(getIt(), getIt()));
+  getIt.registerFactory<LanguageCubit>(
+      () => LanguageCubit(getIt(), getIt()));
 
   // Factory cubits — fresh instance per screen entry
   getIt.registerFactory<SearchCubit>(

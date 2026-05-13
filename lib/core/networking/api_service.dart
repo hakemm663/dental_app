@@ -49,6 +49,9 @@ class ApiService {
         data: FormData.fromMap(fields),
       );
 
+  Future<Response> getMedicalRecords() =>
+      _dio.get(ApiConstants.medicalRecords);
+
   // ── Home ──────────────────────────────────────────────────────────────────
 
   Future<Response> getHomeData() => _dio.get(ApiConstants.home);
