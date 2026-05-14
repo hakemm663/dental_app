@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _loadUserName() async {
-    final name = await SharedPrefHelper.getString(SharedPrefKeys.userName);
+    final name = await SharedPrefHelper.getSecuredString(SharedPrefKeys.userName);
     if (!mounted) return;
     if (name.isNotEmpty) {
       setState(() => userName = name.split(' ').first);

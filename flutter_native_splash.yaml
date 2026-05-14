@@ -12,7 +12,8 @@ flutter_native_splash:
     icon_background_color_dark: "#FFFFFF"
     image_dark: assets/icons/docdoc_app_icon.png
 
-  ios: true
+  # Android only. iOS splash is generated from flutter_native_splash_ios.yaml.
+  ios: false
   android: true
   web: false
   fullscreen: false

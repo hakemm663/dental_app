@@ -1,0 +1,10 @@
+# iOS-only splash. Android splash is generated from flutter_native_splash.yaml.
+# Run: dart run flutter_native_splash:create --path=flutter_native_splash_ios.yaml
+flutter_native_splash:
+  background_image: assets/images/splash.png
+  
+
+  ios: true
+  android: false
+  web: false
+  fullscreen: false
