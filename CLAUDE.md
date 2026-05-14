@@ -59,6 +59,84 @@ that override defaults or encode decisions specific to this project.
 
 ---
 
+# Section C — Security Roadmap Workflow (240-Day Program)
+
+<!--
+This section governs the "Lead Mobile Security Architect" roadmap.
+Source: docs/roadmap/ROADMAP.md
+Progress: docs/roadmap/ROADMAP_PROGRESS.md
+-->
+
+## 1) Session Start Protocol (MANDATORY — EVERY SESSION)
+1. Read `docs/roadmap/ROADMAP_PROGRESS.md` to find `Current Day` and `Last Branch`
+2. Read the matching day's section in `docs/roadmap/ROADMAP.md`
+3. Check current git branch — if not on the correct branch, checkout or create it
+4. Report to user: "Resuming Day X — [topic]. Branch: `security/dayXXX-slug`"
+
+## 2) Branch Naming Convention
+- Pattern: `security/dayXXX-short-slug`
+- Examples: `security/day005-threat-modeling`, `security/day012-jwt-vs-sessions`
+- Day number is ALWAYS 3 digits with leading zeros
+- Slug: lowercase, hyphen-separated, max 4 words describing the day's topic
+- Branch from `development` (the main working branch)
+
+## 3) One Day = One Branch = One PR
+- Each roadmap day gets exactly ONE branch and ONE PR
+- Never combine multiple days into a single branch
+- If a day has sub-topics, they all go in the same branch as separate commits
+
+## 4) Commit Convention
+- Format: `security(dayXXX): brief description`
+- Examples:
+  - `security(day005): add STRIDE threat model document`
+  - `security(day008): implement SSL pinning with Dio`
+  - `security(day012): add JWT secure storage with refresh rotation`
+- Keep commits atomic — one logical change per commit
+
+## 5) What Each Day Produces
+Every day MUST produce at minimum:
+- **Code**: implementation files under `lib/features/security/` or `lib/core/security/`
+- **Docs**: a day summary in `docs/roadmap/days/dayXXX.md` with theory notes, key decisions, and references
+- **Tests**: unit/integration tests for any domain or data layer code written
+
+## 6) Feature Folder Structure for Security Work
+```
+lib/
+  core/
+    security/          ← shared security utilities (crypto, RASP, etc.)
+  features/
+    security/
+      data/            ← security data sources, API clients
+      domain/          ← security use cases, entities, failures
+      presentation/    ← security-related UI (biometric prompts, etc.)
+```
+
+## 7) Progress Update (MANDATORY — END OF EVERY DAY)
+After completing a day's work and before creating the PR:
+1. Update `docs/roadmap/ROADMAP_PROGRESS.md`:
+   - Set `Current Day` to the NEXT day number
+   - Update `Last Branch` and `Last PR`
+   - Update `Last Session Date`
+   - Add a row to the Day Log table
+   - Update Phase Summary if a phase boundary was crossed
+2. Add any notes for the next session in the Session Notes section
+3. Run `/code-review`
+4. Run `/create-pr`
+
+## 8) Session End Protocol
+If ending a session mid-day (incomplete):
+- Commit WIP with message: `security(dayXXX): WIP — [what's done so far]`
+- Add a Session Note: "Day XXX incomplete — [what remains]"
+- Update `Last Session Date` but do NOT advance `Current Day`
+
+## 9) Quality Gate
+- Every day's code must pass `flutter analyze` with zero issues
+- Every day's tests must pass `flutter test`
+- Security implementations must follow OWASP MASVS where applicable
+- All crypto operations use hardware-backed storage (Keystore/Keychain) when available
+
+---
+
 # Section B — Flutter / Dart Specific Rules
 
 <!--
