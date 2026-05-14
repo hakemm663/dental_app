@@ -12,7 +12,7 @@ Claude MUST update this file at the end of every completed day.
 - **Current Phase:** Phase 0 — Lab Setup
 - **Current Week:** Week 0
 - **Last Branch:** `security/day002-reverse-engineering`
-- **Last PR:** (pending)
+- **Last PR:** #25
 - **Started On:** 2026-05-14
 - **Last Session Date:** 2026-05-14
 
@@ -28,7 +28,7 @@ Claude MUST update this file at the end of every completed day.
 |-----|--------|------|--------|------|---------|
 | 0 | `security/day000-flutter-ide-environment` | #23 | DONE | 2026-05-14 | Environment audit: Flutter 3.41.8, Xcode 26.4.1, Android SDK 36.1.0 — `flutter doctor` clean. Dental app baseline recorded (18 pre-existing `info` lints frozen). |
 | 1 | `security/day001-pentest-core-tools` | #24 | DONE | 2026-05-14 | Installed jadx 1.5.5, Burp Suite 2026.3.3, Objection 1.12.4 (pipx), frida-server 17.9.8 arm64 downloaded. Created rootable AVD `pentest_pixel_36` (google_apis API 36.1). Setup script at `scripts/pentest_emulator_setup.sh`. |
-| 2 | `security/day002-reverse-engineering` | (pending) | DONE | 2026-05-14 | Installed Ghidra 12.1, r2frida, Blutter (cloned), reFlutter 0.8.6. Tested apktool+jadx+r2+Ghidra on dental app APK (com.docdoc.app, 304MB, 8268 classes). IDA Free documented as manual. |
+| 2 | `security/day002-reverse-engineering` | #25 | DONE | 2026-05-14 | Installed Ghidra 12.1, r2frida, Blutter (cloned), reFlutter 0.8.6. Tested apktool+jadx+r2+Ghidra on dental app APK (com.docdoc.app, 304MB, 8268 classes). IDA Free documented as manual. |
 
 ---
 
