@@ -8,11 +8,11 @@ Claude MUST update this file at the end of every completed day.
 
 ## Current Status
 
-- **Current Day:** 1
+- **Current Day:** 2
 - **Current Phase:** Phase 0 — Lab Setup
 - **Current Week:** Week 0
-- **Last Branch:** `security/day000-flutter-ide-environment`
-- **Last PR:** #23
+- **Last Branch:** `security/day001-pentest-core-tools`
+- **Last PR:** #24
 - **Started On:** 2026-05-14
 - **Last Session Date:** 2026-05-14
 
@@ -27,6 +27,7 @@ Claude MUST update this file at the end of every completed day.
 | Day | Branch | PR # | Status | Date | Summary |
 |-----|--------|------|--------|------|---------|
 | 0 | `security/day000-flutter-ide-environment` | #23 | DONE | 2026-05-14 | Environment audit: Flutter 3.41.8, Xcode 26.4.1, Android SDK 36.1.0 — `flutter doctor` clean. Dental app baseline recorded (18 pre-existing `info` lints frozen). |
+| 1 | `security/day001-pentest-core-tools` | #24 | DONE | 2026-05-14 | Installed jadx 1.5.5, Burp Suite 2026.3.3, Objection 1.12.4 (pipx), frida-server 17.9.8 arm64 downloaded. Created rootable AVD `pentest_pixel_36` (google_apis API 36.1). Setup script at `scripts/pentest_emulator_setup.sh`. |
 
 ---
 
@@ -50,6 +51,6 @@ Example: "Day 8 pinning implementation needs backend nginx config — ask Hakem 
 -->
 
 - **Day 0 complete (2026-05-14).** Toolchain verified, no `flutter doctor` issues. Dental app is the working security lab (no separate vulnerable app needed).
-- **Day 1 prep:** Android emulator must be launched with `-writable-system` for Frida server install. Tools to install: Frida/frida-tools, Objection, Burp Suite Community, mitmproxy, apktool, jadx.
+- **Day 1 complete (2026-05-14).** jadx 1.5.5, Burp Suite 2026.3.3, Objection 1.12.4, frida-server 17.9.8 arm64 installed. Rootable AVD `pentest_pixel_36` created. **Before Day 2:** boot `pentest_pixel_36` from Android Studio then run `bash scripts/pentest_emulator_setup.sh`.
 - **Optional hardening (non-blocking):** No SSH key registered with GitHub; `origin` uses HTTPS so push/pull works fine. Register an ed25519 key if SSH is preferred later.
 - **Analyze baseline:** 18 pre-existing `info`-level lints in app code (api_service.dart, profile_cubit.dart, message_bubble.dart) — frozen as baseline, clean up opportunistically when touching those files.
