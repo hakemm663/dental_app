@@ -12,7 +12,7 @@ Claude MUST update this file at the end of every completed day.
 - **Current Phase:** Phase 0 — Lab Setup
 - **Current Week:** Week 0
 - **Last Branch:** `security/day000-flutter-ide-environment`
-- **Last PR:** (pending)
+- **Last PR:** #23
 - **Started On:** 2026-05-14
 - **Last Session Date:** 2026-05-14
 
@@ -26,7 +26,7 @@ Claude MUST update this file at the end of every completed day.
 
 | Day | Branch | PR # | Status | Date | Summary |
 |-----|--------|------|--------|------|---------|
-| 0 | `security/day000-flutter-ide-environment` | (pending) | DONE | 2026-05-14 | Environment audit: Flutter 3.41.8, Xcode 26.4.1, Android SDK 36.1.0 — `flutter doctor` clean. Dental app baseline recorded (18 pre-existing `info` lints frozen). |
+| 0 | `security/day000-flutter-ide-environment` | #23 | DONE | 2026-05-14 | Environment audit: Flutter 3.41.8, Xcode 26.4.1, Android SDK 36.1.0 — `flutter doctor` clean. Dental app baseline recorded (18 pre-existing `info` lints frozen). |
 
 ---
 
