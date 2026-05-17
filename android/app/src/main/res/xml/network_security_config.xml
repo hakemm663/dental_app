@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!--
+      Day 3 — base hardening:
+        * No cleartext HTTP for the dental app domain.
+        * Trust only system CAs (user-installed CAs ignored) in release.
+        * Debug overrides allow user-installed CAs (mitmproxy / Burp) for local pentest.
+      Day 8 will add <pin-set> entries with the production backend cert SPKI hashes.
+    -->
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system"/>
+        </trust-anchors>
+    </base-config>
+    <debug-overrides>
+        <trust-anchors>
+            <certificates src="system"/>
+            <certificates src="user"/>
+        </trust-anchors>
+    </debug-overrides>
+</network-security-config>
