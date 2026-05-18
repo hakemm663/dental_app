@@ -23,7 +23,7 @@ class SharedPrefHelper {
   /// Saves a [value] with a [key] in the SharedPreferences.
   static Future<Null> setData(String key, value) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    debugPrint("SharedPrefHelper : setData with key : $key and value : $value");
+    debugPrint("SharedPrefHelper : setData with key : $key");
     switch (value.runtimeType) {
       case const (String):
         await sharedPreferences.setString(key, value);
@@ -93,9 +93,7 @@ class SharedPrefHelper {
   /// Saves a [value] with a [key] in the FlutterSecureStorage.
   static Future<void> setSecuredString(String key, String value) async {
     const flutterSecureStorage = FlutterSecureStorage();
-    debugPrint(
-      "FlutterSecureStorage : setSecuredString with key : $key and value : $value",
-    );
+    debugPrint("FlutterSecureStorage : setSecuredString with key : $key");
     await flutterSecureStorage.write(key: key, value: value);
   }
 
