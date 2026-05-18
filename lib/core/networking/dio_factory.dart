@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:docdoc/core/helpers/constans.dart';
 import 'package:docdoc/core/helpers/shared_pref_helper.dart';
 import 'package:docdoc/core/networking/api_constants.dart';
+import 'package:flutter/foundation.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class DioFactory {
@@ -17,14 +18,19 @@ class DioFactory {
       ),
     );
 
-    dio.interceptors.addAll([
-      _TokenInterceptor(),
-      PrettyDioLogger(
-        requestBody: true,
-        requestHeader: true,
-        responseHeader: false,
-      ),
-    ]);
+    dio.interceptors.add(_TokenInterceptor());
+    // Request/response logging is debug-only and excludes headers so the
+    // Authorization bearer token is never written to logs. Full request/response
+    // tracing in release builds belongs in an opt-in remote logger (Day 38).
+    if (kDebugMode) {
+      dio.interceptors.add(
+        PrettyDioLogger(
+          requestHeader: false,
+          requestBody: true,
+          responseHeader: false,
+        ),
+      );
+    }
 
     return dio;
   }
