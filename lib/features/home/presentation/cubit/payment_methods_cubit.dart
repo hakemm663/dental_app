@@ -1,6 +1,6 @@
 import 'package:docdoc/features/home/data/models/payment_method_model.dart';
 import 'package:docdoc/features/home/domain/use_cases/payment_methods_use_cases.dart';
-import 'package:flutter/foundation.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 
@@ -25,7 +25,8 @@ class PaymentMethodsCubit extends Cubit<PaymentMethodsState> {
       final methods = await _getUseCase();
       emit(PaymentMethodsState.success(methods));
     } catch (e, st) {
-      debugPrint('PaymentMethodsCubit.load failed: $e\n$st');
+      FirebaseCrashlytics.instance
+          .recordError(e, st, reason: 'PaymentMethodsCubit.load failed');
       emit(PaymentMethodsState.error('Failed to load payment methods'));
     }
   }

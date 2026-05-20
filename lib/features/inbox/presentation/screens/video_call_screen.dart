@@ -3,6 +3,7 @@ import 'package:docdoc/core/services/agora_service.dart';
 import 'package:docdoc/core/services/agora_token_service.dart';
 import 'package:docdoc/core/theming/colors.dart';
 import 'package:docdoc/features/inbox/data/models/conversation_model.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
@@ -100,8 +101,9 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
         uid: 0,
         token: token,
       );
-    } catch (e) {
-      debugPrint('Agora init failed: $e');
+    } catch (e, st) {
+      FirebaseCrashlytics.instance
+          .recordError(e, st, reason: 'Agora init failed');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
