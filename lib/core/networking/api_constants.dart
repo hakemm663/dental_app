@@ -1,5 +1,8 @@
+import 'package:docdoc/core/config/env.dart';
+
 class ApiConstants {
-  static const String baseUrl = 'https://vcare.integration25.com/api/';
+  /// Resolved per build flavor — see [Env.apiBaseUrl].
+  static String get baseUrl => Env.apiBaseUrl;
 
   // Auth
   static const String login = 'auth/login';
