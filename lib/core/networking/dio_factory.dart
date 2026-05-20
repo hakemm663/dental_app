@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:docdoc/core/helpers/constans.dart';
 import 'package:docdoc/core/helpers/shared_pref_helper.dart';
 import 'package:docdoc/core/networking/api_constants.dart';
+import 'package:flutter/foundation.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class DioFactory {
@@ -17,14 +18,20 @@ class DioFactory {
       ),
     );
 
-    dio.interceptors.addAll([
-      _TokenInterceptor(),
-      PrettyDioLogger(
-        requestBody: true,
-        requestHeader: true,
-        responseHeader: false,
-      ),
-    ]);
+    dio.interceptors.add(_TokenInterceptor());
+
+    // Request/response logging is a development-only convenience. In release
+    // builds it would write request bodies and headers — including login
+    // credentials and bearer tokens — into device logs.
+    if (kDebugMode) {
+      dio.interceptors.add(
+        PrettyDioLogger(
+          requestBody: true,
+          requestHeader: true,
+          responseHeader: false,
+        ),
+      );
+    }
 
     return dio;
   }
