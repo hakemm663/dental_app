@@ -52,3 +52,6 @@ android/app/*.keystore
 # Firebase Functions secrets
 functions/.env
 functions/.env.local
+
+# Local dev credentials — never commit
+.dev-secrets/

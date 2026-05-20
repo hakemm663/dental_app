@@ -31,8 +31,11 @@ Future<void> main() async {
   };
 
   await FirebaseAppCheck.instance.activate(
-    androidProvider: AndroidProvider.debug,
-    appleProvider: AppleProvider.debug,
+    androidProvider:
+        kReleaseMode ? AndroidProvider.playIntegrity : AndroidProvider.debug,
+    appleProvider: kReleaseMode
+        ? AppleProvider.appAttestWithDeviceCheckFallback
+        : AppleProvider.debug,
   );
   await setupGetIt();
   final token =
