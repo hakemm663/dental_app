@@ -1,23 +1,24 @@
-import 'package:docdoc/core/networking/api_result.dart';
 import 'package:docdoc/core/networking/api_error_handler.dart';
-import 'package:docdoc/core/networking/api_service.dart';
-import 'package:docdoc/features/login/data/models/login_response.dart';
+import 'package:docdoc/core/networking/api_result.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginRepo {
-  final ApiService _apiService;
+  final SupabaseClient _client;
 
-  const LoginRepo(this._apiService);
+  const LoginRepo(this._client);
 
-  Future<ApiResult<LoginResponse>> login({
+  /// Signs in with Supabase Auth. The SDK persists the session itself.
+  /// Returns the authenticated user id on success.
+  Future<ApiResult<String>> login({
     required String email,
     required String password,
   }) async {
     try {
-      final response = await _apiService.login(
+      final response = await _client.auth.signInWithPassword(
         email: email,
         password: password,
       );
-      return Success(LoginResponse.fromJson(response.data as Map<String, dynamic>));
+      return Success(response.user!.id);
     } catch (error) {
       return Failure(ApiErrorHandler.handle(error));
     }

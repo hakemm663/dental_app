@@ -1,7 +1,6 @@
 import 'package:docdoc/core/helpers/constans.dart';
 import 'package:docdoc/core/helpers/shared_pref_helper.dart';
 import 'package:docdoc/core/networking/api_result.dart';
-import 'package:docdoc/features/login/data/models/login_response.dart';
 import 'package:docdoc/features/register/domain/use_cases/register_use_case.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,7 +20,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     required String passwordConfirmation,
   }) async {
     emit(RegisterLoading());
-    final ApiResult<LoginResponse> result = await _registerUseCase(
+    final result = await _registerUseCase(
       name: name,
       email: email,
       phone: phone,
@@ -30,15 +29,7 @@ class RegisterCubit extends Cubit<RegisterState> {
       passwordConfirmation: passwordConfirmation,
     );
     switch (result) {
-      case Success(:final data):
-        if (data.token != null) {
-          await SharedPrefHelper.setSecuredString(
-              SharedPrefKeys.userToken, data.token!);
-        }
-        if (data.username != null) {
-          await SharedPrefHelper.setSecuredString(
-              SharedPrefKeys.userName, data.username!);
-        }
+      case Success():
         await SharedPrefHelper.setSecuredString(
             SharedPrefKeys.userEmail, email);
         emit(RegisterSuccess());

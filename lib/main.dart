@@ -1,7 +1,5 @@
 import 'package:docdoc/core/config/env.dart';
 import 'package:docdoc/core/di/dependency_injection.dart';
-import 'package:docdoc/core/helpers/constans.dart';
-import 'package:docdoc/core/helpers/shared_pref_helper.dart';
 import 'package:docdoc/core/routing/app_router.dart';
 import 'package:docdoc/core/routing/routes.dart';
 import 'package:docdoc/doc_app.dart';
@@ -47,10 +45,9 @@ Future<void> main() async {
   );
 
   await setupGetIt();
-  final token =
-      await SharedPrefHelper.getSecuredString(SharedPrefKeys.userToken);
+  final session = Supabase.instance.client.auth.currentSession;
   final initialRoute =
-      token.isNotEmpty ? Routes.homeScreen : Routes.onBoardingScreen;
+      session != null ? Routes.homeScreen : Routes.onBoardingScreen;
   runApp(DocApp(appRouter: AppRouter(), initialRoute: initialRoute));
   FlutterNativeSplash.remove();
 }

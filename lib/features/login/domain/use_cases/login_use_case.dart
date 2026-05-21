@@ -1,5 +1,4 @@
 import 'package:docdoc/core/networking/api_result.dart';
-import 'package:docdoc/features/login/data/models/login_response.dart';
 import 'package:docdoc/features/login/data/repos/login_repo.dart';
 
 class LoginUseCase {
@@ -7,7 +6,7 @@ class LoginUseCase {
 
   const LoginUseCase(this._loginRepo);
 
-  Future<ApiResult<LoginResponse>> call({
+  Future<ApiResult<String>> call({
     required String email,
     required String password,
   }) =>

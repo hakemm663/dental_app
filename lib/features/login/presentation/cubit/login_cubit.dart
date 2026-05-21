@@ -17,18 +17,12 @@ class LoginCubit extends Cubit<LoginState> {
     emit(const LoginLoading());
     final result = await _loginUseCase(email: email, password: password);
     switch (result) {
-      case Success(:final data):
-        if (data.token != null) {
-          await SharedPrefHelper.setSecuredString(
-              SharedPrefKeys.userToken, data.token!);
-        }
-        if (data.username != null) {
-          await SharedPrefHelper.setSecuredString(
-              SharedPrefKeys.userName, data.username!);
-        }
+      case Success():
+        // Supabase persists the session itself. The email is cached only for
+        // the Firebase-backed inbox, until that feature migrates too.
         await SharedPrefHelper.setSecuredString(
             SharedPrefKeys.userEmail, email);
-        emit(LoginSuccess(data));
+        emit(const LoginSuccess());
       case Failure(:final errMsg):
         emit(LoginError(errMsg));
     }
