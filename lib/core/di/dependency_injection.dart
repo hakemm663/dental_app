@@ -47,6 +47,7 @@ import 'package:docdoc/features/inbox/presentation/cubit/inbox_cubit.dart';
 import 'package:docdoc/features/inbox/presentation/cubit/chat_cubit.dart';
 import 'package:docdoc/core/di/services_di.dart';
 import 'package:get_it/get_it.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 final getIt = GetIt.instance;
 
@@ -54,6 +55,9 @@ Future<void> setupGetIt() async {
   registerServices(getIt);
   // Networking
   getIt.registerLazySingleton<ApiService>(() => ApiService(DioFactory.getDio()));
+
+  // Supabase — domain-data backend (doctors, catalog, …)
+  getIt.registerLazySingleton<SupabaseClient>(() => Supabase.instance.client);
 
   // Login
   getIt.registerLazySingleton<LoginRepo>(() => LoginRepo(getIt()));

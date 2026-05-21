@@ -1,22 +1,21 @@
 import 'package:docdoc/core/networking/api_error_handler.dart';
 import 'package:docdoc/core/networking/api_result.dart';
-import 'package:docdoc/core/networking/api_service.dart';
 import 'package:docdoc/features/home/data/models/city_model.dart';
 import 'package:docdoc/features/home/data/models/governorate_model.dart';
 import 'package:docdoc/features/home/data/models/specialization_model.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomeRepo {
-  final ApiService _apiService;
+  final SupabaseClient _client;
 
-  const HomeRepo(this._apiService);
+  const HomeRepo(this._client);
+
+  static const _cityWithGovernorate = '*, governorate:governorates(id, name)';
 
   Future<ApiResult<List<GovernorateModel>>> getAllGovernorates() async {
     try {
-      final response = await _apiService.getAllGovernorates();
-      final data = (response.data as Map<String, dynamic>)['data'] as List;
-      return Success(
-        data.map((e) => GovernorateModel.fromJson(e as Map<String, dynamic>)).toList(),
-      );
+      final data = await _client.from('governorates').select().order('name');
+      return Success(data.map(GovernorateModel.fromJson).toList());
     } catch (error) {
       return Failure(ApiErrorHandler.handle(error));
     }
@@ -24,23 +23,25 @@ class HomeRepo {
 
   Future<ApiResult<List<CityModel>>> getAllCities() async {
     try {
-      final response = await _apiService.getAllCities();
-      final data = (response.data as Map<String, dynamic>)['data'] as List;
-      return Success(
-        data.map((e) => CityModel.fromJson(e as Map<String, dynamic>)).toList(),
-      );
+      final data = await _client
+          .from('cities')
+          .select(_cityWithGovernorate)
+          .order('name');
+      return Success(data.map(CityModel.fromJson).toList());
     } catch (error) {
       return Failure(ApiErrorHandler.handle(error));
     }
   }
 
-  Future<ApiResult<List<CityModel>>> getCitiesByGovernorate(int governorateId) async {
+  Future<ApiResult<List<CityModel>>> getCitiesByGovernorate(
+      int governorateId) async {
     try {
-      final response = await _apiService.getCitiesByGovernorate(governorateId);
-      final data = (response.data as Map<String, dynamic>)['data'] as List;
-      return Success(
-        data.map((e) => CityModel.fromJson(e as Map<String, dynamic>)).toList(),
-      );
+      final data = await _client
+          .from('cities')
+          .select(_cityWithGovernorate)
+          .eq('governorate_id', governorateId)
+          .order('name');
+      return Success(data.map(CityModel.fromJson).toList());
     } catch (error) {
       return Failure(ApiErrorHandler.handle(error));
     }
@@ -48,11 +49,9 @@ class HomeRepo {
 
   Future<ApiResult<List<SpecializationModel>>> getAllSpecializations() async {
     try {
-      final response = await _apiService.getAllSpecializations();
-      final data = (response.data as Map<String, dynamic>)['data'] as List;
-      return Success(
-        data.map((e) => SpecializationModel.fromJson(e as Map<String, dynamic>)).toList(),
-      );
+      final data =
+          await _client.from('specializations').select().order('name');
+      return Success(data.map(SpecializationModel.fromJson).toList());
     } catch (error) {
       return Failure(ApiErrorHandler.handle(error));
     }

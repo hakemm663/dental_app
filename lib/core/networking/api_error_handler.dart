@@ -1,12 +1,27 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
 import 'api_error_model.dart';
 
 class ApiErrorHandler {
   static String handle(dynamic error) {
+    if (error is PostgrestException) {
+      return 'Something went wrong while loading data. Please try again.';
+    }
+    if (error is AuthException) {
+      // Supabase auth messages are already user-facing, e.g.
+      // "Invalid login credentials", "Email not confirmed".
+      return error.message;
+    }
+    if (error is SocketException) {
+      return 'No internet connection.';
+    }
     if (error is DioException) {
       return _handleDioError(error);
     }
-    return 'An unexpected error occurred';
+    return 'An unexpected error occurred.';
   }
 
   static String _handleDioError(DioException error) {
