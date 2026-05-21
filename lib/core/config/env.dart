@@ -45,4 +45,20 @@ class Env {
         Flavor.staging => _integrationApiUrl,
         Flavor.prod => _prodApiUrl,
       };
+
+  // ── Supabase ────────────────────────────────────────────────────────────
+
+  /// Supabase project URL. The publishable (anon) key is Row-Level-Security
+  /// protected and designed to ship in the client. Both are overridable per
+  /// environment via `--dart-define` so a separate prod project can be wired
+  /// later without a code change.
+  static const String supabaseUrl = String.fromEnvironment(
+    'SUPABASE_URL',
+    defaultValue: 'https://xtlynstfzipnfbczsohz.supabase.co',
+  );
+
+  static const String supabaseAnonKey = String.fromEnvironment(
+    'SUPABASE_ANON_KEY',
+    defaultValue: 'sb_publishable_8d0ZxhM9IbAW1hrLGJ5eRg_mxIgxXHv',
+  );
 }

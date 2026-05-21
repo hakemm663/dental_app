@@ -1,3 +1,4 @@
+import 'package:docdoc/core/config/env.dart';
 import 'package:docdoc/core/di/dependency_injection.dart';
 import 'package:docdoc/core/helpers/constans.dart';
 import 'package:docdoc/core/helpers/shared_pref_helper.dart';
@@ -11,6 +12,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> main() async {
   final binding = WidgetsFlutterBinding.ensureInitialized();
@@ -37,6 +39,13 @@ Future<void> main() async {
         ? AppleProvider.appAttestWithDeviceCheckFallback
         : AppleProvider.debug,
   );
+
+  // Supabase — domain-data backend (doctors, clinics, catalog, appointments).
+  await Supabase.initialize(
+    url: Env.supabaseUrl,
+    anonKey: Env.supabaseAnonKey,
+  );
+
   await setupGetIt();
   final token =
       await SharedPrefHelper.getSecuredString(SharedPrefKeys.userToken);
