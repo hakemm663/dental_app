@@ -74,7 +74,7 @@ Future<void> setupGetIt() async {
   getIt.registerLazySingleton<DoctorRepo>(() => DoctorRepo(getIt()));
   getIt.registerLazySingleton<AppointmentRepo>(() => AppointmentRepo(getIt()));
   getIt.registerLazySingleton<NotificationsRepo>(() => NotificationsRepo());
-  getIt.registerLazySingleton<ReviewsRepo>(() => ReviewsRepo());
+  getIt.registerLazySingleton<ReviewsRepo>(() => ReviewsRepo(getIt()));
   getIt.registerLazySingleton<RecentSearchesRepo>(() => RecentSearchesRepo());
 
   // Home use cases
