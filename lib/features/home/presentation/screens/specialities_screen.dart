@@ -43,7 +43,7 @@ class SpecialitiesScreen extends StatelessWidget {
                       crossAxisCount: 3,
                       mainAxisSpacing: 24.h,
                       crossAxisSpacing: 16.w,
-                      childAspectRatio: 0.85,
+                      childAspectRatio: 0.68,
                     ),
                     itemCount: state.specializations.length,
                     itemBuilder: (context, index) {

@@ -71,7 +71,7 @@ class BookingTotalSheet extends StatelessWidget {
     );
   }
 
-  String _format(double value) => '\$${value.toStringAsFixed(0)}';
+  String _format(double value) => '${value.toStringAsFixed(0)} EGP';
 }
 
 class _Row extends StatelessWidget {

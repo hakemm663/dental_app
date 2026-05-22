@@ -34,11 +34,11 @@ class AppointmentModel {
       doctor: doctorJson != null ? DoctorModel.fromJson(doctorJson) : null,
       patient: patientJson != null ? UserModel.fromJson(patientJson) : null,
       appointmentTime:
-          (json['appointment_time'] ?? json['start_time'] ?? '') as String,
+          (json['start_time'] ?? json['appointment_time'] ?? '') as String,
       appointmentEndTime: json['appointment_end_time'] as String?,
       notes: json['notes'] as String?,
       status: json['status'] as String?,
-      price: (json['appointment_price'] as num?)?.toDouble(),
+      price: (json['price'] as num?)?.toDouble(),
       appointmentType: json['appointment_type'] as String?,
     );
   }

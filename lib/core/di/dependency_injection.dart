@@ -1,7 +1,5 @@
 import 'package:docdoc/core/helpers/constans.dart';
 import 'package:docdoc/core/helpers/shared_pref_helper.dart';
-import 'package:docdoc/core/networking/api_service.dart';
-import 'package:docdoc/core/networking/dio_factory.dart';
 import 'package:docdoc/features/login/data/repos/login_repo.dart';
 import 'package:docdoc/features/login/domain/use_cases/login_use_case.dart';
 import 'package:docdoc/features/login/presentation/cubit/login_cubit.dart';
@@ -47,13 +45,15 @@ import 'package:docdoc/features/inbox/presentation/cubit/inbox_cubit.dart';
 import 'package:docdoc/features/inbox/presentation/cubit/chat_cubit.dart';
 import 'package:docdoc/core/di/services_di.dart';
 import 'package:get_it/get_it.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 final getIt = GetIt.instance;
 
 Future<void> setupGetIt() async {
   registerServices(getIt);
-  // Networking
-  getIt.registerLazySingleton<ApiService>(() => ApiService(DioFactory.getDio()));
+  // Supabase — the domain-data backend (doctors, catalog, appointments,
+  // reviews, profiles, medical records). Auth uses Supabase Auth.
+  getIt.registerLazySingleton<SupabaseClient>(() => Supabase.instance.client);
 
   // Login
   getIt.registerLazySingleton<LoginRepo>(() => LoginRepo(getIt()));
@@ -70,7 +70,7 @@ Future<void> setupGetIt() async {
   getIt.registerLazySingleton<DoctorRepo>(() => DoctorRepo(getIt()));
   getIt.registerLazySingleton<AppointmentRepo>(() => AppointmentRepo(getIt()));
   getIt.registerLazySingleton<NotificationsRepo>(() => NotificationsRepo());
-  getIt.registerLazySingleton<ReviewsRepo>(() => ReviewsRepo());
+  getIt.registerLazySingleton<ReviewsRepo>(() => ReviewsRepo(getIt()));
   getIt.registerLazySingleton<RecentSearchesRepo>(() => RecentSearchesRepo());
 
   // Home use cases

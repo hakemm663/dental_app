@@ -1,14 +1,16 @@
 import 'package:docdoc/core/networking/api_error_handler.dart';
 import 'package:docdoc/core/networking/api_result.dart';
-import 'package:docdoc/core/networking/api_service.dart';
-import 'package:docdoc/features/login/data/models/login_response.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class RegisterRepo {
-  final ApiService _apiService;
+  final SupabaseClient _client;
 
-  const RegisterRepo(this._apiService);
+  const RegisterRepo(this._client);
 
-  Future<ApiResult<LoginResponse>> register({
+  /// Creates a Supabase Auth user. `name`, `phone` and `gender` go into the
+  /// user metadata; the `handle_new_user` DB trigger copies them into the
+  /// `profiles` row. [passwordConfirmation] is validated by the UI form.
+  Future<ApiResult<String>> register({
     required String name,
     required String email,
     required String phone,
@@ -17,17 +19,16 @@ class RegisterRepo {
     required String passwordConfirmation,
   }) async {
     try {
-      final genderString = gender == 1 ? 'male' : 'female';
-      final response = await _apiService.register(
-        name: name,
+      final response = await _client.auth.signUp(
         email: email,
-        phone: phone,
-        gender: genderString,
         password: password,
-        passwordConfirmation: passwordConfirmation,
+        data: {
+          'full_name': name,
+          'phone': phone,
+          'gender': gender == 1 ? 'male' : 'female',
+        },
       );
-      return Success(
-          LoginResponse.fromJson(response.data as Map<String, dynamic>));
+      return Success(response.user!.id);
     } catch (error) {
       return Failure(ApiErrorHandler.handle(error));
     }

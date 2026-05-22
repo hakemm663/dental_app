@@ -153,7 +153,7 @@ with base as (
 ),
 named as (
   select b.*,
-    'Dr. ' || (case when b.is_male then b.fn_m else b.fn_f end)
+    (case when b.is_male then b.fn_m else b.fn_f end)
             || ' ' || b.ln as full_name,
     (case when b.is_male then 'male' else 'female' end) as gender
   from base b

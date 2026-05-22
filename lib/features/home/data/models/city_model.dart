@@ -12,7 +12,7 @@ class CityModel {
   });
 
   factory CityModel.fromJson(Map<String, dynamic> json) {
-    final gov = json['governrate'] as Map<String, dynamic>?;
+    final gov = json['governorate'] as Map<String, dynamic>?;
     return CityModel(
       id: json['id'] as int,
       name: json['name'] as String,

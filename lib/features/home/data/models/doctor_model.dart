@@ -53,42 +53,38 @@ class DoctorModel {
     this.experiences,
   });
 
+  /// Parses a `doctors` row from Supabase. Expects the embedded selects
+  /// `specialization:specializations(...)`, `city:cities(...,governorate:...)`
+  /// and `clinic:clinics(...)`.
   factory DoctorModel.fromJson(Map<String, dynamic> json) {
     final spec = json['specialization'] as Map<String, dynamic>?;
     final city = json['city'] as Map<String, dynamic>?;
-    final gov = city?['governrate'] as Map<String, dynamic>?;
-    final expList = json['experiences'] as List?;
+    final gov = city?['governorate'] as Map<String, dynamic>?;
+    final clinic = json['clinic'] as Map<String, dynamic>?;
 
     return DoctorModel(
       id: json['id'] as int,
       name: json['name'] as String,
-      image: json['photo'] as String? ?? json['image'] as String?,
-      phone: json['phone'] as String?,
-      email: json['email'] as String?,
+      image: json['photo_url'] as String?,
+      phone: clinic?['phone'] as String?,
       gender: json['gender'] as String?,
-      degree: json['degree'] as String?,
-      specializationId: spec?['id'] as int? ?? json['specialization_id'] as int?,
-      specializationName:
-          spec?['name'] as String? ?? json['specialization_name'] as String?,
-      governorateId: gov?['id'] as int? ?? json['governorate_id'] as int?,
+      degree: json['title'] as String?,
+      specializationId:
+          spec?['id'] as int? ?? json['specialization_id'] as int?,
+      specializationName: spec?['name'] as String?,
+      governorateId: gov?['id'] as int?,
       governorateName: gov?['name'] as String?,
       cityId: city?['id'] as int? ?? json['city_id'] as int?,
       cityName: city?['name'] as String?,
-      address: json['address'] as String?,
-      bio: json['description'] as String? ?? json['bio'] as String?,
+      address: clinic?['address'] as String?,
+      bio: json['bio'] as String?,
       startTime: json['start_time'] as String?,
       endTime: json['end_time'] as String?,
-      fees: (json['appoint_price'] as num?)?.toDouble() ??
-          (json['fees'] as num?)?.toDouble(),
+      fees: (json['consultation_fee'] as num?)?.toDouble(),
       rating: (json['rating'] as num?)?.toDouble(),
       reviewsCount: json['reviews_count'] as int?,
-      str: json['str'] as String?,
       latitude: (json['latitude'] as num?)?.toDouble(),
       longitude: (json['longitude'] as num?)?.toDouble(),
-      experiences: expList
-          ?.map((e) =>
-              DoctorExperienceModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
     );
   }
 }

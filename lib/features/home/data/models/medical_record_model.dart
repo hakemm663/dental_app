@@ -18,7 +18,8 @@ class MedicalRecordModel {
       id: json['id'] as int,
       name: (json['name'] ?? json['title'] ?? '') as String,
       type: json['type'] as String?,
-      date: (json['date'] ?? json['created_at']) as String?,
+      date: (json['record_date'] ?? json['date'] ?? json['created_at'])
+          as String?,
       fileUrl: (json['file_url'] ?? json['file']) as String?,
     );
   }

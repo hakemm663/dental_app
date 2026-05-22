@@ -419,7 +419,7 @@ class _AboutTab extends StatelessWidget {
             _Section(
               title: 'Consultation Fees',
               child: Text(
-                '\$${doctor.fees!.toStringAsFixed(0)}',
+                '${doctor.fees!.toStringAsFixed(0)} EGP',
                 style: TextStyles.font14DarkBlueMedium,
               ),
             ),

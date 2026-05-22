@@ -1,5 +1,3 @@
-import 'package:docdoc/features/login/data/models/login_response.dart';
-
 sealed class LoginState {
   const LoginState();
 }
@@ -13,8 +11,7 @@ final class LoginLoading extends LoginState {
 }
 
 final class LoginSuccess extends LoginState {
-  final LoginResponse loginResponse;
-  const LoginSuccess(this.loginResponse);
+  const LoginSuccess();
 }
 
 final class LoginError extends LoginState {
