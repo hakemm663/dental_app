@@ -12,8 +12,6 @@ dependencies:
   cupertino_icons: ^1.0.8
   flutter_bloc: ^9.1.1
   get_it: ^9.2.1
-  dio: ^5.9.2
-  pretty_dio_logger: ^1.4.0
   flutter_native_splash: ^2.4.7
   flutter_svg: ^2.2.4
   flutter_screenutil: ^5.9.3

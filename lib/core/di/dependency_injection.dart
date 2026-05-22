@@ -1,7 +1,5 @@
 import 'package:docdoc/core/helpers/constans.dart';
 import 'package:docdoc/core/helpers/shared_pref_helper.dart';
-import 'package:docdoc/core/networking/api_service.dart';
-import 'package:docdoc/core/networking/dio_factory.dart';
 import 'package:docdoc/features/login/data/repos/login_repo.dart';
 import 'package:docdoc/features/login/domain/use_cases/login_use_case.dart';
 import 'package:docdoc/features/login/presentation/cubit/login_cubit.dart';
@@ -53,10 +51,8 @@ final getIt = GetIt.instance;
 
 Future<void> setupGetIt() async {
   registerServices(getIt);
-  // Networking
-  getIt.registerLazySingleton<ApiService>(() => ApiService(DioFactory.getDio()));
-
-  // Supabase — domain-data backend (doctors, catalog, …)
+  // Supabase — the domain-data backend (doctors, catalog, appointments,
+  // reviews, profiles, medical records). Auth uses Supabase Auth.
   getIt.registerLazySingleton<SupabaseClient>(() => Supabase.instance.client);
 
   // Login

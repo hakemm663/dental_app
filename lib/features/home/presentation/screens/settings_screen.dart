@@ -1,6 +1,4 @@
-import 'package:docdoc/core/di/dependency_injection.dart';
 import 'package:docdoc/core/helpers/shared_pref_helper.dart';
-import 'package:docdoc/core/networking/api_service.dart';
 import 'package:docdoc/core/routing/routes.dart';
 import 'package:docdoc/core/theming/colors.dart';
 import 'package:docdoc/core/theming/styles.dart';
@@ -8,6 +6,7 @@ import 'package:docdoc/core/widgets/app_bar_icon_button.dart';
 import 'package:docdoc/features/home/presentation/widgets/profile_menu_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -140,7 +139,7 @@ class _LogoutDialog {
     if (confirmed == true && context.mounted) {
       final navigator = Navigator.of(context);
       try {
-        await getIt<ApiService>().logout();
+        await Supabase.instance.client.auth.signOut();
       } catch (_) {}
       await _clearStorage();
       navigator.pushNamedAndRemoveUntil(Routes.loginScreen, (_) => false);
