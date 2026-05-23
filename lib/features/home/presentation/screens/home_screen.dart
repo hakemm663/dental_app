@@ -1,5 +1,3 @@
-import 'package:docdoc/core/helpers/constans.dart';
-import 'package:docdoc/core/helpers/shared_pref_helper.dart';
 import 'package:docdoc/core/routing/routes.dart';
 import 'package:docdoc/core/theming/styles.dart';
 import 'package:docdoc/features/home/data/models/specialization_model.dart';
@@ -13,6 +11,7 @@ import 'package:docdoc/features/home/presentation/widgets/speciality_section.dar
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -34,10 +33,34 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _loadUserName() async {
-    final name = await SharedPrefHelper.getSecuredString(SharedPrefKeys.userName);
+    final user = Supabase.instance.client.auth.currentUser;
+    if (user == null) return;
+    // Sign-up writes full_name into user metadata; accounts created via the
+    // dashboard (or without metadata) fall back to the profiles row, and
+    // finally to the email's local part — never an empty greeting.
+    String? name = user.userMetadata?['full_name'] as String?;
+    if (name == null || name.trim().isEmpty) {
+      try {
+        final profile = await Supabase.instance.client
+            .from('profiles')
+            .select('full_name')
+            .eq('id', user.id)
+            .maybeSingle();
+        name = profile?['full_name'] as String?;
+      } catch (_) {
+        // Swallow — email fallback below.
+      }
+    }
     if (!mounted) return;
-    if (name.isNotEmpty) {
-      setState(() => userName = name.split(' ').first);
+    if (name != null && name.trim().isNotEmpty) {
+      final firstName = name.trim().split(' ').first;
+      setState(() => userName = firstName);
+    } else if (user.email != null && user.email!.isNotEmpty) {
+      final local = user.email!.split('@').first;
+      if (local.isNotEmpty) {
+        setState(() =>
+            userName = '${local[0].toUpperCase()}${local.substring(1)}');
+      }
     }
   }
 

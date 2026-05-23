@@ -1,3 +1,4 @@
+import 'package:docdoc/core/helpers/doctor_display.dart';
 import 'package:docdoc/core/theming/colors.dart';
 import 'package:docdoc/core/theming/styles.dart';
 import 'package:docdoc/features/home/data/models/doctor_model.dart';
@@ -34,7 +35,7 @@ class DoctorInfoCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Dr. ${doctor.name}',
+                doctorDisplayName(doctor.name),
                 style: TextStyles.font18DarkBlueBold,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,

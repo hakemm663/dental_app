@@ -1,0 +1,6 @@
+[mcp_servers.agora-docs]
+url = "https://mcp.agora.io"
+
+[mcp_servers.dart]
+args = ["mcp-server"]
+command = "dart"

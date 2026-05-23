@@ -1,3 +1,4 @@
+import 'package:docdoc/core/helpers/doctor_display.dart';
 import 'package:docdoc/core/theming/colors.dart';
 import 'package:docdoc/core/theming/styles.dart';
 import 'package:docdoc/features/home/data/models/appointment_model.dart';
@@ -50,7 +51,7 @@ class UpcomingAppointmentCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Dr. ${doctor?.name ?? 'Doctor'}',
+                      doctorDisplayName(doctor?.name),
                       style: TextStyles.font15DarkBlueMedium,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
