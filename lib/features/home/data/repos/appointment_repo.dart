@@ -101,11 +101,20 @@ class AppointmentRepo {
     try {
       final user = _client.auth.currentUser;
       if (user == null) return const Failure('You are not signed in.');
-      final profile = await _client
+      // The handle_new_user trigger creates a profiles row on signup, but
+      // older accounts (or accounts created via the dashboard) may not have
+      // one yet — insert a stub so the personal-info screen never errors on
+      // first open.
+      var profile = await _client
           .from('profiles')
           .select()
           .eq('id', user.id)
-          .single();
+          .maybeSingle();
+      profile ??= await _client.from('profiles').insert({
+        'id': user.id,
+        'full_name': user.userMetadata?['full_name'],
+        'phone': user.userMetadata?['phone'],
+      }).select().single();
       return Success(_userFrom(profile, user));
     } catch (error) {
       return Failure(ApiErrorHandler.handle(error));

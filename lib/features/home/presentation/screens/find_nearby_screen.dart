@@ -1,3 +1,4 @@
+import 'package:docdoc/core/helpers/doctor_display.dart';
 import 'package:docdoc/core/routing/routes.dart';
 import 'package:docdoc/core/theming/colors.dart';
 import 'package:docdoc/core/theming/styles.dart';
@@ -98,14 +99,21 @@ class _FindNearbyScreenState extends State<FindNearbyScreen> {
                       ),
                       MarkerLayer(
                         markers: doctors.map((doctor) {
+                          final isSelected =
+                              _selectedDoctor?.id == doctor.id;
+                          final size = isSelected ? 40.r : 28.r;
                           return Marker(
-                            point: LatLng(doctor.latitude!, doctor.longitude!),
-                            width: 60.r,
-                            height: 60.r,
+                            point:
+                                LatLng(doctor.latitude!, doctor.longitude!),
+                            width: size,
+                            height: size,
                             child: GestureDetector(
                               onTap: () =>
                                   setState(() => _selectedDoctor = doctor),
-                              child: _DoctorMapMarker(doctor: doctor),
+                              child: _DoctorMapMarker(
+                                doctor: doctor,
+                                selected: isSelected,
+                              ),
                             ),
                           );
                         }).toList(),
@@ -225,21 +233,31 @@ class _MapAppBar extends StatelessWidget {
 
 class _DoctorMapMarker extends StatelessWidget {
   final DoctorModel doctor;
+  final bool selected;
 
-  const _DoctorMapMarker({required this.doctor});
+  const _DoctorMapMarker({required this.doctor, this.selected = false});
 
   @override
   Widget build(BuildContext context) {
+    // Small round pin so dense clusters (e.g. doctors in Mansoura) stay
+    // readable; the selected marker grows + gets a blue ring.
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(10.r),
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: selected ? ColorsManager.mainBlue : Colors.white,
+          width: selected ? 3 : 2,
+        ),
         boxShadow: const [
-          BoxShadow(color: Colors.black26, blurRadius: 4, offset: Offset(0, 2)),
+          BoxShadow(
+            color: Colors.black26,
+            blurRadius: 4,
+            offset: Offset(0, 2),
+          ),
         ],
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10.r),
+      child: ClipOval(
         child: doctor.image != null && doctor.image!.isNotEmpty
             ? Image.network(
                 doctor.image!,
@@ -314,7 +332,7 @@ class _SelectedDoctorCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Dr. ${doctor.name}',
+                      doctorDisplayName(doctor.name),
                       style: TextStyles.font18DarkBlueBold,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,

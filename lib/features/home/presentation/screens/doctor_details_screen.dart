@@ -1,4 +1,5 @@
 import 'package:docdoc/core/di/dependency_injection.dart';
+import 'package:docdoc/core/helpers/doctor_display.dart';
 import 'package:docdoc/core/networking/api_result.dart';
 import 'package:docdoc/core/routing/routes.dart';
 import 'package:docdoc/core/theming/colors.dart';
@@ -195,7 +196,7 @@ class _DoctorSummary extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Dr. ${doctor.name}',
+                doctorDisplayName(doctor.name),
                 style: TextStyles.font18DarkBlueBold,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
