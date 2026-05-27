@@ -83,8 +83,9 @@ class _Row extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style =
-        bold ? TextStyles.font18DarkBlueBold : TextStyles.font14GrayRegular;
+    final style = bold
+        ? TextStyles.font18DarkBlueBold
+        : TextStyles.font14GrayRegular;
     final valueStyle = bold
         ? TextStyles.font18DarkBlueBold
         : TextStyles.font14DarkBlueMedium;

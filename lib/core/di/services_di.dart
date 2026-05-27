@@ -2,12 +2,18 @@ import 'package:docdoc/core/services/agora_service.dart';
 import 'package:docdoc/core/services/agora_token_service.dart';
 import 'package:docdoc/core/services/firebase_storage_service.dart';
 import 'package:docdoc/core/services/media_picker_service.dart';
+import 'package:docdoc/core/services/supabase_storage_service.dart';
 import 'package:get_it/get_it.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 void registerServices(GetIt getIt) {
   getIt.registerLazySingleton<AgoraService>(() => AgoraService());
   getIt.registerLazySingleton<AgoraTokenService>(() => AgoraTokenService());
   getIt.registerLazySingleton<MediaPickerService>(() => MediaPickerService());
   getIt.registerLazySingleton<FirebaseStorageService>(
-      () => FirebaseStorageService());
+    () => FirebaseStorageService(),
+  );
+  getIt.registerLazySingleton<SupabaseStorageService>(
+    () => SupabaseStorageService(Supabase.instance.client),
+  );
 }

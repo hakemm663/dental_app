@@ -15,14 +15,21 @@ class RecentSearchesRepo {
       trimmed,
       ...current.where((q) => q.toLowerCase() != trimmed.toLowerCase()),
     ].take(_maxItems).toList();
-    await SharedPrefHelper.setStringList(SharedPrefKeys.recentSearches, updated);
+    await SharedPrefHelper.setStringList(
+      SharedPrefKeys.recentSearches,
+      updated,
+    );
   }
 
   Future<void> remove(String query) async {
     final current = await getAll();
-    final updated =
-        current.where((q) => q.toLowerCase() != query.toLowerCase()).toList();
-    await SharedPrefHelper.setStringList(SharedPrefKeys.recentSearches, updated);
+    final updated = current
+        .where((q) => q.toLowerCase() != query.toLowerCase())
+        .toList();
+    await SharedPrefHelper.setStringList(
+      SharedPrefKeys.recentSearches,
+      updated,
+    );
   }
 
   Future<void> clearAll() =>

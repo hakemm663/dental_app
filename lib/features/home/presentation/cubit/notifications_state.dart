@@ -12,16 +12,17 @@ class NotificationsState {
   });
 
   const NotificationsState.initial()
-      : this(notifications: const [], isLoading: false);
+    : this(notifications: const [], isLoading: false);
 
   const NotificationsState.loading()
-      : this(notifications: const [], isLoading: true);
+    : this(notifications: const [], isLoading: true);
 
-  const NotificationsState.loaded({required List<NotificationModel> notifications})
-      : this(notifications: notifications, isLoading: false);
+  const NotificationsState.loaded({
+    required List<NotificationModel> notifications,
+  }) : this(notifications: notifications, isLoading: false);
 
   NotificationsState.error({required String message})
-      : this(notifications: const [], isLoading: false, errorMessage: message);
+    : this(notifications: const [], isLoading: false, errorMessage: message);
 
   int get unreadCount => notifications.where((n) => !n.isRead).length;
 }

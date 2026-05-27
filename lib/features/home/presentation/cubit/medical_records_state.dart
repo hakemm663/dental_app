@@ -12,14 +12,14 @@ class MedicalRecordsState {
   });
 
   const MedicalRecordsState.initial()
-      : this(records: const [], isLoading: false);
+    : this(records: const [], isLoading: false);
 
   const MedicalRecordsState.loading()
-      : this(records: const [], isLoading: true);
+    : this(records: const [], isLoading: true);
 
   MedicalRecordsState.success(List<MedicalRecordModel> records)
-      : this(records: records, isLoading: false);
+    : this(records: records, isLoading: false);
 
   MedicalRecordsState.error(String message)
-      : this(records: const [], isLoading: false, errorMessage: message);
+    : this(records: const [], isLoading: false, errorMessage: message);
 }

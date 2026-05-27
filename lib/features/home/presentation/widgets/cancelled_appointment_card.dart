@@ -9,10 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class CancelledAppointmentCard extends StatelessWidget {
   final AppointmentModel appointment;
 
-  const CancelledAppointmentCard({
-    super.key,
-    required this.appointment,
-  });
+  const CancelledAppointmentCard({super.key, required this.appointment});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +32,7 @@ class CancelledAppointmentCard extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
             decoration: BoxDecoration(
-              color: const Color(0xFFFFEBEE),
+              color: ColorsManager.dangerRedBg,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(16.r),
                 topRight: Radius.circular(16.r),
@@ -45,14 +42,15 @@ class CancelledAppointmentCard extends StatelessWidget {
               children: [
                 Icon(
                   Icons.cancel_rounded,
-                  color: const Color(0xFFEF4444),
+                  color: ColorsManager.dangerRed,
                   size: 18.r,
                 ),
                 SizedBox(width: 8.w),
                 Text(
                   'Appointment cancelled',
-                  style: TextStyles.font13DarkBlueMedium
-                      .copyWith(color: const Color(0xFFEF4444)),
+                  style: TextStyles.font13DarkBlueMedium.copyWith(
+                    color: ColorsManager.dangerRed,
+                  ),
                 ),
                 const Spacer(),
                 Icon(

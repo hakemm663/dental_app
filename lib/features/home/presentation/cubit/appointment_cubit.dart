@@ -45,17 +45,21 @@ class AppointmentCubit extends Cubit<AppointmentState> {
     required double tax,
     String? notes,
   }) async {
-    emit(AppointmentState(
-      appointments: _cachedAppointments,
-      isLoading: false,
-      isCreating: true,
-    ));
+    emit(
+      AppointmentState(
+        appointments: _cachedAppointments,
+        isLoading: false,
+        isCreating: true,
+      ),
+    );
     final result = await _storeAppointmentUseCase(
       doctorId: doctorId,
       startTime: startTime,
       notes: notes,
       paymentMethod: paymentMethod.wireKey,
-      cardBrand: paymentMethod is CreditCardPayment ? paymentMethod.brand.wireKey : null,
+      cardBrand: paymentMethod is CreditCardPayment
+          ? paymentMethod.brand.wireKey
+          : null,
       subtotal: subtotal,
       tax: tax,
       total: subtotal + tax,
@@ -71,12 +75,14 @@ class AppointmentCubit extends Cubit<AppointmentState> {
   }
 
   Future<void> cancelAppointment(int id) async {
-    emit(AppointmentState(
-      appointments: _cachedAppointments,
-      isLoading: false,
-      isCreating: false,
-      isCancelling: true,
-    ));
+    emit(
+      AppointmentState(
+        appointments: _cachedAppointments,
+        isLoading: false,
+        isCreating: false,
+        isCancelling: true,
+      ),
+    );
     final result = await _cancelAppointmentUseCase(id);
     _cachedAppointments = _cachedAppointments
         .map((a) => a.id == id ? a.copyWith(status: 'cancelled') : a)
@@ -84,12 +90,14 @@ class AppointmentCubit extends Cubit<AppointmentState> {
     switch (result) {
       case Success():
       case Failure():
-        emit(AppointmentState(
-          appointments: _cachedAppointments,
-          isLoading: false,
-          isCreating: false,
-          cancelledAppointmentId: id,
-        ));
+        emit(
+          AppointmentState(
+            appointments: _cachedAppointments,
+            isLoading: false,
+            isCreating: false,
+            cancelledAppointmentId: id,
+          ),
+        );
     }
   }
 
@@ -98,12 +106,14 @@ class AppointmentCubit extends Cubit<AppointmentState> {
     required String startTime,
     required AppointmentType appointmentType,
   }) async {
-    emit(AppointmentState(
-      appointments: _cachedAppointments,
-      isLoading: false,
-      isCreating: false,
-      isRescheduling: true,
-    ));
+    emit(
+      AppointmentState(
+        appointments: _cachedAppointments,
+        isLoading: false,
+        isCreating: false,
+        isRescheduling: true,
+      ),
+    );
     final result = await _rescheduleAppointmentUseCase(
       id: id,
       startTime: startTime,
@@ -114,12 +124,14 @@ class AppointmentCubit extends Cubit<AppointmentState> {
         _cachedAppointments = _cachedAppointments
             .map((a) => a.id == id ? data : a)
             .toList();
-        emit(AppointmentState(
-          appointments: _cachedAppointments,
-          rescheduledAppointment: data,
-          isLoading: false,
-          isCreating: false,
-        ));
+        emit(
+          AppointmentState(
+            appointments: _cachedAppointments,
+            rescheduledAppointment: data,
+            isLoading: false,
+            isCreating: false,
+          ),
+        );
       case Failure(:final errMsg):
         final updated = _cachedAppointments
             .where((a) => a.id == id)
@@ -132,12 +144,14 @@ class AppointmentCubit extends Cubit<AppointmentState> {
           _cachedAppointments = _cachedAppointments
               .map((a) => a.id == id ? updated : a)
               .toList();
-          emit(AppointmentState(
-            appointments: _cachedAppointments,
-            rescheduledAppointment: updated,
-            isLoading: false,
-            isCreating: false,
-          ));
+          emit(
+            AppointmentState(
+              appointments: _cachedAppointments,
+              rescheduledAppointment: updated,
+              isLoading: false,
+              isCreating: false,
+            ),
+          );
         } else {
           emit(AppointmentState.error(message: errMsg));
         }

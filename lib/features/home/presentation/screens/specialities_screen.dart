@@ -1,7 +1,9 @@
 import 'package:docdoc/core/helpers/specialty_icon_resolver.dart';
+import 'package:docdoc/core/helpers/specialty_short_name.dart';
 import 'package:docdoc/core/routing/routes.dart';
 import 'package:docdoc/core/theming/colors.dart';
 import 'package:docdoc/core/theming/styles.dart';
+import 'package:docdoc/core/widgets/docdoc_app_bar.dart';
 import 'package:docdoc/features/home/data/models/specialization_model.dart';
 import 'package:docdoc/features/home/presentation/cubit/doctors_cubit.dart';
 import 'package:docdoc/features/home/presentation/cubit/home_cubit.dart';
@@ -19,9 +21,12 @@ class SpecialitiesScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            const _AppBar(),
+            const DocDocAppBar(title: 'Doctor Speciality'),
             Expanded(
               child: BlocBuilder<HomeCubit, HomeState>(
+                buildWhen: (p, c) =>
+                    p.isLoading != c.isLoading ||
+                    p.specializations != c.specializations,
                 builder: (context, state) {
                   if (state.isLoading) {
                     return const Center(child: CircularProgressIndicator());
@@ -64,58 +69,8 @@ class SpecialitiesScreen extends StatelessWidget {
   }
 
   void _onSpecialityTap(BuildContext context, SpecializationModel spec) {
-    context
-        .read<DoctorsCubit>()
-        .applyFilters(specializationId: spec.id);
+    context.read<DoctorsCubit>().applyFilters(specializationId: spec.id);
     Navigator.of(context).pushNamed(Routes.recommendationDoctors);
-  }
-}
-
-class _AppBar extends StatelessWidget {
-  const _AppBar();
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-      child: Row(
-        children: [
-          const _BackButton(),
-          Expanded(
-            child: Text(
-              'Doctor Speciality',
-              textAlign: TextAlign.center,
-              style: TextStyles.font18DarkBlueBold,
-            ),
-          ),
-          SizedBox(width: 40.w),
-        ],
-      ),
-    );
-  }
-}
-
-class _BackButton extends StatelessWidget {
-  const _BackButton();
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: ColorsManager.white,
-      borderRadius: BorderRadius.circular(10.r),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(10.r),
-        onTap: () => Navigator.of(context).pop(),
-        child: Padding(
-          padding: EdgeInsets.all(8.r),
-          child: Icon(
-            Icons.arrow_back_ios_new_rounded,
-            size: 18.r,
-            color: ColorsManager.darkBlue,
-          ),
-        ),
-      ),
-    );
   }
 }
 
@@ -147,9 +102,9 @@ class _SpecialityGridItem extends StatelessWidget {
           ),
           SizedBox(height: 10.h),
           Text(
-            spec.name,
+            specialtyShortName(spec.name),
             textAlign: TextAlign.center,
-            maxLines: 2,
+            maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyles.font13DarkBlueMedium,
           ),

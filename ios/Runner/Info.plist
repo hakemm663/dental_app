@@ -69,10 +69,20 @@
 		<key>UIStatusBarHidden</key>
 		<false/>
 		<key>NSCameraUsageDescription</key>
-		<string>DocDoc needs camera access to take photos and make video calls</string>
+		<string>DocDoc needs camera access to take profile photos, chat photos, and join video consultations.</string>
 		<key>NSMicrophoneUsageDescription</key>
-		<string>DocDoc needs microphone access for video and voice calls</string>
+		<string>DocDoc needs microphone access for video and voice consultations.</string>
 		<key>NSPhotoLibraryUsageDescription</key>
-		<string>DocDoc needs photo library access to share images in chat</string>
+		<string>DocDoc needs photo library access to choose profile and chat images.</string>
+		<key>NSPhotoLibraryAddUsageDescription</key>
+		<string>DocDoc needs permission to save photos you receive in chat.</string>
+		<key>NSBluetoothPeripheralUsageDescription</key>
+		<string>DocDoc uses Bluetooth to route call audio to headsets and connected accessories.</string>
+		<key>NSBluetoothAlwaysUsageDescription</key>
+		<string>DocDoc uses Bluetooth to route call audio to headsets and connected accessories.</string>
+		<key>NSLocalNetworkUsageDescription</key>
+		<string>DocDoc uses the local network to connect video calls on the same Wi-Fi.</string>
+		<key>ITSAppUsesNonExemptEncryption</key>
+		<false/>
 	</dict>
 </plist>

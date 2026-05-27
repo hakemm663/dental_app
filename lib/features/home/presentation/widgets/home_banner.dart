@@ -80,10 +80,7 @@ class _FindNearbyButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(30.r),
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-          child: Text(
-            'Find Nearby',
-            style: TextStyles.font14BlueSemiBold,
-          ),
+          child: Text('Find Nearby', style: TextStyles.font14BlueSemiBold),
         ),
       ),
     );

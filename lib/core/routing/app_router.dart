@@ -38,7 +38,6 @@ import 'package:docdoc/features/inbox/presentation/cubit/chat_cubit.dart';
 import 'package:docdoc/features/inbox/presentation/screens/inbox_screen.dart';
 import 'package:docdoc/features/inbox/presentation/screens/chat_screen.dart';
 import 'package:docdoc/features/inbox/presentation/screens/video_call_screen.dart';
-import 'package:docdoc/features/inbox/presentation/screens/camera_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:docdoc/core/routing/routes.dart';
@@ -75,21 +74,13 @@ class AppRouter {
           ),
         );
       case Routes.forgotPassword:
-        return MaterialPageRoute(
-          builder: (_) => const ForgotPasswordScreen(),
-        );
+        return MaterialPageRoute(builder: (_) => const ForgotPasswordScreen());
       case Routes.verifyCode:
-        return MaterialPageRoute(
-          builder: (_) => const VerifyCodeScreen(),
-        );
+        return MaterialPageRoute(builder: (_) => const VerifyCodeScreen());
       case Routes.newPassword:
-        return MaterialPageRoute(
-          builder: (_) => const NewPasswordScreen(),
-        );
+        return MaterialPageRoute(builder: (_) => const NewPasswordScreen());
       case Routes.passwordChanged:
-        return MaterialPageRoute(
-          builder: (_) => const PasswordChangedScreen(),
-        );
+        return MaterialPageRoute(builder: (_) => const PasswordChangedScreen());
       case Routes.homeScreen:
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
@@ -201,9 +192,7 @@ class AppRouter {
           ),
         );
       case Routes.settings:
-        return MaterialPageRoute(
-          builder: (_) => const SettingsScreen(),
-        );
+        return MaterialPageRoute(builder: (_) => const SettingsScreen());
       case Routes.notificationSettings:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
@@ -226,9 +215,7 @@ class AppRouter {
           ),
         );
       case Routes.faq:
-        return MaterialPageRoute(
-          builder: (_) => const FaqScreen(),
-        );
+        return MaterialPageRoute(builder: (_) => const FaqScreen());
       case Routes.profile:
         return MaterialPageRoute(
           builder: (_) => BlocProvider.value(
@@ -255,10 +242,6 @@ class AppRouter {
         final conversation = arguments as ConversationModel;
         return MaterialPageRoute(
           builder: (_) => VideoCallScreen(conversation: conversation),
-        );
-      case Routes.cameraScreen:
-        return MaterialPageRoute(
-          builder: (_) => const CameraScreen(),
         );
       case Routes.search:
         return MaterialPageRoute(

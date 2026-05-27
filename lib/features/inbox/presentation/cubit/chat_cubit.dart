@@ -42,10 +42,8 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  Future<void> sendImageMessage(
-      String conversationId, String imageUrl) async {
-    final result =
-        await _sendImageMessageUseCase(conversationId, imageUrl);
+  Future<void> sendImageMessage(String conversationId, String imageUrl) async {
+    final result = await _sendImageMessageUseCase(conversationId, imageUrl);
     switch (result) {
       case Success():
         break;
@@ -61,7 +59,11 @@ class ChatCubit extends Cubit<ChatState> {
     int fileSize,
   ) async {
     final result = await _sendAttachmentMessageUseCase(
-        conversationId, fileUrl, fileName, fileSize);
+      conversationId,
+      fileUrl,
+      fileName,
+      fileSize,
+    );
     switch (result) {
       case Success():
         break;

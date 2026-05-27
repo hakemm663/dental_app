@@ -7,11 +7,7 @@ class HomeHeader extends StatelessWidget {
   final String userName;
   final VoidCallback? onNotificationTap;
 
-  const HomeHeader({
-    super.key,
-    required this.userName,
-    this.onNotificationTap,
-  });
+  const HomeHeader({super.key, required this.userName, this.onNotificationTap});
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +20,7 @@ class HomeHeader extends StatelessWidget {
             children: [
               Text('Hi, $userName!', style: TextStyles.font24BlackBold),
               SizedBox(height: 6.h),
-              Text(
-                'How Are you Today?',
-                style: TextStyles.font14GrayRegular,
-              ),
+              Text('How Are you Today?', style: TextStyles.font14GrayRegular),
             ],
           ),
         ),
@@ -67,7 +60,7 @@ class _NotificationButton extends StatelessWidget {
                   width: 8.r,
                   height: 8.r,
                   decoration: const BoxDecoration(
-                    color: Color(0xFFFF4D6D),
+                    color: ColorsManager.notificationDot,
                     shape: BoxShape.circle,
                   ),
                 ),

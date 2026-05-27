@@ -1,8 +1,10 @@
+import 'package:docdoc/core/widgets/bottom_action_bar.dart';
 import 'package:docdoc/core/routing/routes.dart';
 import 'package:docdoc/core/theming/colors.dart';
 import 'package:docdoc/core/theming/styles.dart';
-import 'package:docdoc/core/widgets/app_bar_icon_button.dart';
 import 'package:docdoc/core/widgets/app_text_button.dart';
+import 'package:docdoc/core/widgets/docdoc_app_bar.dart';
+import 'package:docdoc/core/widgets/outlined_pill_button.dart';
 import 'package:docdoc/features/home/data/models/appointment_model.dart';
 import 'package:docdoc/features/home/data/models/appointment_type.dart';
 import 'package:docdoc/features/home/presentation/widgets/booking_summary_view.dart';
@@ -39,7 +41,7 @@ class RescheduleConfirmedScreen extends StatelessWidget {
         bottom: false,
         child: Column(
           children: [
-            _DetailsAppBar(onBack: () => Navigator.of(context).pop()),
+            const DocDocAppBar(title: 'Details'),
             Expanded(
               child: SingleChildScrollView(
                 padding: EdgeInsets.fromLTRB(24.w, 8.h, 24.w, 0),
@@ -72,12 +74,16 @@ class RescheduleConfirmedScreen extends StatelessWidget {
                     Divider(height: 1, color: ColorsManager.lighterGray),
                     BookingInfoRow(
                       icon: Icons.assignment_outlined,
-                      iconBg: const Color(0xFFE8F5E9),
-                      iconColor: const Color(0xFF22C55E),
+                      iconBg: ColorsManager.successGreenBg,
+                      iconColor: ColorsManager.successGreen,
                       title: 'Appointment Type',
                       subtitle: args.appointmentType.label,
-                      trailing: args.appointmentType == AppointmentType.videoCall
-                          ? _GetLinkButton(onTap: () {})
+                      trailing:
+                          args.appointmentType == AppointmentType.videoCall
+                          ? OutlinedPillButton(
+                              label: 'Get Link',
+                              onPressed: () {},
+                            )
                           : null,
                     ),
                     if (doctor != null) ...[
@@ -94,8 +100,7 @@ class RescheduleConfirmedScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(24.w, 12.h, 24.w, 32.h),
+            BottomActionBar(
               child: AppTextButton(
                 buttonText: 'Done',
                 textStyle: TextStyles.font16WhiteSemiBold,
@@ -114,35 +119,6 @@ class RescheduleConfirmedScreen extends StatelessWidget {
   }
 }
 
-class _DetailsAppBar extends StatelessWidget {
-  final VoidCallback onBack;
-
-  const _DetailsAppBar({required this.onBack});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-      child: Row(
-        children: [
-          AppBarIconButton(
-            icon: Icons.arrow_back_ios_new_rounded,
-            onTap: onBack,
-          ),
-          Expanded(
-            child: Text(
-              'Details',
-              textAlign: TextAlign.center,
-              style: TextStyles.font18DarkBlueBold,
-            ),
-          ),
-          SizedBox(width: 36.w),
-        ],
-      ),
-    );
-  }
-}
-
 class _SuccessCheck extends StatelessWidget {
   const _SuccessCheck();
 
@@ -153,30 +129,9 @@ class _SuccessCheck extends StatelessWidget {
       height: 100.r,
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
-        color: Color(0xFF22C55E),
+        color: ColorsManager.successGreen,
       ),
       child: Icon(Icons.check_rounded, color: Colors.white, size: 56.r),
-    );
-  }
-}
-
-class _GetLinkButton extends StatelessWidget {
-  final VoidCallback onTap;
-
-  const _GetLinkButton({required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return OutlinedButton(
-      onPressed: onTap,
-      style: OutlinedButton.styleFrom(
-        side: BorderSide(color: ColorsManager.mainBlue),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.r),
-        ),
-        padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
-      ),
-      child: Text('Get Link', style: TextStyles.font13BlueSemiBold),
     );
   }
 }

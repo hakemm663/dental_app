@@ -10,14 +10,16 @@ enum Flavor { dev, staging, prod }
 class Env {
   Env._();
 
-  static const String _value =
-      String.fromEnvironment('ENV', defaultValue: 'dev');
+  static const String _value = String.fromEnvironment(
+    'ENV',
+    defaultValue: 'dev',
+  );
 
   static Flavor get flavor => switch (_value) {
-        'prod' => Flavor.prod,
-        'staging' => Flavor.staging,
-        _ => Flavor.dev,
-      };
+    'prod' => Flavor.prod,
+    'staging' => Flavor.staging,
+    _ => Flavor.dev,
+  };
 
   static bool get isDev => flavor == Flavor.dev;
   static bool get isStaging => flavor == Flavor.staging;
@@ -41,10 +43,10 @@ class Env {
 
   /// VCare API base URL for the active flavor.
   static String get apiBaseUrl => switch (flavor) {
-        Flavor.dev => _integrationApiUrl,
-        Flavor.staging => _integrationApiUrl,
-        Flavor.prod => _prodApiUrl,
-      };
+    Flavor.dev => _integrationApiUrl,
+    Flavor.staging => _integrationApiUrl,
+    Flavor.prod => _prodApiUrl,
+  };
 
   // ── Supabase ────────────────────────────────────────────────────────────
 

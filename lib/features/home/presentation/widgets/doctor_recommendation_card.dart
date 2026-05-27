@@ -1,6 +1,8 @@
 import 'package:docdoc/core/helpers/doctor_display.dart';
 import 'package:docdoc/core/theming/colors.dart';
 import 'package:docdoc/core/theming/styles.dart';
+import 'package:docdoc/core/widgets/docdoc_avatar.dart';
+import 'package:docdoc/core/widgets/star_rating.dart';
 import 'package:docdoc/features/home/data/models/doctor_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,7 +32,14 @@ class DoctorRecommendationCard extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              _DoctorAvatar(image: doctor.image, name: doctor.name),
+              DocDocAvatar(
+                imageUrl: doctor.image,
+                name: doctor.name,
+                size: 90,
+                cornerRadius: 12,
+                backgroundColor: ColorsManager.moreLighterGray,
+                initialStyle: TextStyles.font24BlueBold,
+              ),
               SizedBox(width: 16.w),
               Expanded(
                 child: Column(
@@ -48,55 +57,13 @@ class DoctorRecommendationCard extends StatelessWidget {
                       address: doctor.address,
                     ),
                     SizedBox(height: 8.h),
-                    _RatingRow(rating: doctor.rating),
+                    StarRating(value: doctor.rating),
                   ],
                 ),
               ),
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _DoctorAvatar extends StatelessWidget {
-  final String? image;
-  final String name;
-
-  const _DoctorAvatar({required this.image, required this.name});
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(12.r),
-      child: Container(
-        width: 90.r,
-        height: 90.r,
-        color: ColorsManager.moreLighterGray,
-        child: image == null || image!.isEmpty
-            ? _Initial(name: name)
-            : Image.network(
-                image!,
-                fit: BoxFit.cover,
-                errorBuilder: (_, _, _) => _Initial(name: name),
-              ),
-      ),
-    );
-  }
-}
-
-class _Initial extends StatelessWidget {
-  final String name;
-
-  const _Initial({required this.name});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        name.isNotEmpty ? name[0].toUpperCase() : '?',
-        style: TextStyles.font24BlueBold,
       ),
     );
   }
@@ -135,26 +102,6 @@ class _SpecialityRow extends StatelessWidget {
             ),
           ),
         ],
-      ],
-    );
-  }
-}
-
-class _RatingRow extends StatelessWidget {
-  final double? rating;
-
-  const _RatingRow({this.rating});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(Icons.star_rounded, color: const Color(0xFFFFB800), size: 18.r),
-        SizedBox(width: 4.w),
-        Text(
-          rating != null ? rating!.toStringAsFixed(1) : '—',
-          style: TextStyles.font14DarkBlueMedium,
-        ),
       ],
     );
   }

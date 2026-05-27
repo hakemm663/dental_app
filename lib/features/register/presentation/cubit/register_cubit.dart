@@ -31,7 +31,9 @@ class RegisterCubit extends Cubit<RegisterState> {
     switch (result) {
       case Success():
         await SharedPrefHelper.setSecuredString(
-            SharedPrefKeys.userEmail, email);
+          SharedPrefKeys.userEmail,
+          email,
+        );
         emit(RegisterSuccess());
       case Failure(:final errMsg):
         emit(RegisterError(errMsg));

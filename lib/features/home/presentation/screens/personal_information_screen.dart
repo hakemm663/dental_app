@@ -1,9 +1,11 @@
+import 'package:docdoc/core/widgets/bottom_action_bar.dart';
 import 'package:docdoc/core/theming/colors.dart';
 import 'package:docdoc/features/home/data/models/user_model.dart';
 import 'package:docdoc/core/theming/styles.dart';
-import 'package:docdoc/core/widgets/app_bar_icon_button.dart';
+import 'package:docdoc/core/widgets/docdoc_app_bar.dart';
 import 'package:docdoc/core/widgets/app_text_button.dart';
 import 'package:docdoc/core/widgets/app_text_form_field.dart';
+import 'package:docdoc/core/widgets/phone_country_field.dart';
 import 'package:docdoc/features/home/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,9 +19,9 @@ class PersonalInformationScreen extends StatefulWidget {
       _PersonalInformationScreenState();
 }
 
-class _PersonalInformationScreenState
-    extends State<PersonalInformationScreen> {
+class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _phoneFieldKey = GlobalKey<PhoneCountryFieldState>();
   late final TextEditingController _nameController;
   late final TextEditingController _emailController;
   late final TextEditingController _phoneController;
@@ -62,21 +64,23 @@ class _PersonalInformationScreenState
     final genderValue = _selectedGender == '1' || _selectedGender == 'male'
         ? 1
         : _selectedGender == '0' || _selectedGender == 'female'
-            ? 0
-            : null;
+        ? 0
+        : null;
+    final phone =
+        _phoneFieldKey.currentState?.normalisedNumber ??
+        _phoneController.text.trim();
     context.read<ProfileCubit>().updateProfile(
-          name: _nameController.text.trim(),
-          email: _emailController.text.trim(),
-          phone: _phoneController.text.trim(),
-          gender: genderValue,
-        );
+      name: _nameController.text.trim(),
+      email: _emailController.text.trim(),
+      phone: phone,
+      gender: genderValue,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<ProfileCubit, ProfileState>(
-      listenWhen: (p, c) =>
-          p.isUpdating != c.isUpdating || p.user != c.user,
+      listenWhen: (p, c) => p.isUpdating != c.isUpdating || p.user != c.user,
       listener: (context, state) {
         if (!_populated && state.user != null) {
           setState(() => _populate(state.user!));
@@ -89,15 +93,15 @@ class _PersonalInformationScreenState
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text('Profile updated'),
-                backgroundColor: Color(0xFF22C55E),
+                backgroundColor: ColorsManager.successGreen,
               ),
             );
           }
         }
         if (state.errorMessage != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.errorMessage!)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
         }
       },
       child: Scaffold(
@@ -106,7 +110,7 @@ class _PersonalInformationScreenState
           bottom: false,
           child: Column(
             children: [
-              _AppBar(onBack: () => Navigator.of(context).pop()),
+              const DocDocAppBar(title: 'Personal Information'),
               Expanded(
                 child: SingleChildScrollView(
                   padding: EdgeInsets.fromLTRB(24.w, 8.h, 24.w, 24.h),
@@ -136,9 +140,10 @@ class _PersonalInformationScreenState
                         SizedBox(height: 16.h),
                         _Label('Phone Number'),
                         SizedBox(height: 8.h),
-                        AppTextFormField(
+                        PhoneCountryField(
+                          key: _phoneFieldKey,
                           controller: _phoneController,
-                          hintText: 'Enter your phone',
+                          hintText: 'Your number',
                           validator: (v) =>
                               v == null || v.trim().isEmpty ? 'Required' : null,
                         ),
@@ -147,8 +152,7 @@ class _PersonalInformationScreenState
                         SizedBox(height: 8.h),
                         _GenderSelector(
                           value: _selectedGender,
-                          onChanged: (v) =>
-                              setState(() => _selectedGender = v),
+                          onChanged: (v) => setState(() => _selectedGender = v),
                         ),
                       ],
                     ),
@@ -157,9 +161,7 @@ class _PersonalInformationScreenState
               ),
               BlocBuilder<ProfileCubit, ProfileState>(
                 buildWhen: (p, c) => p.isUpdating != c.isUpdating,
-                builder: (_, state) => Container(
-                  color: Colors.white,
-                  padding: EdgeInsets.fromLTRB(24.w, 12.h, 24.w, 32.h),
+                builder: (_, state) => BottomActionBar(
                   child: state.isUpdating
                       ? const Center(child: CircularProgressIndicator())
                       : AppTextButton(
@@ -173,35 +175,6 @@ class _PersonalInformationScreenState
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _AppBar extends StatelessWidget {
-  final VoidCallback onBack;
-
-  const _AppBar({required this.onBack});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-      child: Row(
-        children: [
-          AppBarIconButton(
-            icon: Icons.arrow_back_ios_new_rounded,
-            onTap: onBack,
-          ),
-          Expanded(
-            child: Text(
-              'Personal Information',
-              textAlign: TextAlign.center,
-              style: TextStyles.font18DarkBlueBold,
-            ),
-          ),
-          SizedBox(width: 36.w),
-        ],
       ),
     );
   }
@@ -270,7 +243,9 @@ class _GenderOption extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 14.h),
         decoration: BoxDecoration(
-          color: selected ? ColorsManager.mainBlue : ColorsManager.moreLightGray,
+          color: selected
+              ? ColorsManager.mainBlue
+              : ColorsManager.moreLightGray,
           borderRadius: BorderRadius.circular(16.r),
           border: Border.all(
             color: selected

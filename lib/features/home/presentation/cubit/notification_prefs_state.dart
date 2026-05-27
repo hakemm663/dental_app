@@ -18,14 +18,14 @@ class NotificationPrefsState {
   });
 
   const NotificationPrefsState.initial()
-      : this(
-          push: true,
-          sound: true,
-          vibrate: true,
-          appUpdates: true,
-          specialOffers: false,
-          isLoading: false,
-        );
+    : this(
+        push: true,
+        sound: true,
+        vibrate: true,
+        appUpdates: true,
+        specialOffers: false,
+        isLoading: false,
+      );
 
   NotificationPrefsState copyWith({
     bool? push,

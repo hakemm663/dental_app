@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:docdoc/core/routing/routes.dart';
 import 'package:docdoc/core/theming/colors.dart';
 import 'package:docdoc/core/theming/styles.dart';
+import 'package:docdoc/core/widgets/app_bar_icon_button.dart';
+import 'package:docdoc/core/widgets/docdoc_app_bar.dart';
 import 'package:docdoc/features/home/presentation/cubit/doctors_cubit.dart';
 import 'package:docdoc/features/home/presentation/cubit/home_cubit.dart';
 import 'package:docdoc/features/home/presentation/widgets/doctor_recommendation_card.dart';
@@ -49,8 +51,7 @@ class _RecommendationDoctorsScreenState
   }
 
   void _openFilterSheet() {
-    final specializations =
-        context.read<HomeCubit>().state.specializations;
+    final specializations = context.read<HomeCubit>().state.specializations;
     final currentState = context.read<DoctorsCubit>().state;
     showModalBottomSheet<SortFilterResult>(
       context: context,
@@ -64,9 +65,9 @@ class _RecommendationDoctorsScreenState
     ).then((result) {
       if (result != null && mounted) {
         context.read<DoctorsCubit>().applyFilters(
-              specializationId: result.specializationId,
-              minRating: result.minRating,
-            );
+          specializationId: result.specializationId,
+          minRating: result.minRating,
+        );
       }
     });
   }
@@ -78,7 +79,16 @@ class _RecommendationDoctorsScreenState
       body: SafeArea(
         child: Column(
           children: [
-            _AppBar(onFilterTap: _openFilterSheet),
+            DocDocAppBar(
+              title: 'Recommendation Doctor',
+              actions: [
+                AppBarIconButton(
+                  icon: Icons.more_horiz_rounded,
+                  iconSize: 24.r,
+                  onTap: _openFilterSheet,
+                ),
+              ],
+            ),
             Padding(
               padding: EdgeInsets.fromLTRB(24.w, 16.h, 24.w, 0),
               child: _SearchBar(
@@ -90,6 +100,10 @@ class _RecommendationDoctorsScreenState
             SizedBox(height: 16.h),
             Expanded(
               child: BlocBuilder<DoctorsCubit, DoctorsState>(
+                buildWhen: (p, c) =>
+                    p.isLoading != c.isLoading ||
+                    p.errorMessage != c.errorMessage ||
+                    p.doctors != c.doctors,
                 builder: (context, state) {
                   if (state.isLoading) {
                     return const Center(child: CircularProgressIndicator());
@@ -113,12 +127,10 @@ class _RecommendationDoctorsScreenState
                       final doctor = state.doctors[index];
                       return DoctorRecommendationCard(
                         doctor: doctor,
-                        specialityLabel:
-                            doctor.specializationName ?? 'General',
-                        onTap: () => Navigator.of(context).pushNamed(
-                          Routes.doctorDetails,
-                          arguments: doctor.id,
-                        ),
+                        specialityLabel: doctor.specializationName ?? 'General',
+                        onTap: () => Navigator.of(
+                          context,
+                        ).pushNamed(Routes.doctorDetails, arguments: doctor.id),
                       );
                     },
                   );
@@ -126,70 +138,6 @@ class _RecommendationDoctorsScreenState
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _AppBar extends StatelessWidget {
-  final VoidCallback onFilterTap;
-
-  const _AppBar({required this.onFilterTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-      child: Row(
-        children: [
-          const _BackButton(),
-          Expanded(
-            child: Text(
-              'Recommendation Doctor',
-              textAlign: TextAlign.center,
-              style: TextStyles.font18DarkBlueBold,
-            ),
-          ),
-          Material(
-            color: Colors.transparent,
-            child: InkWell(
-              borderRadius: BorderRadius.circular(8.r),
-              onTap: onFilterTap,
-              child: Padding(
-                padding: EdgeInsets.all(6.r),
-                child: Icon(
-                  Icons.more_horiz_rounded,
-                  color: ColorsManager.darkBlue,
-                  size: 24.r,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _BackButton extends StatelessWidget {
-  const _BackButton();
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: ColorsManager.white,
-      borderRadius: BorderRadius.circular(10.r),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(10.r),
-        onTap: () => Navigator.of(context).pop(),
-        child: Padding(
-          padding: EdgeInsets.all(8.r),
-          child: Icon(
-            Icons.arrow_back_ios_new_rounded,
-            size: 18.r,
-            color: ColorsManager.darkBlue,
-          ),
         ),
       ),
     );

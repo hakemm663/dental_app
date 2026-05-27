@@ -8,7 +8,8 @@ part 'medical_records_state.dart';
 class MedicalRecordsCubit extends Cubit<MedicalRecordsState> {
   final GetMedicalRecordsUseCase _getUseCase;
 
-  MedicalRecordsCubit(this._getUseCase) : super(const MedicalRecordsState.initial());
+  MedicalRecordsCubit(this._getUseCase)
+    : super(const MedicalRecordsState.initial());
 
   Future<void> getMedicalRecords() async {
     emit(const MedicalRecordsState.loading());

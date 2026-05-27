@@ -9,10 +9,14 @@ class SettingsRepo {
       'push': await _getBoolWithDefault(SharedPrefKeys.notifPush, true),
       'sound': await _getBoolWithDefault(SharedPrefKeys.notifSound, true),
       'vibrate': await _getBoolWithDefault(SharedPrefKeys.notifVibrate, true),
-      'appUpdates':
-          await _getBoolWithDefault(SharedPrefKeys.notifAppUpdates, true),
-      'specialOffers':
-          await _getBoolWithDefault(SharedPrefKeys.notifSpecialOffers, false),
+      'appUpdates': await _getBoolWithDefault(
+        SharedPrefKeys.notifAppUpdates,
+        true,
+      ),
+      'specialOffers': await _getBoolWithDefault(
+        SharedPrefKeys.notifSpecialOffers,
+        false,
+      ),
     };
   }
 
@@ -32,8 +36,10 @@ class SettingsRepo {
 
   Future<Map<String, bool>> getSecurityPrefs() async {
     return {
-      'rememberPassword':
-          await _getBoolWithDefault(SharedPrefKeys.secRememberPassword, false),
+      'rememberPassword': await _getBoolWithDefault(
+        SharedPrefKeys.secRememberPassword,
+        false,
+      ),
       'faceId': await _getBoolWithDefault(SharedPrefKeys.secFaceId, false),
       'pin': await _getBoolWithDefault(SharedPrefKeys.secPin, false),
     };
@@ -51,10 +57,9 @@ class SettingsRepo {
 
   // ── Language ──────────────────────────────────────────────────────────────
 
-  Future<String> getLanguageCode() =>
-      SharedPrefHelper.getString(SharedPrefKeys.languageCode).then(
-        (v) => v.isEmpty ? 'en' : v,
-      );
+  Future<String> getLanguageCode() => SharedPrefHelper.getString(
+    SharedPrefKeys.languageCode,
+  ).then((v) => v.isEmpty ? 'en' : v);
 
   Future<void> setLanguageCode(String code) =>
       SharedPrefHelper.setData(SharedPrefKeys.languageCode, code);

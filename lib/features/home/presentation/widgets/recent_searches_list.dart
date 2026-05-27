@@ -37,11 +37,13 @@ class RecentSearchesList extends StatelessWidget {
           ],
         ),
         SizedBox(height: 16.h),
-        ...searches.map((q) => _RecentSearchItem(
-              query: q,
-              onTap: () => onTap(q),
-              onRemove: () => onRemove(q),
-            )),
+        ...searches.map(
+          (q) => _RecentSearchItem(
+            query: q,
+            onTap: () => onTap(q),
+            onRemove: () => onRemove(q),
+          ),
+        ),
       ],
     );
   }

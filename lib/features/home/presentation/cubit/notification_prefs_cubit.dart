@@ -8,19 +8,21 @@ class NotificationPrefsCubit extends Cubit<NotificationPrefsState> {
   final SetNotificationPrefUseCase _setUseCase;
 
   NotificationPrefsCubit(this._getUseCase, this._setUseCase)
-      : super(const NotificationPrefsState.initial());
+    : super(const NotificationPrefsState.initial());
 
   Future<void> load() async {
     emit(state.copyWith(isLoading: true));
     final prefs = await _getUseCase();
-    emit(state.copyWith(
-      push: prefs['push'],
-      sound: prefs['sound'],
-      vibrate: prefs['vibrate'],
-      appUpdates: prefs['appUpdates'],
-      specialOffers: prefs['specialOffers'],
-      isLoading: false,
-    ));
+    emit(
+      state.copyWith(
+        push: prefs['push'],
+        sound: prefs['sound'],
+        vibrate: prefs['vibrate'],
+        appUpdates: prefs['appUpdates'],
+        specialOffers: prefs['specialOffers'],
+        isLoading: false,
+      ),
+    );
   }
 
   Future<void> toggle(String key, bool value) async {

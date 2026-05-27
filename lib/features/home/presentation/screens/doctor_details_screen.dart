@@ -1,3 +1,4 @@
+import 'package:docdoc/core/widgets/bottom_action_bar.dart';
 import 'package:docdoc/core/di/dependency_injection.dart';
 import 'package:docdoc/core/helpers/doctor_display.dart';
 import 'package:docdoc/core/networking/api_result.dart';
@@ -5,6 +6,8 @@ import 'package:docdoc/core/routing/routes.dart';
 import 'package:docdoc/core/theming/colors.dart';
 import 'package:docdoc/core/theming/styles.dart';
 import 'package:docdoc/core/widgets/app_text_button.dart';
+import 'package:docdoc/core/widgets/docdoc_avatar.dart';
+import 'package:docdoc/core/widgets/star_rating.dart';
 import 'package:docdoc/features/home/data/models/review_model.dart';
 import 'package:docdoc/features/home/presentation/cubit/doctor_details_cubit.dart';
 import 'package:docdoc/features/home/presentation/cubit/doctor_reviews_cubit.dart';
@@ -13,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:latlong2/latlong.dart';
 
 class DoctorDetailsScreen extends StatefulWidget {
@@ -47,6 +51,10 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen>
     return Scaffold(
       backgroundColor: Colors.white,
       body: BlocBuilder<DoctorDetailsCubit, DoctorDetailsState>(
+        buildWhen: (p, c) =>
+            p.isLoading != c.isLoading ||
+            p.errorMessage != c.errorMessage ||
+            p.doctor != c.doctor,
         builder: (context, state) {
           if (state.isLoading) {
             return const Center(child: CircularProgressIndicator());
@@ -127,7 +135,7 @@ class _DetailsAppBar extends StatelessWidget {
           const _BackButton(),
           Expanded(
             child: Text(
-              'Dr $name',
+              doctorDisplayName(name),
               textAlign: TextAlign.center,
               style: TextStyles.font18DarkBlueBold,
               maxLines: 1,
@@ -139,8 +147,13 @@ class _DetailsAppBar extends StatelessWidget {
             child: InkWell(
               borderRadius: BorderRadius.circular(8.r),
               onTap: () {},
-              child: Padding(
-                padding: EdgeInsets.all(6.r),
+              child: Container(
+                width: 40.r,
+                height: 40.r,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.r),
+                  border: Border.all(color: ColorsManager.lighterGray),
+                ),
                 child: Icon(
                   Icons.more_horiz_rounded,
                   color: ColorsManager.darkBlue,
@@ -166,8 +179,13 @@ class _BackButton extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(10.r),
         onTap: () => Navigator.of(context).pop(),
-        child: Padding(
-          padding: EdgeInsets.all(8.r),
+        child: Container(
+          width: 40.r,
+          height: 40.r,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.r),
+            border: Border.all(color: ColorsManager.lighterGray),
+          ),
           child: Icon(
             Icons.arrow_back_ios_new_rounded,
             size: 18.r,
@@ -189,7 +207,14 @@ class _DoctorSummary extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        _DoctorAvatar(image: doctor.image, name: doctor.name),
+        DocDocAvatar(
+          imageUrl: doctor.image,
+          name: doctor.name,
+          size: 100,
+          cornerRadius: 16,
+          backgroundColor: ColorsManager.moreLighterGray,
+          initialStyle: TextStyles.font24BlueBold,
+        ),
         SizedBox(width: 16.w),
         Expanded(
           child: Column(
@@ -213,63 +238,16 @@ class _DoctorSummary extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
               SizedBox(height: 8.h),
-              Row(
-                children: [
-                  Icon(
-                    Icons.star_rounded,
-                    color: const Color(0xFFFFB800),
-                    size: 16.r,
-                  ),
-                  SizedBox(width: 4.w),
-                  Text(
-                    doctor.rating != null
-                        ? '${doctor.rating!.toStringAsFixed(1)} (${doctor.reviewsCount ?? 0} reviews)'
-                        : '—',
-                    style: TextStyles.font14DarkBlueMedium,
-                  ),
-                ],
+              StarRating(
+                value: doctor.rating,
+                reviewsCount: doctor.reviewsCount ?? 0,
+                iconSize: 16,
               ),
             ],
           ),
         ),
         _ChatButton(doctor: doctor),
       ],
-    );
-  }
-}
-
-class _DoctorAvatar extends StatelessWidget {
-  final String? image;
-  final String name;
-
-  const _DoctorAvatar({required this.image, required this.name});
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(16.r),
-      child: Container(
-        width: 100.r,
-        height: 100.r,
-        color: ColorsManager.moreLighterGray,
-        child: image == null || image!.isEmpty
-            ? Center(
-                child: Text(
-                  name.isNotEmpty ? name[0].toUpperCase() : '?',
-                  style: TextStyles.font24BlueBold,
-                ),
-              )
-            : Image.network(
-                image!,
-                fit: BoxFit.cover,
-                errorBuilder: (_, _, _) => Center(
-                  child: Text(
-                    name.isNotEmpty ? name[0].toUpperCase() : '?',
-                    style: TextStyles.font24BlueBold,
-                  ),
-                ),
-              ),
-      ),
     );
   }
 }
@@ -292,27 +270,24 @@ class _ChatButton extends StatelessWidget {
           if (!context.mounted) return;
           switch (result) {
             case Success(:final data):
-              Navigator.of(context).pushNamed(
-                Routes.chatScreen,
-                arguments: data,
-              );
+              Navigator.of(
+                context,
+              ).pushNamed(Routes.chatScreen, arguments: data);
             case Failure():
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Could not open chat')),
               );
           }
         },
-        child: Container(
-          padding: EdgeInsets.all(10.r),
-          decoration: BoxDecoration(
-            border: Border.all(color: ColorsManager.white, width: 1.5),
-            borderRadius: BorderRadius.circular(12.r),
+        child: SvgPicture.asset(
+          'assets/svgs/message_icon.svg',
+          width: 22.r,
+          height: 22.r,
+          colorFilter: const ColorFilter.mode(
+            ColorsManager.mainBlue,
+            BlendMode.srcIn,
           ),
-          child: Icon(
-            Icons.chat_bubble_outline_rounded,
-            color: ColorsManager.mainBlue,
-            size: 22.r,
-          ),
+          semanticsLabel: 'Open chat',
         ),
       ),
     );
@@ -534,6 +509,7 @@ class _ReviewsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DoctorReviewsCubit, DoctorReviewsState>(
+      buildWhen: (p, c) => p.isLoading != c.isLoading || p.reviews != c.reviews,
       builder: (context, state) {
         if (state.isLoading) {
           return const Center(child: CircularProgressIndicator());
@@ -591,7 +567,7 @@ class _ReviewItem extends StatelessWidget {
                     Icons.star_rounded,
                     size: 16.r,
                     color: i < review.rating
-                        ? const Color(0xFFFFB800)
+                        ? ColorsManager.ratingStar
                         : ColorsManager.lighterGray,
                   ),
                 ),
@@ -621,36 +597,13 @@ class _ReviewerAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipOval(
-      child: Container(
-        width: 44.r,
-        height: 44.r,
-        color: ColorsManager.moreLighterGray,
-        child: image != null && image!.isNotEmpty
-            ? Image.network(
-                image!,
-                fit: BoxFit.cover,
-                errorBuilder: (_, _, _) => _Initial(name: name),
-              )
-            : _Initial(name: name),
-      ),
-    );
-  }
-}
-
-class _Initial extends StatelessWidget {
-  final String name;
-
-  const _Initial({required this.name});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        name.isNotEmpty ? name[0].toUpperCase() : '?',
-        style: TextStyles.font14DarkBlueBold.copyWith(
-          color: ColorsManager.mainBlue,
-        ),
+    return DocDocAvatar(
+      imageUrl: image,
+      name: name,
+      size: 44,
+      backgroundColor: ColorsManager.moreLighterGray,
+      initialStyle: TextStyles.font14DarkBlueBold.copyWith(
+        color: ColorsManager.mainBlue,
       ),
     );
   }
@@ -684,9 +637,7 @@ class _BookButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      padding: EdgeInsets.fromLTRB(24.w, 12.h, 24.w, 32.h),
+    return BottomActionBar(
       child: AppTextButton(
         buttonText: 'Make An Appointment',
         textStyle: TextStyles.font16WhiteSemiBold,

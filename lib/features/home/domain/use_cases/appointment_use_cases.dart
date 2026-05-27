@@ -7,7 +7,8 @@ class GetAppointmentsUseCase {
 
   const GetAppointmentsUseCase(this._repo);
 
-  Future<ApiResult<List<AppointmentModel>>> call() => _repo.getAllAppointments();
+  Future<ApiResult<List<AppointmentModel>>> call() =>
+      _repo.getAllAppointments();
 }
 
 class StoreAppointmentUseCase {
@@ -25,18 +26,17 @@ class StoreAppointmentUseCase {
     double? tax,
     double? total,
     String? appointmentType,
-  }) =>
-      _repo.storeAppointment(
-        doctorId: doctorId,
-        startTime: startTime,
-        notes: notes,
-        paymentMethod: paymentMethod,
-        cardBrand: cardBrand,
-        subtotal: subtotal,
-        tax: tax,
-        total: total,
-        appointmentType: appointmentType,
-      );
+  }) => _repo.storeAppointment(
+    doctorId: doctorId,
+    startTime: startTime,
+    notes: notes,
+    paymentMethod: paymentMethod,
+    cardBrand: cardBrand,
+    subtotal: subtotal,
+    tax: tax,
+    total: total,
+    appointmentType: appointmentType,
+  );
 }
 
 class CancelAppointmentUseCase {
@@ -56,10 +56,9 @@ class RescheduleAppointmentUseCase {
     required int id,
     required String startTime,
     String? appointmentType,
-  }) =>
-      _repo.rescheduleAppointment(
-        id: id,
-        startTime: startTime,
-        appointmentType: appointmentType,
-      );
+  }) => _repo.rescheduleAppointment(
+    id: id,
+    startTime: startTime,
+    appointmentType: appointmentType,
+  );
 }

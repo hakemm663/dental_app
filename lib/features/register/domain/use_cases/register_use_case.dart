@@ -13,13 +13,12 @@ class RegisterUseCase {
     required int gender,
     required String password,
     required String passwordConfirmation,
-  }) =>
-      _registerRepo.register(
-        name: name,
-        email: email,
-        phone: phone,
-        gender: gender,
-        password: password,
-        passwordConfirmation: passwordConfirmation,
-      );
+  }) => _registerRepo.register(
+    name: name,
+    email: email,
+    phone: phone,
+    gender: gender,
+    password: password,
+    passwordConfirmation: passwordConfirmation,
+  );
 }

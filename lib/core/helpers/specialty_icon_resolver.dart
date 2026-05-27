@@ -25,7 +25,8 @@ IconData specialtyIconFor(String name) {
 
   // ── Generic medical fallbacks ──
   if (n.contains('neuro')) return Icons.psychology_outlined;
-  if (n.contains('cardio') || n.contains('heart')) return Icons.favorite_outline;
+  if (n.contains('cardio') || n.contains('heart'))
+    return Icons.favorite_outline;
   if (n.contains('eye') || n.contains('ophth') || n.contains('optom')) {
     return Icons.remove_red_eye_outlined;
   }

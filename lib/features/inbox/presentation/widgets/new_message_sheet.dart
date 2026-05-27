@@ -96,10 +96,12 @@ class _NewMessageSheetState extends State<NewMessageSheet> {
                 final doctors = _query.isEmpty
                     ? state.doctors
                     : state.doctors
-                        .where((d) => d.name
-                            .toLowerCase()
-                            .contains(_query.toLowerCase()))
-                        .toList();
+                          .where(
+                            (d) => d.name.toLowerCase().contains(
+                              _query.toLowerCase(),
+                            ),
+                          )
+                          .toList();
 
                 if (doctors.isEmpty) {
                   return Center(
@@ -127,8 +129,9 @@ class _NewMessageSheetState extends State<NewMessageSheet> {
                         final navigator = Navigator.of(context);
                         final cubit = context.read<InboxCubit>();
                         navigator.pop();
-                        final result =
-                            await cubit.getOrCreateConversation(doctor);
+                        final result = await cubit.getOrCreateConversation(
+                          doctor,
+                        );
                         switch (result) {
                           case Success(:final data):
                             navigator.pushNamed(

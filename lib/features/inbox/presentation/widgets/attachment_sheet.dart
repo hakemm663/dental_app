@@ -33,14 +33,14 @@ class AttachmentSheet extends StatelessWidget {
               icon: Icons.description_outlined,
               label: 'Document',
               color: const Color(0xFF4CAF50),
-              bgColor: const Color(0xFFE8F5E9),
+              bgColor: ColorsManager.successGreenBg,
               onTap: onDocument,
             ),
             _AttachmentOption(
               icon: Icons.attach_file_rounded,
               label: 'Attach File',
               color: const Color(0xFFF44336),
-              bgColor: const Color(0xFFFFEBEE),
+              bgColor: ColorsManager.dangerRedBg,
               onTap: onAttachFile,
             ),
           ],
@@ -75,19 +75,13 @@ class _AttachmentOption extends StatelessWidget {
           Container(
             width: 56.r,
             height: 56.r,
-            decoration: BoxDecoration(
-              color: bgColor,
-              shape: BoxShape.circle,
-            ),
+            decoration: BoxDecoration(color: bgColor, shape: BoxShape.circle),
             child: Icon(icon, color: color, size: 26.r),
           ),
           SizedBox(height: 8.h),
           Text(
             label,
-            style: TextStyle(
-              fontSize: 12.sp,
-              color: ColorsManager.darkBlue,
-            ),
+            style: TextStyle(fontSize: 12.sp, color: ColorsManager.darkBlue),
           ),
         ],
       ),

@@ -15,8 +15,10 @@ class VerifyCodeScreen extends StatefulWidget {
 }
 
 class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
-  final List<TextEditingController> controllers =
-      List.generate(6, (_) => TextEditingController());
+  final List<TextEditingController> controllers = List.generate(
+    6,
+    (_) => TextEditingController(),
+  );
   final List<FocusNode> focusNodes = List.generate(6, (_) => FocusNode());
 
   @override
@@ -59,31 +61,34 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
               verticalSpace(40),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: List.generate(6, (i) => _OtpBox(
-                      controller: controllers[i],
-                      focusNode: focusNodes[i],
-                      onChanged: (v) {
-                        if (v.isNotEmpty && i < 5) {
-                          focusNodes[i + 1].requestFocus();
-                        }
-                        setState(() {});
-                      },
-                      onBackspace: () {
-                        if (controllers[i].text.isEmpty && i > 0) {
-                          focusNodes[i - 1].requestFocus();
-                        }
-                      },
-                    )),
+                children: List.generate(
+                  6,
+                  (i) => _OtpBox(
+                    controller: controllers[i],
+                    focusNode: focusNodes[i],
+                    onChanged: (v) {
+                      if (v.isNotEmpty && i < 5) {
+                        focusNodes[i + 1].requestFocus();
+                      }
+                      setState(() {});
+                    },
+                    onBackspace: () {
+                      if (controllers[i].text.isEmpty && i > 0) {
+                        focusNodes[i - 1].requestFocus();
+                      }
+                    },
+                  ),
+                ),
               ),
               verticalSpace(40),
               AppTextButton(
                 buttonText: 'Verify',
                 textStyle: TextStyles.font16WhiteSemiBold,
-                backgroundColor:
-                    _isFilled ? ColorsManager.mainBlue : ColorsManager.lightGray,
+                backgroundColor: _isFilled
+                    ? ColorsManager.mainBlue
+                    : ColorsManager.lightGray,
                 onPressed: _isFilled
-                    ? () =>
-                        Navigator.of(context).pushNamed(Routes.newPassword)
+                    ? () => Navigator.of(context).pushNamed(Routes.newPassword)
                     : () {},
               ),
             ],
@@ -155,13 +160,17 @@ class _OtpBoxState extends State<_OtpBox> {
             contentPadding: EdgeInsets.symmetric(vertical: 14.h),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide:
-                  const BorderSide(color: Color(0xFFEDEDED), width: 1.3),
+              borderSide: const BorderSide(
+                color: Color(0xFFEDEDED),
+                width: 1.3,
+              ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: const BorderSide(
-                  color: ColorsManager.mainBlue, width: 1.3),
+                color: ColorsManager.mainBlue,
+                width: 1.3,
+              ),
             ),
             fillColor: const Color(0xFFFDFDFF),
             filled: true,

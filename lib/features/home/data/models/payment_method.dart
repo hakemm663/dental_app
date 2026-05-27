@@ -13,16 +13,16 @@ sealed class PaymentMethod {
   const PaymentMethod();
 
   String get label => switch (this) {
-        CreditCardPayment(:final brand) => brand.label,
-        BankTransferPayment() => 'Bank Transfer',
-        PayPalPayment() => 'Paypal',
-      };
+    CreditCardPayment(:final brand) => brand.label,
+    BankTransferPayment() => 'Bank Transfer',
+    PayPalPayment() => 'Paypal',
+  };
 
   String get wireKey => switch (this) {
-        CreditCardPayment() => 'credit_card',
-        BankTransferPayment() => 'bank_transfer',
-        PayPalPayment() => 'paypal',
-      };
+    CreditCardPayment() => 'credit_card',
+    BankTransferPayment() => 'bank_transfer',
+    PayPalPayment() => 'paypal',
+  };
 }
 
 class CreditCardPayment extends PaymentMethod {

@@ -16,51 +16,51 @@ class HomeState {
   });
 
   const HomeState.initial()
-      : this(
-          governorates: const [],
-          cities: const [],
-          specializations: const [],
-          isLoading: false,
-        );
+    : this(
+        governorates: const [],
+        cities: const [],
+        specializations: const [],
+        isLoading: false,
+      );
 
   const HomeState.loading()
-      : this(
-          governorates: const [],
-          cities: const [],
-          specializations: const [],
-          isLoading: true,
-        );
+    : this(
+        governorates: const [],
+        cities: const [],
+        specializations: const [],
+        isLoading: true,
+      );
 
   HomeState.success({
     required List<GovernorateModel> governorates,
     required List<CityModel> cities,
     required List<SpecializationModel> specializations,
   }) : this(
-          governorates: governorates,
-          cities: cities,
-          specializations: specializations,
-          isLoading: false,
-        );
+         governorates: governorates,
+         cities: cities,
+         specializations: specializations,
+         isLoading: false,
+       );
 
   HomeState.citiesLoaded({
     required List<GovernorateModel> governorates,
     required List<CityModel> cities,
     required List<SpecializationModel> specializations,
   }) : this(
-          governorates: governorates,
-          cities: cities,
-          specializations: specializations,
-          isLoading: false,
-        );
+         governorates: governorates,
+         cities: cities,
+         specializations: specializations,
+         isLoading: false,
+       );
 
   HomeState.error({required String message})
-      : this(
-          governorates: const [],
-          cities: const [],
-          specializations: const [],
-          isLoading: false,
-          errorMessage: message,
-        );
+    : this(
+        governorates: const [],
+        cities: const [],
+        specializations: const [],
+        isLoading: false,
+        errorMessage: message,
+      );
 
   HomeState copyWith({
     List<GovernorateModel>? governorates,

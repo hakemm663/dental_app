@@ -34,7 +34,8 @@ class HomeRepo {
   }
 
   Future<ApiResult<List<CityModel>>> getCitiesByGovernorate(
-      int governorateId) async {
+    int governorateId,
+  ) async {
     try {
       final data = await _client
           .from('cities')
@@ -49,8 +50,7 @@ class HomeRepo {
 
   Future<ApiResult<List<SpecializationModel>>> getAllSpecializations() async {
     try {
-      final data =
-          await _client.from('specializations').select().order('name');
+      final data = await _client.from('specializations').select().order('name');
       return Success(data.map(SpecializationModel.fromJson).toList());
     } catch (error) {
       return Failure(ApiErrorHandler.handle(error));

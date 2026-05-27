@@ -1,3 +1,4 @@
+import 'package:docdoc/core/widgets/bottom_action_bar.dart';
 import 'package:docdoc/core/routing/routes.dart';
 import 'package:docdoc/core/theming/styles.dart';
 import 'package:docdoc/core/widgets/app_bar_icon_button.dart';
@@ -47,10 +48,10 @@ class _RescheduleAppointmentScreenState
   void _onReschedule() {
     if (_selectedTime == null) return;
     context.read<AppointmentCubit>().rescheduleAppointment(
-          id: widget.appointment.id,
-          startTime: _startTimePayload,
-          appointmentType: _selectedType,
-        );
+      id: widget.appointment.id,
+      startTime: _startTimePayload,
+      appointmentType: _selectedType,
+    );
   }
 
   @override
@@ -71,9 +72,9 @@ class _RescheduleAppointmentScreenState
             ),
           );
         } else if (state.errorMessage != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.errorMessage!)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
         }
       },
       child: Scaffold(
@@ -82,9 +83,7 @@ class _RescheduleAppointmentScreenState
           bottom: false,
           child: Column(
             children: [
-              _RescheduleAppBar(
-                onBack: () => Navigator.of(context).pop(),
-              ),
+              _RescheduleAppBar(onBack: () => Navigator.of(context).pop()),
               Expanded(
                 child: SingleChildScrollView(
                   padding: EdgeInsets.fromLTRB(24.w, 8.h, 24.w, 24.h),
@@ -99,24 +98,22 @@ class _RescheduleAppointmentScreenState
                       _selectedTime = null;
                     }),
                     onTimeSelected: (t) => setState(() => _selectedTime = t),
-                    onTypeSelected: (t) =>
-                        setState(() => _selectedType = t),
+                    onTypeSelected: (t) => setState(() => _selectedType = t),
                   ),
                 ),
               ),
               BlocBuilder<AppointmentCubit, AppointmentState>(
                 buildWhen: (p, c) => p.isRescheduling != c.isRescheduling,
-                builder: (_, state) => Container(
-                  color: Colors.white,
-                  padding: EdgeInsets.fromLTRB(24.w, 12.h, 24.w, 32.h),
+                builder: (_, state) => BottomActionBar(
                   child: state.isRescheduling
                       ? const Center(child: CircularProgressIndicator())
                       : AppTextButton(
                           buttonText: 'Reschedule',
                           textStyle: TextStyles.font16WhiteSemiBold,
                           borderRadius: 16,
-                          onPressed:
-                              _selectedTime != null ? _onReschedule : () {},
+                          onPressed: _selectedTime != null
+                              ? _onReschedule
+                              : () {},
                         ),
                 ),
               ),

@@ -31,10 +31,7 @@ class ConversationTile extends StatelessWidget {
                   ? NetworkImage(doctor.image!)
                   : null,
               child: doctor.image == null
-                  ? Text(
-                      doctor.name[0],
-                      style: TextStyles.font18DarkBlueBold,
-                    )
+                  ? Text(doctor.name[0], style: TextStyles.font18DarkBlueBold)
                   : null,
             ),
             SizedBox(width: 14.w),

@@ -9,6 +9,5 @@ class LoginUseCase {
   Future<ApiResult<String>> call({
     required String email,
     required String password,
-  }) =>
-      _loginRepo.login(email: email, password: password);
+  }) => _loginRepo.login(email: email, password: password);
 }

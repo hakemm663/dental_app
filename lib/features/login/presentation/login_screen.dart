@@ -38,9 +38,9 @@ class _LoginScreenState extends State<LoginScreen> {
         if (state is LoginSuccess) {
           Navigator.of(context).pushReplacementNamed(Routes.homeScreen);
         } else if (state is LoginError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.errMsg)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.errMsg)));
         }
       },
       builder: (context, state) {
@@ -101,8 +101,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           Align(
                             alignment: AlignmentDirectional.centerEnd,
                             child: GestureDetector(
-                              onTap: () => Navigator.of(context)
-                                  .pushNamed(Routes.forgotPassword),
+                              onTap: () => Navigator.of(
+                                context,
+                              ).pushNamed(Routes.forgotPassword),
                               child: Text(
                                 'Forgot Password?',
                                 style: TextStyles.font13BlueRegular,
@@ -118,9 +119,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                   onPressed: () {
                                     if (formKey.currentState!.validate()) {
                                       context.read<LoginCubit>().login(
-                                            email: emailController.text,
-                                            password: passwordController.text,
-                                          );
+                                        email: emailController.text,
+                                        password: passwordController.text,
+                                      );
                                     }
                                   },
                                 ),

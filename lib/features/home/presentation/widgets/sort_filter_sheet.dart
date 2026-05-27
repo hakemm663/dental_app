@@ -63,9 +63,7 @@ class _SortFilterSheetState extends State<SortFilterSheet> {
             ),
           ),
           SizedBox(height: 20.h),
-          Center(
-            child: Text('Sort By', style: TextStyles.font18DarkBlueBold),
-          ),
+          Center(child: Text('Sort By', style: TextStyles.font18DarkBlueBold)),
           Divider(height: 24.h, color: ColorsManager.lighterGray),
           Text('Speciality', style: TextStyles.font18DarkBlueBold),
           SizedBox(height: 12.h),
@@ -204,7 +202,9 @@ class _Chip extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 10.h),
         decoration: BoxDecoration(
-          color: isSelected ? ColorsManager.mainBlue : ColorsManager.moreLighterGray,
+          color: isSelected
+              ? ColorsManager.mainBlue
+              : ColorsManager.moreLighterGray,
           borderRadius: BorderRadius.circular(30.r),
         ),
         child: Text(
@@ -238,7 +238,9 @@ class _RatingChip extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
         decoration: BoxDecoration(
-          color: isSelected ? ColorsManager.mainBlue : ColorsManager.moreLighterGray,
+          color: isSelected
+              ? ColorsManager.mainBlue
+              : ColorsManager.moreLighterGray,
           borderRadius: BorderRadius.circular(30.r),
         ),
         child: Row(

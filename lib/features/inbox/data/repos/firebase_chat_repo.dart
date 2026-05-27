@@ -10,8 +10,8 @@ class FirebaseChatRepo {
   static const _uuid = Uuid();
 
   FirebaseChatRepo({required String patientId, FirebaseFirestore? firestore})
-      : _patientId = patientId,
-        _firestore = firestore ?? FirebaseFirestore.instance;
+    : _patientId = patientId,
+      _firestore = firestore ?? FirebaseFirestore.instance;
 
   CollectionReference<Map<String, dynamic>> get _conversations =>
       _firestore.collection('conversations');
@@ -24,9 +24,10 @@ class FirebaseChatRepo {
         .where('patientId', isEqualTo: _patientId)
         .orderBy('lastMessageTime', descending: true)
         .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((doc) => _conversationFromDoc(doc))
-            .toList());
+        .map(
+          (snapshot) =>
+              snapshot.docs.map((doc) => _conversationFromDoc(doc)).toList(),
+        );
   }
 
   Future<List<ConversationModel>> searchConversations(String query) async {
@@ -38,9 +39,11 @@ class FirebaseChatRepo {
     final lower = query.toLowerCase();
     return snapshot.docs
         .map(_conversationFromDoc)
-        .where((c) =>
-            c.doctor.name.toLowerCase().contains(lower) ||
-            c.lastMessage.toLowerCase().contains(lower))
+        .where(
+          (c) =>
+              c.doctor.name.toLowerCase().contains(lower) ||
+              c.lastMessage.toLowerCase().contains(lower),
+        )
         .toList();
   }
 
@@ -48,12 +51,13 @@ class FirebaseChatRepo {
     return _messages(conversationId)
         .orderBy('timestamp', descending: false)
         .snapshots()
-        .map((snapshot) =>
-            snapshot.docs.map((doc) => _messageFromDoc(doc)).toList());
+        .map(
+          (snapshot) =>
+              snapshot.docs.map((doc) => _messageFromDoc(doc)).toList(),
+        );
   }
 
-  Future<MessageModel> sendMessage(
-      String conversationId, String text) async {
+  Future<MessageModel> sendMessage(String conversationId, String text) async {
     final messageId = _uuid.v4();
     final now = Timestamp.now();
 
@@ -85,7 +89,9 @@ class FirebaseChatRepo {
   }
 
   Future<MessageModel> sendImageMessage(
-      String conversationId, String imageUrl) async {
+    String conversationId,
+    String imageUrl,
+  ) async {
     final messageId = _uuid.v4();
     final now = Timestamp.now();
 
@@ -206,13 +212,15 @@ class FirebaseChatRepo {
       final data = doc.data();
       final doctorId = data['doctorId'] as int;
       if (seen.add(doctorId)) {
-        doctors.add(DoctorModel(
-          id: doctorId,
-          name: data['doctorName'] as String,
-          image: data['doctorImage'] as String?,
-          specializationName: data['doctorSpecialization'] as String?,
-          address: data['doctorAddress'] as String?,
-        ));
+        doctors.add(
+          DoctorModel(
+            id: doctorId,
+            name: data['doctorName'] as String,
+            image: data['doctorImage'] as String?,
+            specializationName: data['doctorSpecialization'] as String?,
+            address: data['doctorAddress'] as String?,
+          ),
+        );
       }
     }
 
@@ -220,10 +228,10 @@ class FirebaseChatRepo {
   }
 
   ConversationModel _conversationFromDoc(
-      QueryDocumentSnapshot<Map<String, dynamic>> doc) {
+    QueryDocumentSnapshot<Map<String, dynamic>> doc,
+  ) {
     final data = doc.data();
-    final lastMessageTime =
-        (data['lastMessageTime'] as Timestamp).toDate();
+    final lastMessageTime = (data['lastMessageTime'] as Timestamp).toDate();
 
     final doctor = DoctorModel(
       id: data['doctorId'] as int,
@@ -243,7 +251,8 @@ class FirebaseChatRepo {
   }
 
   MessageModel _messageFromDoc(
-      QueryDocumentSnapshot<Map<String, dynamic>> doc) {
+    QueryDocumentSnapshot<Map<String, dynamic>> doc,
+  ) {
     final data = doc.data();
     final timestamp = (data['timestamp'] as Timestamp).toDate();
     final typeStr = data['type'] as String? ?? 'text';

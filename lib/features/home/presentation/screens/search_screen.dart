@@ -13,6 +13,7 @@ import 'package:docdoc/features/home/presentation/widgets/speciality_chips_row.d
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:docdoc/features/home/presentation/widgets/home_bottom_nav.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -51,6 +52,9 @@ class _SearchScreenState extends State<SearchScreen> {
     context.read<SearchCubit>().onQueryChanged(query);
   }
 
+  void _onTabSelected(HomeNavTab tab) =>
+      dispatchHomeNavTab(context, tab, active: HomeNavTab.search);
+
   Future<void> _openFilterSheet(
     List<SpecializationModel> specializations,
     SearchState state,
@@ -67,20 +71,20 @@ class _SearchScreenState extends State<SearchScreen> {
     );
     if (result != null && mounted) {
       context.read<SearchCubit>().applyFilters(
-            specializationId: result.specializationId,
-            minRating: result.minRating,
-          );
+        specializationId: result.specializationId,
+        minRating: result.minRating,
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final specializations =
-        context.watch<HomeCubit>().state.specializations;
+    final specializations = context.watch<HomeCubit>().state.specializations;
 
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
+        bottom: false,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -114,9 +118,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     );
                   }
                   if (state.isLoading) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                    return const Center(child: CircularProgressIndicator());
                   }
                   if (state.errorMessage != null) {
                     return _ErrorView(message: state.errorMessage!);
@@ -126,17 +128,20 @@ class _SearchScreenState extends State<SearchScreen> {
                     specializations: specializations,
                     onChipSelected: (id) =>
                         context.read<SearchCubit>().applyFilters(
-                              specializationId: id,
-                              minRating: state.activeMinRating,
-                            ),
-                    onDoctorTap: (doctorId) =>
-                        Navigator.of(context).pushNamed(
-                      Routes.doctorDetails,
-                      arguments: doctorId,
-                    ),
+                          specializationId: id,
+                          minRating: state.activeMinRating,
+                        ),
+                    onDoctorTap: (doctorId) => Navigator.of(
+                      context,
+                    ).pushNamed(Routes.doctorDetails, arguments: doctorId),
                   );
                 },
               ),
+            ),
+            HomeBottomNav(
+              activeTab: HomeNavTab.search,
+              onTabSelected: _onTabSelected,
+              onSearchTap: () => _focusNode.requestFocus(),
             ),
           ],
         ),
@@ -280,8 +285,7 @@ class _ResultsView extends StatelessWidget {
                 final doctor = state.results[index];
                 return DoctorRecommendationCard(
                   doctor: doctor,
-                  specialityLabel:
-                      doctor.specializationName ?? 'General',
+                  specialityLabel: doctor.specializationName ?? 'General',
                   onTap: () => onDoctorTap(doctor.id),
                 );
               },
@@ -311,10 +315,7 @@ class _ErrorView extends StatelessWidget {
               color: ColorsManager.lighterGray,
             ),
             SizedBox(height: 12.h),
-            Text(
-              'Something went wrong',
-              style: TextStyles.font18DarkBlueBold,
-            ),
+            Text('Something went wrong', style: TextStyles.font18DarkBlueBold),
             SizedBox(height: 4.h),
             Text(
               message,

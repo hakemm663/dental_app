@@ -8,7 +8,7 @@ class LanguageCubit extends Cubit<LanguageState> {
   final SetLanguageCodeUseCase _setUseCase;
 
   LanguageCubit(this._getUseCase, this._setUseCase)
-      : super(const LanguageState.initial());
+    : super(const LanguageState.initial());
 
   Future<void> load() async {
     emit(state.copyWith(isLoading: true));

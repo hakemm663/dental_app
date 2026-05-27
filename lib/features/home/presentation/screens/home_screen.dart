@@ -1,5 +1,7 @@
+import 'package:docdoc/core/helpers/user_display.dart';
 import 'package:docdoc/core/routing/routes.dart';
 import 'package:docdoc/core/theming/styles.dart';
+import 'package:docdoc/core/widgets/section_header.dart';
 import 'package:docdoc/features/home/data/models/specialization_model.dart';
 import 'package:docdoc/features/home/presentation/cubit/doctors_cubit.dart';
 import 'package:docdoc/features/home/presentation/cubit/home_cubit.dart';
@@ -22,7 +24,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String userName = 'there';
-  HomeNavTab activeTab = HomeNavTab.home;
 
   @override
   void initState() {
@@ -48,38 +49,20 @@ class _HomeScreenState extends State<HomeScreen> {
             .maybeSingle();
         name = profile?['full_name'] as String?;
       } catch (_) {
-        // Swallow — email fallback below.
+        // Swallow — email fallback handled by resolveDisplayName.
       }
     }
     if (!mounted) return;
-    if (name != null && name.trim().isNotEmpty) {
-      final firstName = name.trim().split(' ').first;
-      setState(() => userName = firstName);
-    } else if (user.email != null && user.email!.isNotEmpty) {
-      final local = user.email!.split('@').first;
-      if (local.isNotEmpty) {
-        setState(() =>
-            userName = '${local[0].toUpperCase()}${local.substring(1)}');
-      }
-    }
+    setState(
+      () => userName = resolveDisplayName(fullName: name, email: user.email),
+    );
   }
 
-  void _onTabSelected(HomeNavTab tab) {
-    setState(() => activeTab = tab);
-    switch (tab) {
-      case HomeNavTab.home:
-        break;
-      case HomeNavTab.calendar:
-        Navigator.of(context).pushNamed(Routes.appointments);
-      case HomeNavTab.profile:
-        Navigator.of(context).pushNamed(Routes.profile);
-      case HomeNavTab.chat:
-        Navigator.of(context).pushNamed(Routes.inboxScreen);
-    }
-  }
+  void _onTabSelected(HomeNavTab tab) =>
+      dispatchHomeNavTab(context, tab, active: HomeNavTab.home);
 
   void _onSearchTap() {
-    _pushAndResetDoctors(Routes.recommendationDoctors);
+    _pushAndResetDoctors(Routes.search);
   }
 
   /// Push a screen that may apply doctor filters and reset the list on return.
@@ -115,6 +98,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     SizedBox(height: 28.h),
                     BlocBuilder<HomeCubit, HomeState>(
+                      buildWhen: (p, c) =>
+                          p.isLoading != c.isLoading ||
+                          p.specializations != c.specializations,
                       builder: (context, state) {
                         if (state.isLoading) {
                           return Padding(
@@ -137,35 +123,29 @@ class _HomeScreenState extends State<HomeScreen> {
                             onSeeAll: () =>
                                 _pushAndResetDoctors(Routes.specialitiesScreen),
                             onSpecialityTap: (SpecializationModel spec) {
-                              context
-                                  .read<DoctorsCubit>()
-                                  .applyFilters(specializationId: spec.id);
-                              _pushAndResetDoctors(Routes.recommendationDoctors);
+                              context.read<DoctorsCubit>().applyFilters(
+                                specializationId: spec.id,
+                              );
+                              _pushAndResetDoctors(
+                                Routes.recommendationDoctors,
+                              );
                             },
                           ),
                         );
                       },
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Recommendation Doctor',
-                          style: TextStyles.font18DarkBlueBold
-                              .copyWith(fontSize: 20.sp),
-                        ),
-                        GestureDetector(
-                          onTap: () =>
-                              _pushAndResetDoctors(Routes.recommendationDoctors),
-                          child: Text(
-                            'See All',
-                            style: TextStyles.font13BlueSemiBold,
-                          ),
-                        ),
-                      ],
+                    SectionHeader(
+                      title: 'Recommendation Doctor',
+                      titleFontSize: 20,
+                      onSeeAll: () =>
+                          _pushAndResetDoctors(Routes.recommendationDoctors),
                     ),
                     SizedBox(height: 12.h),
                     BlocBuilder<DoctorsCubit, DoctorsState>(
+                      buildWhen: (p, c) =>
+                          p.isLoading != c.isLoading ||
+                          p.errorMessage != c.errorMessage ||
+                          p.doctors != c.doctors,
                       builder: (context, state) {
                         if (state.isLoading) {
                           return SizedBox(
@@ -214,7 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             HomeBottomNav(
-              activeTab: activeTab,
+              activeTab: HomeNavTab.home,
               onTabSelected: _onTabSelected,
               onSearchTap: _onSearchTap,
               userName: userName,

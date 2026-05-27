@@ -62,10 +62,13 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                       isObscureText: isObscurePassword,
                       suffixIcon: GestureDetector(
                         onTap: () => setState(
-                            () => isObscurePassword = !isObscurePassword),
-                        child: Icon(isObscurePassword
-                            ? Icons.visibility_off
-                            : Icons.visibility),
+                          () => isObscurePassword = !isObscurePassword,
+                        ),
+                        child: Icon(
+                          isObscurePassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
                       ),
                       validator: (value) {
                         if (value == null || value.length < 8) {
@@ -81,10 +84,13 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                       isObscureText: isObscureConfirm,
                       suffixIcon: GestureDetector(
                         onTap: () => setState(
-                            () => isObscureConfirm = !isObscureConfirm),
-                        child: Icon(isObscureConfirm
-                            ? Icons.visibility_off
-                            : Icons.visibility),
+                          () => isObscureConfirm = !isObscureConfirm,
+                        ),
+                        child: Icon(
+                          isObscureConfirm
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
                       ),
                       validator: (value) {
                         if (value != passwordController.text) {

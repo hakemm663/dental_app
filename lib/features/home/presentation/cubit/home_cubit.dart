@@ -13,18 +13,20 @@ class HomeCubit extends Cubit<HomeState> {
   final GetCitiesByGovernorateUseCase _getCitiesByGovernorateUseCase;
 
   HomeCubit(this._getHomeDataUseCase, this._getCitiesByGovernorateUseCase)
-      : super(const HomeState.initial());
+    : super(const HomeState.initial());
 
   Future<void> loadHomeData() async {
     emit(const HomeState.loading());
     final result = await _getHomeDataUseCase();
     switch (result) {
       case Success(:final data):
-        emit(HomeState.success(
-          governorates: data.governorates,
-          cities: data.cities,
-          specializations: data.specializations,
-        ));
+        emit(
+          HomeState.success(
+            governorates: data.governorates,
+            cities: data.cities,
+            specializations: data.specializations,
+          ),
+        );
       case Failure(:final errMsg):
         emit(HomeState.error(message: errMsg));
     }
@@ -34,11 +36,13 @@ class HomeCubit extends Cubit<HomeState> {
     final result = await _getCitiesByGovernorateUseCase(governorateId);
     switch (result) {
       case Success(:final data):
-        emit(HomeState.citiesLoaded(
-          governorates: state.governorates,
-          cities: data,
-          specializations: state.specializations,
-        ));
+        emit(
+          HomeState.citiesLoaded(
+            governorates: state.governorates,
+            cities: data,
+            specializations: state.specializations,
+          ),
+        );
       case Failure(:final errMsg):
         emit(HomeState.error(message: errMsg));
     }

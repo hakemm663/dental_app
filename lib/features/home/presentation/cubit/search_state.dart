@@ -23,13 +23,13 @@ class SearchState {
   bool get hasResults => results.isNotEmpty;
 
   const SearchState.initial()
-      : recentSearches = const [],
-        results = const [],
-        isLoading = false,
-        query = '',
-        activeSpecializationId = null,
-        activeMinRating = null,
-        errorMessage = null;
+    : recentSearches = const [],
+      results = const [],
+      isLoading = false,
+      query = '',
+      activeSpecializationId = null,
+      activeMinRating = null,
+      errorMessage = null;
 
   SearchState copyWith({
     List<String>? recentSearches,

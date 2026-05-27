@@ -12,14 +12,14 @@ class PaymentMethodsState {
   });
 
   const PaymentMethodsState.initial()
-      : this(methods: const [], isLoading: false);
+    : this(methods: const [], isLoading: false);
 
   const PaymentMethodsState.loading()
-      : this(methods: const [], isLoading: true);
+    : this(methods: const [], isLoading: true);
 
   PaymentMethodsState.success(List<PaymentMethodModel> methods)
-      : this(methods: methods, isLoading: false);
+    : this(methods: methods, isLoading: false);
 
   PaymentMethodsState.error(String message)
-      : this(methods: const [], isLoading: false, errorMessage: message);
+    : this(methods: const [], isLoading: false, errorMessage: message);
 }

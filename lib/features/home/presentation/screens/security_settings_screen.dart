@@ -10,8 +10,7 @@ class SecuritySettingsScreen extends StatefulWidget {
   const SecuritySettingsScreen({super.key});
 
   @override
-  State<SecuritySettingsScreen> createState() =>
-      _SecuritySettingsScreenState();
+  State<SecuritySettingsScreen> createState() => _SecuritySettingsScreenState();
 }
 
 class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
@@ -76,9 +75,8 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
                         title: 'PIN Lock',
                         subtitle: 'Require PIN to open the app',
                         value: state.pin,
-                        onChanged: (v) => context
-                            .read<SecurityPrefsCubit>()
-                            .toggle('pin', v),
+                        onChanged: (v) =>
+                            context.read<SecurityPrefsCubit>().toggle('pin', v),
                       ),
                     ],
                   );

@@ -1,5 +1,6 @@
 import 'package:docdoc/core/theming/colors.dart';
 import 'package:docdoc/core/theming/styles.dart';
+import 'package:docdoc/core/widgets/colored_icon_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -32,14 +33,10 @@ class ProfileMenuItem extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 12.h),
         child: Row(
           children: [
-            Container(
-              width: 44.r,
-              height: 44.r,
-              decoration: BoxDecoration(
-                color: iconBg,
-                borderRadius: BorderRadius.circular(12.r),
-              ),
-              child: Icon(icon, color: iconColor, size: 22.r),
+            ColoredIconBadge(
+              icon: icon,
+              backgroundColor: iconBg,
+              iconColor: iconColor,
             ),
             SizedBox(width: 14.w),
             Expanded(

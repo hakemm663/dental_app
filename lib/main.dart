@@ -15,15 +15,14 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 Future<void> main() async {
   final binding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: binding);
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // Route Flutter framework errors and uncaught async errors to Crashlytics.
   // Collection is disabled in debug so local crashes surface in the console
   // rather than polluting the production dashboard.
-  await FirebaseCrashlytics.instance
-      .setCrashlyticsCollectionEnabled(!kDebugMode);
+  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
+    !kDebugMode,
+  );
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   binding.platformDispatcher.onError = (error, stack) {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
@@ -31,23 +30,22 @@ Future<void> main() async {
   };
 
   await FirebaseAppCheck.instance.activate(
-    androidProvider:
-        kReleaseMode ? AndroidProvider.playIntegrity : AndroidProvider.debug,
+    androidProvider: kReleaseMode
+        ? AndroidProvider.playIntegrity
+        : AndroidProvider.debug,
     appleProvider: kReleaseMode
         ? AppleProvider.appAttestWithDeviceCheckFallback
         : AppleProvider.debug,
   );
 
   // Supabase — domain-data backend (doctors, clinics, catalog, appointments).
-  await Supabase.initialize(
-    url: Env.supabaseUrl,
-    anonKey: Env.supabaseAnonKey,
-  );
+  await Supabase.initialize(url: Env.supabaseUrl, anonKey: Env.supabaseAnonKey);
 
   await setupGetIt();
   final session = Supabase.instance.client.auth.currentSession;
-  final initialRoute =
-      session != null ? Routes.homeScreen : Routes.onBoardingScreen;
+  final initialRoute = session != null
+      ? Routes.homeScreen
+      : Routes.onBoardingScreen;
   runApp(DocApp(appRouter: AppRouter(), initialRoute: initialRoute));
   FlutterNativeSplash.remove();
 }

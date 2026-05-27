@@ -53,10 +53,9 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Future<void> _handleCameraTap() async {
-    final imagePath = await Navigator.of(context).pushNamed(
-      Routes.cameraScreen,
-    );
-    if (!mounted || imagePath is! String) return;
+    // Native OS camera via image_picker — no custom in-app camera page.
+    final imagePath = await _mediaPicker.pickImageFromCamera();
+    if (!mounted || imagePath == null) return;
     await _uploadAndSendImage(imagePath);
   }
 
@@ -76,11 +75,11 @@ class _ChatScreenState extends State<ChatScreen> {
     );
     if (!mounted) return;
     context.read<ChatCubit>().sendAttachmentMessage(
-          widget.conversation.id,
-          url,
-          result.name,
-          result.size,
-        );
+      widget.conversation.id,
+      url,
+      result.name,
+      result.size,
+    );
   }
 
   Future<void> _uploadAndSendImage(String filePath) async {
@@ -89,10 +88,7 @@ class _ChatScreenState extends State<ChatScreen> {
       widget.conversation.id,
     );
     if (!mounted) return;
-    context.read<ChatCubit>().sendImageMessage(
-          widget.conversation.id,
-          url,
-        );
+    context.read<ChatCubit>().sendImageMessage(widget.conversation.id, url);
   }
 
   Future<void> _uploadAndSendAttachment(String filePath) async {
@@ -103,11 +99,11 @@ class _ChatScreenState extends State<ChatScreen> {
     if (!mounted) return;
     final fileName = filePath.split('/').last;
     context.read<ChatCubit>().sendAttachmentMessage(
-          widget.conversation.id,
-          url,
-          fileName,
-          0,
-        );
+      widget.conversation.id,
+      url,
+      fileName,
+      0,
+    );
   }
 
   @override
@@ -121,10 +117,9 @@ class _ChatScreenState extends State<ChatScreen> {
             _ChatAppBar(
               doctorName: doctor.name,
               specialization: doctor.specializationName,
-              onVideoCall: () => Navigator.of(context).pushNamed(
-                Routes.videoCall,
-                arguments: widget.conversation,
-              ),
+              onVideoCall: () => Navigator.of(
+                context,
+              ).pushNamed(Routes.videoCall, arguments: widget.conversation),
             ),
             Expanded(
               child: BlocConsumer<ChatCubit, ChatState>(
@@ -162,9 +157,10 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
             ChatInputBar(
               onSend: (text) {
-                context
-                    .read<ChatCubit>()
-                    .sendMessage(widget.conversation.id, text);
+                context.read<ChatCubit>().sendMessage(
+                  widget.conversation.id,
+                  text,
+                );
               },
               onAttachmentTap: () => _showAttachmentSheet(context),
               onCameraTap: _handleCameraTap,
@@ -248,10 +244,7 @@ class _ChatAppBar extends StatelessWidget {
                 ),
                 SizedBox(height: 2.h),
                 if (specialization != null)
-                  Text(
-                    specialization!,
-                    style: TextStyles.font12GrayRegular,
-                  ),
+                  Text(specialization!, style: TextStyles.font12GrayRegular),
               ],
             ),
           ),

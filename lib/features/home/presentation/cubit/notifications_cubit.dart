@@ -10,7 +10,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
   final MarkAllNotificationsReadUseCase _markAllReadUseCase;
 
   NotificationsCubit(this._getNotificationsUseCase, this._markAllReadUseCase)
-      : super(const NotificationsState.initial());
+    : super(const NotificationsState.initial());
 
   Future<void> loadNotifications() async {
     emit(const NotificationsState.loading());
@@ -26,8 +26,10 @@ class NotificationsCubit extends Cubit<NotificationsState> {
   Future<void> markAllAsRead() async {
     await _markAllReadUseCase();
     final current = state.notifications;
-    emit(NotificationsState.loaded(
-      notifications: current.map((n) => n.copyWith(isRead: true)).toList(),
-    ));
+    emit(
+      NotificationsState.loaded(
+        notifications: current.map((n) => n.copyWith(isRead: true)).toList(),
+      ),
+    );
   }
 }

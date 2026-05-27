@@ -1,6 +1,8 @@
 import 'package:docdoc/core/helpers/specialty_icon_resolver.dart';
+import 'package:docdoc/core/helpers/specialty_short_name.dart';
 import 'package:docdoc/core/theming/colors.dart';
 import 'package:docdoc/core/theming/styles.dart';
+import 'package:docdoc/core/widgets/section_header.dart';
 import 'package:docdoc/features/home/data/models/specialization_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,7 +24,11 @@ class SpecialitySection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _SectionHeader(title: 'Doctor Speciality', onSeeAll: onSeeAll),
+        SectionHeader(
+          title: 'Doctor Speciality',
+          titleFontSize: 20,
+          onSeeAll: onSeeAll,
+        ),
         SizedBox(height: 16.h),
         SizedBox(
           height: 110.h,
@@ -40,30 +46,6 @@ class SpecialitySection extends StatelessWidget {
               );
             },
           ),
-        ),
-      ],
-    );
-  }
-}
-
-class _SectionHeader extends StatelessWidget {
-  final String title;
-  final VoidCallback? onSeeAll;
-
-  const _SectionHeader({required this.title, this.onSeeAll});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          title,
-          style: TextStyles.font18DarkBlueBold.copyWith(fontSize: 20.sp),
-        ),
-        GestureDetector(
-          onTap: onSeeAll,
-          child: Text('See All', style: TextStyles.font13BlueSemiBold),
         ),
       ],
     );
@@ -99,7 +81,7 @@ class _SpecialityItem extends StatelessWidget {
           SizedBox(
             width: 80.w,
             child: Text(
-              spec.name,
+              specialtyShortName(spec.name),
               textAlign: TextAlign.center,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,

@@ -1,6 +1,8 @@
 import 'package:docdoc/core/helpers/doctor_display.dart';
 import 'package:docdoc/core/theming/colors.dart';
 import 'package:docdoc/core/theming/styles.dart';
+import 'package:docdoc/core/widgets/docdoc_avatar.dart';
+import 'package:docdoc/core/widgets/star_rating.dart';
 import 'package:docdoc/features/home/data/models/doctor_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,20 +16,13 @@ class DoctorInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(12.r),
-          child: Container(
-            width: 80.r,
-            height: 80.r,
-            color: ColorsManager.moreLighterGray,
-            child: doctor.image != null && doctor.image!.isNotEmpty
-                ? Image.network(
-                    doctor.image!,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, _, _) => _Initial(name: doctor.name),
-                  )
-                : _Initial(name: doctor.name),
-          ),
+        DocDocAvatar(
+          imageUrl: doctor.image,
+          name: doctor.name,
+          size: 80,
+          cornerRadius: 12,
+          backgroundColor: ColorsManager.moreLighterGray,
+          initialStyle: TextStyles.font24BlueBold,
         ),
         SizedBox(width: 14.w),
         Expanded(
@@ -52,42 +47,15 @@ class DoctorInfoCard extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
               SizedBox(height: 6.h),
-              Row(
-                children: [
-                  Icon(
-                    Icons.star_rounded,
-                    color: const Color(0xFFFFB800),
-                    size: 16.r,
-                  ),
-                  SizedBox(width: 4.w),
-                  Text(
-                    doctor.rating != null
-                        ? '${doctor.rating!.toStringAsFixed(1)} (${doctor.reviewsCount ?? 0} reviews)'
-                        : '—',
-                    style: TextStyles.font14DarkBlueMedium,
-                  ),
-                ],
+              StarRating(
+                value: doctor.rating,
+                reviewsCount: doctor.reviewsCount ?? 0,
+                iconSize: 16,
               ),
             ],
           ),
         ),
       ],
-    );
-  }
-}
-
-class _Initial extends StatelessWidget {
-  final String name;
-
-  const _Initial({required this.name});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        name.isNotEmpty ? name[0].toUpperCase() : '?',
-        style: TextStyles.font24BlueBold,
-      ),
     );
   }
 }

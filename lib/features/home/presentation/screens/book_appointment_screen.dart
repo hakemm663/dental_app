@@ -1,7 +1,8 @@
+import 'package:docdoc/core/widgets/bottom_action_bar.dart';
 import 'package:docdoc/core/routing/routes.dart';
-import 'package:docdoc/core/theming/colors.dart';
 import 'package:docdoc/core/theming/styles.dart';
 import 'package:docdoc/core/widgets/app_text_button.dart';
+import 'package:docdoc/core/widgets/docdoc_app_bar.dart';
 import 'package:docdoc/features/home/data/models/doctor_model.dart';
 import 'package:docdoc/features/home/data/models/payment_method.dart';
 import 'package:docdoc/features/home/presentation/cubit/appointment_cubit.dart';
@@ -124,7 +125,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
           bottom: false,
           child: Column(
             children: [
-              _BookingAppBar(onBack: _onBack),
+              DocDocAppBar(title: 'Book Appointment', onBack: _onBack),
               Padding(
                 padding: EdgeInsets.fromLTRB(24.w, 12.h, 24.w, 8.h),
                 child: BookingStepper(currentStep: _step),
@@ -187,47 +188,6 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
   }
 }
 
-class _BookingAppBar extends StatelessWidget {
-  final VoidCallback onBack;
-
-  const _BookingAppBar({required this.onBack});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-      child: Row(
-        children: [
-          Material(
-            color: ColorsManager.lighterGray,
-            borderRadius: BorderRadius.circular(10.r),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(10.r),
-              onTap: onBack,
-              child: Padding(
-                padding: EdgeInsets.all(8.r),
-                child: Icon(
-                  Icons.arrow_back_ios_new_rounded,
-                  size: 18.r,
-                  color: ColorsManager.darkBlue,
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: Text(
-              'Book Appointment',
-              textAlign: TextAlign.center,
-              style: TextStyles.font18DarkBlueBold,
-            ),
-          ),
-          SizedBox(width: 36.w),
-        ],
-      ),
-    );
-  }
-}
-
 class _ContinueBar extends StatelessWidget {
   final bool enabled;
   final VoidCallback onContinue;
@@ -236,9 +196,7 @@ class _ContinueBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      padding: EdgeInsets.fromLTRB(24.w, 12.h, 24.w, 32.h),
+    return BottomActionBar(
       child: AppTextButton(
         buttonText: 'Continue',
         textStyle: TextStyles.font16WhiteSemiBold,

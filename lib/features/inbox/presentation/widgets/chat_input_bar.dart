@@ -100,11 +100,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
                   color: ColorsManager.mainBlue,
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
-                  Icons.mic,
-                  color: Colors.white,
-                  size: 20.r,
-                ),
+                child: Icon(Icons.mic, color: Colors.white, size: 20.r),
               ),
             ] else
               GestureDetector(

@@ -2,6 +2,7 @@ import 'package:docdoc/core/helpers/doctor_display.dart';
 import 'package:docdoc/core/theming/colors.dart';
 import 'package:docdoc/core/theming/styles.dart';
 import 'package:docdoc/features/home/data/models/appointment_model.dart';
+import 'package:docdoc/core/widgets/star_rating.dart';
 import 'package:docdoc/features/home/presentation/widgets/appointment_card_shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,10 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class CompletedAppointmentCard extends StatelessWidget {
   final AppointmentModel appointment;
 
-  const CompletedAppointmentCard({
-    super.key,
-    required this.appointment,
-  });
+  const CompletedAppointmentCard({super.key, required this.appointment});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +33,7 @@ class CompletedAppointmentCard extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
             decoration: BoxDecoration(
-              color: const Color(0xFFE8F5E9),
+              color: ColorsManager.successGreenBg,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(16.r),
                 topRight: Radius.circular(16.r),
@@ -45,14 +43,15 @@ class CompletedAppointmentCard extends StatelessWidget {
               children: [
                 Icon(
                   Icons.check_circle_rounded,
-                  color: const Color(0xFF22C55E),
+                  color: ColorsManager.successGreen,
                   size: 18.r,
                 ),
                 SizedBox(width: 8.w),
                 Text(
                   'Appointment done',
-                  style: TextStyles.font13DarkBlueMedium
-                      .copyWith(color: const Color(0xFF22C55E)),
+                  style: TextStyles.font13DarkBlueMedium.copyWith(
+                    color: ColorsManager.successGreen,
+                  ),
                 ),
                 const Spacer(),
                 Icon(
@@ -90,18 +89,7 @@ class CompletedAppointmentCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                if (doctor?.rating != null) ...[
-                  Icon(
-                    Icons.star_rounded,
-                    color: const Color(0xFFFFB800),
-                    size: 18.r,
-                  ),
-                  SizedBox(width: 4.w),
-                  Text(
-                    doctor!.rating!.toStringAsFixed(1),
-                    style: TextStyles.font14DarkBlueMedium,
-                  ),
-                ],
+                if (doctor?.rating != null) StarRating(value: doctor!.rating),
               ],
             ),
           ),

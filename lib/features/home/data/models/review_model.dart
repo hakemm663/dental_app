@@ -17,12 +17,13 @@ class ReviewModel {
 
   // TODO(backend): wire to real doctor reviews endpoint when available
   factory ReviewModel.fromJson(Map<String, dynamic> json) => ReviewModel(
-        id: json['id'] as int,
-        reviewerName: json['reviewer_name'] as String,
-        reviewerImage: json['reviewer_image'] as String?,
-        rating: json['rating'] as int,
-        body: json['body'] as String,
-        createdAt: DateTime.tryParse(json['created_at'] as String? ?? '') ??
-            DateTime.now(),
-      );
+    id: json['id'] as int,
+    reviewerName: json['reviewer_name'] as String,
+    reviewerImage: json['reviewer_image'] as String?,
+    rating: json['rating'] as int,
+    body: json['body'] as String,
+    createdAt:
+        DateTime.tryParse(json['created_at'] as String? ?? '') ??
+        DateTime.now(),
+  );
 }
