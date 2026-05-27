@@ -25,8 +25,11 @@ class PaymentMethodsCubit extends Cubit<PaymentMethodsState> {
       final methods = await _getUseCase();
       emit(PaymentMethodsState.success(methods));
     } catch (e, st) {
-      FirebaseCrashlytics.instance
-          .recordError(e, st, reason: 'PaymentMethodsCubit.load failed');
+      FirebaseCrashlytics.instance.recordError(
+        e,
+        st,
+        reason: 'PaymentMethodsCubit.load failed',
+      );
       emit(PaymentMethodsState.error('Failed to load payment methods'));
     }
   }

@@ -10,8 +10,7 @@ class LanguageSettingsScreen extends StatefulWidget {
   const LanguageSettingsScreen({super.key});
 
   @override
-  State<LanguageSettingsScreen> createState() =>
-      _LanguageSettingsScreenState();
+  State<LanguageSettingsScreen> createState() => _LanguageSettingsScreenState();
 }
 
 class _LanguageSettingsScreenState extends State<LanguageSettingsScreen> {
@@ -111,10 +110,14 @@ class _LanguageTile extends StatelessWidget {
         margin: EdgeInsets.only(bottom: 12.h),
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
         decoration: BoxDecoration(
-          color: selected ? ColorsManager.lightBlue : ColorsManager.moreLighterGray,
+          color: selected
+              ? ColorsManager.lightBlue
+              : ColorsManager.moreLighterGray,
           borderRadius: BorderRadius.circular(12.r),
           border: Border.all(
-            color: selected ? ColorsManager.mainBlue : ColorsManager.lighterGray,
+            color: selected
+                ? ColorsManager.mainBlue
+                : ColorsManager.lighterGray,
           ),
         ),
         child: Row(
@@ -123,13 +126,18 @@ class _LanguageTile extends StatelessWidget {
               child: Text(
                 label,
                 style: TextStyles.font14DarkBlueMedium.copyWith(
-                  color: selected ? ColorsManager.mainBlue : ColorsManager.darkBlue,
+                  color: selected
+                      ? ColorsManager.mainBlue
+                      : ColorsManager.darkBlue,
                 ),
               ),
             ),
             if (selected)
-              Icon(Icons.check_rounded,
-                  color: ColorsManager.mainBlue, size: 20.r),
+              Icon(
+                Icons.check_rounded,
+                color: ColorsManager.mainBlue,
+                size: 20.r,
+              ),
           ],
         ),
       ),

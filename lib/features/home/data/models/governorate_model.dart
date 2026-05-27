@@ -5,8 +5,5 @@ class GovernorateModel {
   const GovernorateModel({required this.id, required this.name});
 
   factory GovernorateModel.fromJson(Map<String, dynamic> json) =>
-      GovernorateModel(
-        id: json['id'] as int,
-        name: json['name'] as String,
-      );
+      GovernorateModel(id: json['id'] as int, name: json['name'] as String);
 }

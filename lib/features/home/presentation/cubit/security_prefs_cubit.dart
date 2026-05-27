@@ -8,17 +8,19 @@ class SecurityPrefsCubit extends Cubit<SecurityPrefsState> {
   final SetSecurityPrefUseCase _setUseCase;
 
   SecurityPrefsCubit(this._getUseCase, this._setUseCase)
-      : super(const SecurityPrefsState.initial());
+    : super(const SecurityPrefsState.initial());
 
   Future<void> load() async {
     emit(state.copyWith(isLoading: true));
     final prefs = await _getUseCase();
-    emit(state.copyWith(
-      rememberPassword: prefs['rememberPassword'],
-      faceId: prefs['faceId'],
-      pin: prefs['pin'],
-      isLoading: false,
-    ));
+    emit(
+      state.copyWith(
+        rememberPassword: prefs['rememberPassword'],
+        faceId: prefs['faceId'],
+        pin: prefs['pin'],
+        isLoading: false,
+      ),
+    );
   }
 
   Future<void> toggle(String key, bool value) async {

@@ -38,14 +38,16 @@ class SearchCubit extends Cubit<SearchState> {
 
     if (trimmed.isEmpty) {
       _allFetched = [];
-      emit(state.copyWith(
-        query: '',
-        results: [],
-        isLoading: false,
-        clearError: true,
-        clearSpecialization: true,
-        clearRating: true,
-      ));
+      emit(
+        state.copyWith(
+          query: '',
+          results: [],
+          isLoading: false,
+          clearError: true,
+          clearSpecialization: true,
+          clearRating: true,
+        ),
+      );
       return;
     }
 
@@ -72,31 +74,33 @@ class SearchCubit extends Cubit<SearchState> {
           state.activeSpecializationId,
           state.activeMinRating,
         );
-        emit(state.copyWith(
-          results: filtered,
-          recentSearches: recent,
-          isLoading: false,
-          clearError: true,
-        ));
+        emit(
+          state.copyWith(
+            results: filtered,
+            recentSearches: recent,
+            isLoading: false,
+            clearError: true,
+          ),
+        );
       case Failure(:final errMsg):
         _allFetched = [];
-        emit(state.copyWith(
-          isLoading: false,
-          errorMessage: errMsg,
-          results: [],
-        ));
+        emit(
+          state.copyWith(isLoading: false, errorMessage: errMsg, results: []),
+        );
     }
   }
 
   void applyFilters({int? specializationId, double? minRating}) {
     final filtered = _applyFilters(_allFetched, specializationId, minRating);
-    emit(state.copyWith(
-      results: filtered,
-      activeSpecializationId: specializationId,
-      activeMinRating: minRating,
-      clearSpecialization: specializationId == null,
-      clearRating: minRating == null,
-    ));
+    emit(
+      state.copyWith(
+        results: filtered,
+        activeSpecializationId: specializationId,
+        activeMinRating: minRating,
+        clearSpecialization: specializationId == null,
+        clearRating: minRating == null,
+      ),
+    );
   }
 
   List<DoctorModel> _applyFilters(
@@ -106,12 +110,14 @@ class SearchCubit extends Cubit<SearchState> {
   ) {
     var filtered = source;
     if (specializationId != null) {
-      filtered =
-          filtered.where((d) => d.specializationId == specializationId).toList();
+      filtered = filtered
+          .where((d) => d.specializationId == specializationId)
+          .toList();
     }
     if (minRating != null) {
-      filtered =
-          filtered.where((d) => d.rating != null && d.rating! >= minRating).toList();
+      filtered = filtered
+          .where((d) => d.rating != null && d.rating! >= minRating)
+          .toList();
     }
     return filtered;
   }

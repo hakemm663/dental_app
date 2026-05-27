@@ -3,6 +3,7 @@ import 'package:docdoc/core/routing/routes.dart';
 import 'package:docdoc/core/theming/styles.dart';
 import 'package:docdoc/core/widgets/app_text_button.dart';
 import 'package:docdoc/core/widgets/app_text_form_field.dart';
+import 'package:docdoc/core/widgets/phone_country_field.dart';
 import 'package:docdoc/features/register/presentation/cubit/register_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +18,7 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final formKey = GlobalKey<FormState>();
+  final phoneFieldKey = GlobalKey<PhoneCountryFieldState>();
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final phoneController = TextEditingController();
@@ -43,9 +45,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         if (state is RegisterSuccess) {
           Navigator.of(context).pushReplacementNamed(Routes.homeScreen);
         } else if (state is RegisterError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.errMsg)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.errMsg)));
         }
       },
       builder: (context, state) {
@@ -90,11 +92,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             },
                           ),
                           verticalSpace(18),
-                          AppTextFormField(
-                            hintText: 'Phone',
+                          PhoneCountryField(
+                            key: phoneFieldKey,
                             controller: phoneController,
+                            hintText: 'Your number',
                             validator: (value) {
-                              if (value == null || value.isEmpty) {
+                              if (value == null || value.trim().isEmpty) {
                                 return 'Please enter your phone';
                               }
                               return null;
@@ -113,10 +116,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             isObscureText: isObscurePassword,
                             suffixIcon: GestureDetector(
                               onTap: () => setState(
-                                  () => isObscurePassword = !isObscurePassword),
-                              child: Icon(isObscurePassword
-                                  ? Icons.visibility_off
-                                  : Icons.visibility),
+                                () => isObscurePassword = !isObscurePassword,
+                              ),
+                              child: Icon(
+                                isObscurePassword
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                              ),
                             ),
                             validator: (value) {
                               if (value == null || value.length < 8) {
@@ -132,10 +138,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             isObscureText: isObscureConfirm,
                             suffixIcon: GestureDetector(
                               onTap: () => setState(
-                                  () => isObscureConfirm = !isObscureConfirm),
-                              child: Icon(isObscureConfirm
-                                  ? Icons.visibility_off
-                                  : Icons.visibility),
+                                () => isObscureConfirm = !isObscureConfirm,
+                              ),
+                              child: Icon(
+                                isObscureConfirm
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                              ),
                             ),
                             validator: (value) {
                               if (value != passwordController.text) {
@@ -152,22 +161,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   textStyle: TextStyles.font16WhiteSemiBold,
                                   onPressed: () {
                                     if (formKey.currentState!.validate()) {
+                                      final phone =
+                                          phoneFieldKey
+                                              .currentState
+                                              ?.normalisedNumber ??
+                                          phoneController.text;
                                       context.read<RegisterCubit>().register(
-                                            name: nameController.text,
-                                            email: emailController.text,
-                                            phone: phoneController.text,
-                                            gender: selectedGender,
-                                            password: passwordController.text,
-                                            passwordConfirmation:
-                                                confirmPasswordController.text,
-                                          );
+                                        name: nameController.text,
+                                        email: emailController.text,
+                                        phone: phone,
+                                        gender: selectedGender,
+                                        password: passwordController.text,
+                                        passwordConfirmation:
+                                            confirmPasswordController.text,
+                                      );
                                     }
                                   },
                                 ),
                           verticalSpace(24),
                           GestureDetector(
-                            onTap: () => Navigator.of(context)
-                                .pushReplacementNamed(Routes.loginScreen),
+                            onTap: () => Navigator.of(
+                              context,
+                            ).pushReplacementNamed(Routes.loginScreen),
                             child: RichText(
                               textAlign: TextAlign.center,
                               text: TextSpan(
@@ -208,9 +223,23 @@ class _GenderSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Expanded(child: _GenderOption(label: 'Male', value: 1, selected: selected, onTap: onChanged)),
+        Expanded(
+          child: _GenderOption(
+            label: 'Male',
+            value: 1,
+            selected: selected,
+            onTap: onChanged,
+          ),
+        ),
         SizedBox(width: 12.w),
-        Expanded(child: _GenderOption(label: 'Female', value: 2, selected: selected, onTap: onChanged)),
+        Expanded(
+          child: _GenderOption(
+            label: 'Female',
+            value: 2,
+            selected: selected,
+            onTap: onChanged,
+          ),
+        ),
       ],
     );
   }

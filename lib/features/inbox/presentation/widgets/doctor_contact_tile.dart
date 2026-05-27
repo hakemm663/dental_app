@@ -25,13 +25,11 @@ class DoctorContactTile extends StatelessWidget {
             CircleAvatar(
               radius: 24.r,
               backgroundColor: ColorsManager.moreLighterGray,
-              backgroundImage:
-                  doctor.image != null ? NetworkImage(doctor.image!) : null,
+              backgroundImage: doctor.image != null
+                  ? NetworkImage(doctor.image!)
+                  : null,
               child: doctor.image == null
-                  ? Text(
-                      doctor.name[0],
-                      style: TextStyles.font18DarkBlueBold,
-                    )
+                  ? Text(doctor.name[0], style: TextStyles.font18DarkBlueBold)
                   : null,
             ),
             SizedBox(width: 14.w),

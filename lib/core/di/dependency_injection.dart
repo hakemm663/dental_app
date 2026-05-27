@@ -68,148 +68,203 @@ Future<void> setupGetIt() async {
   // Repos
   getIt.registerLazySingleton<HomeRepo>(() => HomeRepo(getIt()));
   getIt.registerLazySingleton<DoctorRepo>(() => DoctorRepo(getIt()));
-  getIt.registerLazySingleton<AppointmentRepo>(() => AppointmentRepo(getIt()));
+  getIt.registerLazySingleton<AppointmentRepo>(
+    () => AppointmentRepo(getIt(), getIt()),
+  );
   getIt.registerLazySingleton<NotificationsRepo>(() => NotificationsRepo());
   getIt.registerLazySingleton<ReviewsRepo>(() => ReviewsRepo(getIt()));
   getIt.registerLazySingleton<RecentSearchesRepo>(() => RecentSearchesRepo());
 
   // Home use cases
   getIt.registerLazySingleton<GetHomeDataUseCase>(
-      () => GetHomeDataUseCase(getIt()));
+    () => GetHomeDataUseCase(getIt()),
+  );
   getIt.registerLazySingleton<GetCitiesByGovernorateUseCase>(
-      () => GetCitiesByGovernorateUseCase(getIt()));
+    () => GetCitiesByGovernorateUseCase(getIt()),
+  );
 
   // Doctor use cases
   getIt.registerLazySingleton<GetDoctorsUseCase>(
-      () => GetDoctorsUseCase(getIt()));
+    () => GetDoctorsUseCase(getIt()),
+  );
   getIt.registerLazySingleton<FilterDoctorsUseCase>(
-      () => FilterDoctorsUseCase(getIt()));
+    () => FilterDoctorsUseCase(getIt()),
+  );
   getIt.registerLazySingleton<SearchDoctorsUseCase>(
-      () => SearchDoctorsUseCase(getIt()));
+    () => SearchDoctorsUseCase(getIt()),
+  );
   getIt.registerLazySingleton<GetDoctorDetailsUseCase>(
-      () => GetDoctorDetailsUseCase(getIt()));
+    () => GetDoctorDetailsUseCase(getIt()),
+  );
 
   // Appointment use cases
   getIt.registerLazySingleton<GetAppointmentsUseCase>(
-      () => GetAppointmentsUseCase(getIt()));
+    () => GetAppointmentsUseCase(getIt()),
+  );
   getIt.registerLazySingleton<StoreAppointmentUseCase>(
-      () => StoreAppointmentUseCase(getIt()));
+    () => StoreAppointmentUseCase(getIt()),
+  );
   getIt.registerLazySingleton<CancelAppointmentUseCase>(
-      () => CancelAppointmentUseCase(getIt()));
+    () => CancelAppointmentUseCase(getIt()),
+  );
   getIt.registerLazySingleton<RescheduleAppointmentUseCase>(
-      () => RescheduleAppointmentUseCase(getIt()));
+    () => RescheduleAppointmentUseCase(getIt()),
+  );
 
   // Profile use cases
   getIt.registerLazySingleton<GetUserProfileUseCase>(
-      () => GetUserProfileUseCase(getIt()));
+    () => GetUserProfileUseCase(getIt()),
+  );
   getIt.registerLazySingleton<UpdateProfileUseCase>(
-      () => UpdateProfileUseCase(getIt()));
+    () => UpdateProfileUseCase(getIt()),
+  );
+  getIt.registerLazySingleton<UpdateAvatarUseCase>(
+    () => UpdateAvatarUseCase(getIt()),
+  );
 
   // Medical records
   getIt.registerLazySingleton<MedicalRecordsRepo>(
-      () => MedicalRecordsRepo(getIt()));
+    () => MedicalRecordsRepo(getIt()),
+  );
   getIt.registerLazySingleton<GetMedicalRecordsUseCase>(
-      () => GetMedicalRecordsUseCase(getIt()));
+    () => GetMedicalRecordsUseCase(getIt()),
+  );
 
   // Payment methods
   getIt.registerLazySingleton<PaymentMethodsRepo>(() => PaymentMethodsRepo());
   getIt.registerLazySingleton<GetPaymentMethodsUseCase>(
-      () => GetPaymentMethodsUseCase(getIt()));
+    () => GetPaymentMethodsUseCase(getIt()),
+  );
   getIt.registerLazySingleton<AddPaymentMethodUseCase>(
-      () => AddPaymentMethodUseCase(getIt()));
+    () => AddPaymentMethodUseCase(getIt()),
+  );
   getIt.registerLazySingleton<RemovePaymentMethodUseCase>(
-      () => RemovePaymentMethodUseCase(getIt()));
+    () => RemovePaymentMethodUseCase(getIt()),
+  );
   getIt.registerLazySingleton<SetDefaultPaymentMethodUseCase>(
-      () => SetDefaultPaymentMethodUseCase(getIt()));
+    () => SetDefaultPaymentMethodUseCase(getIt()),
+  );
 
   // Settings
   getIt.registerLazySingleton<SettingsRepo>(() => SettingsRepo());
   getIt.registerLazySingleton<GetNotificationPrefsUseCase>(
-      () => GetNotificationPrefsUseCase(getIt()));
+    () => GetNotificationPrefsUseCase(getIt()),
+  );
   getIt.registerLazySingleton<SetNotificationPrefUseCase>(
-      () => SetNotificationPrefUseCase(getIt()));
+    () => SetNotificationPrefUseCase(getIt()),
+  );
   getIt.registerLazySingleton<GetSecurityPrefsUseCase>(
-      () => GetSecurityPrefsUseCase(getIt()));
+    () => GetSecurityPrefsUseCase(getIt()),
+  );
   getIt.registerLazySingleton<SetSecurityPrefUseCase>(
-      () => SetSecurityPrefUseCase(getIt()));
+    () => SetSecurityPrefUseCase(getIt()),
+  );
   getIt.registerLazySingleton<GetLanguageCodeUseCase>(
-      () => GetLanguageCodeUseCase(getIt()));
+    () => GetLanguageCodeUseCase(getIt()),
+  );
   getIt.registerLazySingleton<SetLanguageCodeUseCase>(
-      () => SetLanguageCodeUseCase(getIt()));
+    () => SetLanguageCodeUseCase(getIt()),
+  );
 
   // Notification use cases
   getIt.registerLazySingleton<GetNotificationsUseCase>(
-      () => GetNotificationsUseCase(getIt()));
+    () => GetNotificationsUseCase(getIt()),
+  );
   getIt.registerLazySingleton<MarkAllNotificationsReadUseCase>(
-      () => MarkAllNotificationsReadUseCase(getIt()));
+    () => MarkAllNotificationsReadUseCase(getIt()),
+  );
 
   // Reviews use case
   getIt.registerLazySingleton<GetDoctorReviewsUseCase>(
-      () => GetDoctorReviewsUseCase(getIt()));
+    () => GetDoctorReviewsUseCase(getIt()),
+  );
 
   // Recent searches use cases
   getIt.registerLazySingleton<GetRecentSearchesUseCase>(
-      () => GetRecentSearchesUseCase(getIt()));
+    () => GetRecentSearchesUseCase(getIt()),
+  );
   getIt.registerLazySingleton<AddRecentSearchUseCase>(
-      () => AddRecentSearchUseCase(getIt()));
+    () => AddRecentSearchUseCase(getIt()),
+  );
   getIt.registerLazySingleton<RemoveRecentSearchUseCase>(
-      () => RemoveRecentSearchUseCase(getIt()));
+    () => RemoveRecentSearchUseCase(getIt()),
+  );
   getIt.registerLazySingleton<ClearRecentSearchesUseCase>(
-      () => ClearRecentSearchesUseCase(getIt()));
+    () => ClearRecentSearchesUseCase(getIt()),
+  );
 
   // Cubits — singletons for shared state, factories for screen-scoped cubits
   getIt.registerLazySingleton<HomeCubit>(() => HomeCubit(getIt(), getIt()));
   getIt.registerLazySingleton<DoctorsCubit>(
-      () => DoctorsCubit(getIt(), getIt(), getIt()));
+    () => DoctorsCubit(getIt(), getIt(), getIt()),
+  );
   getIt.registerLazySingleton<AppointmentCubit>(
-      () => AppointmentCubit(getIt(), getIt(), getIt(), getIt()));
+    () => AppointmentCubit(getIt(), getIt(), getIt(), getIt()),
+  );
   getIt.registerLazySingleton<ProfileCubit>(
-      () => ProfileCubit(getIt(), getIt()));
+    () => ProfileCubit(getIt(), getIt(), getIt()),
+  );
 
   // Profile & settings factory cubits
   getIt.registerFactory<MedicalRecordsCubit>(
-      () => MedicalRecordsCubit(getIt()));
+    () => MedicalRecordsCubit(getIt()),
+  );
   getIt.registerFactory<PaymentMethodsCubit>(
-      () => PaymentMethodsCubit(getIt(), getIt(), getIt(), getIt()));
+    () => PaymentMethodsCubit(getIt(), getIt(), getIt(), getIt()),
+  );
   getIt.registerFactory<NotificationPrefsCubit>(
-      () => NotificationPrefsCubit(getIt(), getIt()));
+    () => NotificationPrefsCubit(getIt(), getIt()),
+  );
   getIt.registerFactory<SecurityPrefsCubit>(
-      () => SecurityPrefsCubit(getIt(), getIt()));
-  getIt.registerFactory<LanguageCubit>(
-      () => LanguageCubit(getIt(), getIt()));
+    () => SecurityPrefsCubit(getIt(), getIt()),
+  );
+  getIt.registerFactory<LanguageCubit>(() => LanguageCubit(getIt(), getIt()));
 
   // Factory cubits — fresh instance per screen entry
   getIt.registerFactory<SearchCubit>(
-      () => SearchCubit(getIt(), getIt(), getIt(), getIt(), getIt()));
-  getIt.registerFactory<DoctorDetailsCubit>(
-      () => DoctorDetailsCubit(getIt()));
-  getIt.registerFactory<DoctorReviewsCubit>(
-      () => DoctorReviewsCubit(getIt()));
+    () => SearchCubit(getIt(), getIt(), getIt(), getIt(), getIt()),
+  );
+  getIt.registerFactory<DoctorDetailsCubit>(() => DoctorDetailsCubit(getIt()));
+  getIt.registerFactory<DoctorReviewsCubit>(() => DoctorReviewsCubit(getIt()));
   getIt.registerFactory<NotificationsCubit>(
-      () => NotificationsCubit(getIt(), getIt()));
+    () => NotificationsCubit(getIt(), getIt()),
+  );
 
   // Inbox
-  final userEmail = await SharedPrefHelper.getSecuredString(SharedPrefKeys.userEmail);
+  final userEmail = await SharedPrefHelper.getSecuredString(
+    SharedPrefKeys.userEmail,
+  );
   getIt.registerLazySingleton<FirebaseChatRepo>(
-      () => FirebaseChatRepo(patientId: userEmail));
+    () => FirebaseChatRepo(patientId: userEmail),
+  );
   getIt.registerLazySingleton<GetConversationsUseCase>(
-      () => GetConversationsUseCase(getIt()));
+    () => GetConversationsUseCase(getIt()),
+  );
   getIt.registerLazySingleton<SearchConversationsUseCase>(
-      () => SearchConversationsUseCase(getIt()));
+    () => SearchConversationsUseCase(getIt()),
+  );
   getIt.registerLazySingleton<GetMessagesUseCase>(
-      () => GetMessagesUseCase(getIt()));
+    () => GetMessagesUseCase(getIt()),
+  );
   getIt.registerLazySingleton<SendMessageUseCase>(
-      () => SendMessageUseCase(getIt()));
+    () => SendMessageUseCase(getIt()),
+  );
   getIt.registerLazySingleton<SendImageMessageUseCase>(
-      () => SendImageMessageUseCase(getIt()));
+    () => SendImageMessageUseCase(getIt()),
+  );
   getIt.registerLazySingleton<SendAttachmentMessageUseCase>(
-      () => SendAttachmentMessageUseCase(getIt()));
+    () => SendAttachmentMessageUseCase(getIt()),
+  );
   getIt.registerLazySingleton<GetDoctorsForNewMessageUseCase>(
-      () => GetDoctorsForNewMessageUseCase(getIt()));
+    () => GetDoctorsForNewMessageUseCase(getIt()),
+  );
   getIt.registerLazySingleton<GetOrCreateConversationUseCase>(
-      () => GetOrCreateConversationUseCase(getIt()));
+    () => GetOrCreateConversationUseCase(getIt()),
+  );
   getIt.registerLazySingleton<InboxCubit>(
-      () => InboxCubit(getIt(), getIt(), getIt(), getIt()));
+    () => InboxCubit(getIt(), getIt(), getIt(), getIt()),
+  );
   getIt.registerFactory<ChatCubit>(
-      () => ChatCubit(getIt(), getIt(), getIt(), getIt()));
+    () => ChatCubit(getIt(), getIt(), getIt(), getIt()),
+  );
 }

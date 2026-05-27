@@ -1,7 +1,9 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:docdoc/core/services/agora_service.dart';
 import 'package:docdoc/core/services/agora_token_service.dart';
+import 'package:docdoc/core/services/device_permissions_service.dart';
 import 'package:docdoc/core/theming/colors.dart';
+import 'package:docdoc/core/widgets/adaptive.dart';
 import 'package:docdoc/features/inbox/data/models/conversation_model.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +28,8 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
   bool _isMicMuted = false;
   bool _isCameraOff = false;
   bool _isSpeakerOn = true;
-  bool _callEnded = false; // guards against double-leave when _endCall() precedes dispose()
+  bool _callEnded =
+      false; // guards against double-leave when _endCall() precedes dispose()
   int? _remoteUid;
   _ConnectionState _connectionState = _ConnectionState.connecting;
 
@@ -84,7 +87,10 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
   }
 
   Future<void> _initCall() async {
-    final granted = await requestCallPermissions();
+    // Adaptive denied / permanently-denied flow (with Open Settings) instead
+    // of a silent pop.
+    final granted = await const DevicePermissionsService()
+        .ensureCameraAndMicrophone(context);
     if (!granted) {
       if (mounted) Navigator.of(context).pop();
       return;
@@ -102,17 +108,22 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
         token: token,
       );
     } catch (e, st) {
-      FirebaseCrashlytics.instance
-          .recordError(e, st, reason: 'Agora init failed');
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to start call: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-        Navigator.of(context).pop();
-      }
+      FirebaseCrashlytics.instance.recordError(
+        e,
+        st,
+        reason: 'Agora init failed',
+      );
+      if (!mounted) return;
+      await showDocDocAdaptiveDialog(
+        context: context,
+        title: 'Video call unavailable',
+        message:
+            'We couldn\'t start the call. This often happens on the iOS '
+            'simulator, which has no camera. Please try again on a physical '
+            'device.',
+        confirmText: 'OK',
+      );
+      if (mounted) Navigator.of(context).pop();
     }
   }
 
@@ -147,10 +158,7 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
             connectionState: _connectionState,
           ),
           _BackButton(onTap: _endCall),
-          _LocalPip(
-            agoraService: _agoraService,
-            isCameraOff: _isCameraOff,
-          ),
+          _LocalPip(agoraService: _agoraService, isCameraOff: _isCameraOff),
           _ConnectionLabel(state: _connectionState),
           _BottomControls(
             isMicMuted: _isMicMuted,
@@ -310,8 +318,11 @@ class _LocalPip extends StatelessWidget {
           borderRadius: BorderRadius.circular(12.r),
           child: isCameraOff || !agoraService.isInitialized
               ? Center(
-                  child: Icon(Icons.videocam_off_rounded,
-                      size: 32.r, color: Colors.white54),
+                  child: Icon(
+                    Icons.videocam_off_rounded,
+                    size: 32.r,
+                    color: Colors.white54,
+                  ),
                 )
               : AgoraVideoView(
                   controller: VideoViewController(
@@ -395,7 +406,9 @@ class _BottomControls extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             _CallControl(
-              icon: isSpeakerOn ? Icons.volume_up_rounded : Icons.volume_off_rounded,
+              icon: isSpeakerOn
+                  ? Icons.volume_up_rounded
+                  : Icons.volume_off_rounded,
               bgColor: isSpeakerOn
                   ? Colors.white.withValues(alpha: 0.2)
                   : Colors.white.withValues(alpha: 0.1),
@@ -403,7 +416,9 @@ class _BottomControls extends StatelessWidget {
               onTap: onSpeakerToggle,
             ),
             _CallControl(
-              icon: isCameraOff ? Icons.videocam_off_rounded : Icons.videocam_rounded,
+              icon: isCameraOff
+                  ? Icons.videocam_off_rounded
+                  : Icons.videocam_rounded,
               bgColor: isCameraOff
                   ? Colors.white.withValues(alpha: 0.1)
                   : Colors.white.withValues(alpha: 0.2),
@@ -426,7 +441,7 @@ class _BottomControls extends StatelessWidget {
             ),
             _CallControl(
               icon: Icons.call_end_rounded,
-              bgColor: const Color(0xFFFF4D6D),
+              bgColor: ColorsManager.notificationDot,
               iconColor: Colors.white,
               onTap: onEndCall,
             ),
@@ -457,10 +472,7 @@ class _CallControl extends StatelessWidget {
       child: Container(
         width: 52.r,
         height: 52.r,
-        decoration: BoxDecoration(
-          color: bgColor,
-          shape: BoxShape.circle,
-        ),
+        decoration: BoxDecoration(color: bgColor, shape: BoxShape.circle),
         child: Icon(icon, color: iconColor, size: 24.r),
       ),
     );

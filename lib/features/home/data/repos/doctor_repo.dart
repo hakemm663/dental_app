@@ -9,7 +9,8 @@ class DoctorRepo {
   const DoctorRepo(this._client);
 
   /// Doctor row plus the embedded resources `DoctorModel.fromJson` expects.
-  static const _doctorSelect = '*, '
+  static const _doctorSelect =
+      '*, '
       'specialization:specializations(id, name), '
       'city:cities(id, name, governorate:governorates(id, name)), '
       'clinic:clinics(address, phone)';

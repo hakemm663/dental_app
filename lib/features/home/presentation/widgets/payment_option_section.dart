@@ -3,6 +3,7 @@ import 'package:docdoc/core/theming/styles.dart';
 import 'package:docdoc/features/home/data/models/payment_method.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class PaymentOptionSection extends StatelessWidget {
   final PaymentMethod? selected;
@@ -65,18 +66,14 @@ class _CreditCardGroup extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _RadioRow(
-          label: 'Credit Card',
-          bold: true,
-          isSelected: expanded,
-          onTap: onTopTap,
-        ),
+        _RadioRow(label: 'Credit Card', isSelected: expanded, onTap: onTopTap),
         if (expanded) ...[
           SizedBox(height: 12.h),
           ...CardBrand.values.map(
             (brand) => _BrandRow(
               brand: brand,
-              isSelected: selected is CreditCardPayment &&
+              isSelected:
+                  selected is CreditCardPayment &&
                   (selected as CreditCardPayment).brand == brand,
               showDivider: brand != CardBrand.values.last,
               onTap: () => onBrandTap(brand),
@@ -91,13 +88,11 @@ class _CreditCardGroup extends StatelessWidget {
 class _RadioRow extends StatelessWidget {
   final String label;
   final bool isSelected;
-  final bool bold;
   final VoidCallback onTap;
 
   const _RadioRow({
     required this.label,
     required this.isSelected,
-    required this.bold,
     required this.onTap,
   });
 
@@ -110,11 +105,12 @@ class _RadioRow extends StatelessWidget {
         children: [
           _Radio(isSelected: isSelected),
           SizedBox(width: 12.w),
-          Text(
-            label,
-            style: bold
-                ? TextStyles.font14DarkBlueBold.copyWith(fontSize: 16.sp)
-                : TextStyles.font14DarkBlueMedium,
+          Expanded(
+            child: Text(
+              label,
+              style: TextStyles.font14DarkBlueMedium,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ],
       ),
@@ -135,12 +131,7 @@ class _SimpleOptionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _RadioRow(
-      label: label,
-      isSelected: isSelected,
-      bold: true,
-      onTap: onTap,
-    );
+    return _RadioRow(label: label, isSelected: isSelected, onTap: onTap);
   }
 }
 
@@ -208,8 +199,9 @@ class _BrandRow extends StatelessWidget {
                     child: Text(
                       brand.label,
                       style: isSelected
-                          ? TextStyles.font14DarkBlueMedium
-                              .copyWith(color: ColorsManager.mainBlue)
+                          ? TextStyles.font14DarkBlueMedium.copyWith(
+                              color: ColorsManager.mainBlue,
+                            )
                           : TextStyles.font14DarkBlueMedium,
                     ),
                   ),
@@ -236,32 +228,30 @@ class _BrandIcon extends StatelessWidget {
 
   const _BrandIcon({required this.brand});
 
-  // TODO(assets): swap to real brand SVG/PNG assets when designer provides them.
-  Color get _bg => switch (brand) {
-        CardBrand.mastercard => const Color(0xFFFFF3E0),
-        CardBrand.amex => const Color(0xFF1F4E9F),
-        CardBrand.capitalOne => const Color(0xFFE3E7EE),
-        CardBrand.barclays => const Color(0xFF1AA9E1),
-      };
-
-  Color get _fg => switch (brand) {
-        CardBrand.mastercard => const Color(0xFFE65100),
-        CardBrand.amex => Colors.white,
-        CardBrand.capitalOne => const Color(0xFF1A2B5C),
-        CardBrand.barclays => Colors.white,
-      };
+  String get _svgAsset => switch (brand) {
+    CardBrand.mastercard => 'assets/svgs/mastercard.svg',
+    CardBrand.amex => 'assets/svgs/american_express.svg',
+    CardBrand.capitalOne => 'assets/svgs/capital_one.svg',
+    CardBrand.barclays => 'assets/svgs/barclays.svg',
+  };
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 36.r,
-      height: 36.r,
+      width: 45.r,
+      height: 45.r,
       decoration: BoxDecoration(
-        color: _bg,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(8.r),
+        border: Border.all(color: Colors.white),
       ),
       alignment: Alignment.center,
-      child: Icon(Icons.credit_card_rounded, color: _fg, size: 20.r),
+      child: SvgPicture.asset(
+        _svgAsset,
+        width: 30.r,
+        height: 30.r,
+        fit: BoxFit.contain,
+      ),
     );
   }
 }

@@ -14,38 +14,34 @@ class ProfileState {
   });
 
   const ProfileState.initial()
-      : this(
-          user: null,
-          isLoading: false,
-          isUpdating: false,
-        );
+    : this(user: null, isLoading: false, isUpdating: false);
 
   const ProfileState.loading()
-      : this(
-          user: null,
-          isLoading: true,
-          isUpdating: false,
-        );
+    : this(user: null, isLoading: true, isUpdating: false);
 
   const ProfileState.updating()
-      : this(
-          user: null,
-          isLoading: false,
-          isUpdating: true,
-        );
+    : this(user: null, isLoading: false, isUpdating: true);
 
   ProfileState.success({required UserModel user})
-      : this(
-          user: user,
-          isLoading: false,
-          isUpdating: false,
-        );
+    : this(user: user, isLoading: false, isUpdating: false);
 
   ProfileState.error({required String message})
-      : this(
-          user: null,
-          isLoading: false,
-          isUpdating: false,
-          errorMessage: message,
-        );
+    : this(
+        user: null,
+        isLoading: false,
+        isUpdating: false,
+        errorMessage: message,
+      );
+
+  ProfileState copyWith({
+    UserModel? user,
+    bool? isLoading,
+    bool? isUpdating,
+    String? errorMessage,
+  }) => ProfileState(
+    user: user ?? this.user,
+    isLoading: isLoading ?? this.isLoading,
+    isUpdating: isUpdating ?? this.isUpdating,
+    errorMessage: errorMessage ?? this.errorMessage,
+  );
 }

@@ -42,7 +42,9 @@ class SendMessageUseCase {
   const SendMessageUseCase(this._repo);
 
   Future<ApiResult<MessageModel>> call(
-      String conversationId, String text) async {
+    String conversationId,
+    String text,
+  ) async {
     try {
       return Success(await _repo.sendMessage(conversationId, text));
     } catch (error) {
@@ -57,7 +59,9 @@ class SendImageMessageUseCase {
   const SendImageMessageUseCase(this._repo);
 
   Future<ApiResult<MessageModel>> call(
-      String conversationId, String imageUrl) async {
+    String conversationId,
+    String imageUrl,
+  ) async {
     try {
       return Success(await _repo.sendImageMessage(conversationId, imageUrl));
     } catch (error) {
@@ -78,8 +82,14 @@ class SendAttachmentMessageUseCase {
     int fileSize,
   ) async {
     try {
-      return Success(await _repo.sendAttachmentMessage(
-          conversationId, fileUrl, fileName, fileSize));
+      return Success(
+        await _repo.sendAttachmentMessage(
+          conversationId,
+          fileUrl,
+          fileName,
+          fileSize,
+        ),
+      );
     } catch (error) {
       return Failure(ApiErrorHandler.handle(error));
     }

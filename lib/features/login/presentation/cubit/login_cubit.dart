@@ -10,10 +10,7 @@ class LoginCubit extends Cubit<LoginState> {
 
   LoginCubit(this._loginUseCase) : super(const LoginInitial());
 
-  Future<void> login({
-    required String email,
-    required String password,
-  }) async {
+  Future<void> login({required String email, required String password}) async {
     emit(const LoginLoading());
     final result = await _loginUseCase(email: email, password: password);
     switch (result) {
@@ -21,7 +18,9 @@ class LoginCubit extends Cubit<LoginState> {
         // Supabase persists the session itself. The email is cached only for
         // the Firebase-backed inbox, until that feature migrates too.
         await SharedPrefHelper.setSecuredString(
-            SharedPrefKeys.userEmail, email);
+          SharedPrefKeys.userEmail,
+          email,
+        );
         emit(const LoginSuccess());
       case Failure(:final errMsg):
         emit(LoginError(errMsg));

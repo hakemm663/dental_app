@@ -18,3 +18,12 @@ class UpdateProfileUseCase {
   Future<ApiResult<UserModel>> call(Map<String, dynamic> fields) =>
       _repo.updateProfile(fields);
 }
+
+class UpdateAvatarUseCase {
+  final AppointmentRepo _repo;
+
+  const UpdateAvatarUseCase(this._repo);
+
+  Future<ApiResult<UserModel>> call(String filePath) =>
+      _repo.updateAvatar(filePath);
+}

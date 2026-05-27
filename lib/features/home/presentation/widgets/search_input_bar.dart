@@ -42,8 +42,10 @@ class SearchInputBar extends StatelessWidget {
                   size: 20.r,
                 ),
                 border: InputBorder.none,
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 14.h, horizontal: 12.w),
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 14.h,
+                  horizontal: 12.w,
+                ),
               ),
             ),
           ),
@@ -52,17 +54,13 @@ class SearchInputBar extends StatelessWidget {
         GestureDetector(
           onTap: onFilterTap,
           child: Container(
-            width: 48.r,
-            height: 48.r,
+            width: 40.r,
+            height: 40.r,
             decoration: BoxDecoration(
-              color: ColorsManager.mainBlue,
-              borderRadius: BorderRadius.circular(12.r),
+              borderRadius: BorderRadius.circular(10.r),
+              border: Border.all(color: ColorsManager.lighterGray),
             ),
-            child: Icon(
-              Icons.tune_rounded,
-              color: Colors.white,
-              size: 22.r,
-            ),
+            child: Icon(Icons.tune_rounded, color: Colors.black, size: 22.r),
           ),
         ),
       ],

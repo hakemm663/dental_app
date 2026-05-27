@@ -4,7 +4,9 @@ import 'package:docdoc/features/home/data/models/payment_method_model.dart';
 
 class PaymentMethodsRepo {
   Future<List<PaymentMethodModel>> getAll() async {
-    final raw = await SharedPrefHelper.getStringList(SharedPrefKeys.paymentMethods);
+    final raw = await SharedPrefHelper.getStringList(
+      SharedPrefKeys.paymentMethods,
+    );
     return raw.map(PaymentMethodModel.fromJsonString).toList();
   }
 
@@ -21,9 +23,7 @@ class PaymentMethodsRepo {
 
   Future<void> setDefault(String id) async {
     final all = await getAll();
-    await _save(
-      all.map((m) => m.copyWith(isDefault: m.id == id)).toList(),
-    );
+    await _save(all.map((m) => m.copyWith(isDefault: m.id == id)).toList());
   }
 
   Future<void> _save(List<PaymentMethodModel> methods) =>

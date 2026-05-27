@@ -1,6 +1,9 @@
 import 'package:docdoc/core/theming/colors.dart';
 import 'package:docdoc/core/theming/styles.dart';
-import 'package:docdoc/core/widgets/app_bar_icon_button.dart';
+import 'package:docdoc/core/widgets/colored_icon_badge.dart';
+import 'package:docdoc/core/widgets/docdoc_app_bar.dart';
+import 'package:docdoc/core/widgets/empty_state_view.dart';
+import 'package:docdoc/core/widgets/error_retry_view.dart';
 import 'package:docdoc/features/home/data/models/medical_record_model.dart';
 import 'package:docdoc/features/home/presentation/cubit/medical_records_cubit.dart';
 import 'package:flutter/material.dart';
@@ -28,30 +31,37 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            _AppBar(onBack: () => Navigator.of(context).pop()),
+            const DocDocAppBar(title: 'Medical Records'),
             Expanded(
               child: BlocBuilder<MedicalRecordsCubit, MedicalRecordsState>(
+                buildWhen: (p, c) =>
+                    p.isLoading != c.isLoading ||
+                    p.errorMessage != c.errorMessage ||
+                    p.records != c.records,
                 builder: (_, state) {
                   if (state.isLoading) {
                     return const Center(child: CircularProgressIndicator());
                   }
                   if (state.errorMessage != null) {
-                    return _ErrorView(
+                    return ErrorRetryView(
                       message: state.errorMessage!,
-                      onRetry: () =>
-                          context.read<MedicalRecordsCubit>().getMedicalRecords(),
+                      onRetry: () => context
+                          .read<MedicalRecordsCubit>()
+                          .getMedicalRecords(),
                     );
                   }
                   if (state.records.isEmpty) {
-                    return _EmptyState();
+                    return const EmptyStateView(
+                      icon: Icons.folder_outlined,
+                      message: 'No medical records',
+                    );
                   }
                   return RefreshIndicator(
                     onRefresh: () =>
                         context.read<MedicalRecordsCubit>().getMedicalRecords(),
                     color: ColorsManager.mainBlue,
                     child: ListView.separated(
-                      padding:
-                          EdgeInsets.fromLTRB(24.w, 16.h, 24.w, 24.h),
+                      padding: EdgeInsets.fromLTRB(24.w, 16.h, 24.w, 24.h),
                       itemCount: state.records.length,
                       separatorBuilder: (_, _) =>
                           Divider(height: 1, color: ColorsManager.lighterGray),
@@ -69,35 +79,6 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
   }
 }
 
-class _AppBar extends StatelessWidget {
-  final VoidCallback onBack;
-
-  const _AppBar({required this.onBack});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-      child: Row(
-        children: [
-          AppBarIconButton(
-            icon: Icons.arrow_back_ios_new_rounded,
-            onTap: onBack,
-          ),
-          Expanded(
-            child: Text(
-              'Medical Records',
-              textAlign: TextAlign.center,
-              style: TextStyles.font18DarkBlueBold,
-            ),
-          ),
-          SizedBox(width: 36.w),
-        ],
-      ),
-    );
-  }
-}
-
 class _RecordTile extends StatelessWidget {
   final MedicalRecordModel record;
 
@@ -109,18 +90,10 @@ class _RecordTile extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 12.h),
       child: Row(
         children: [
-          Container(
-            width: 44.r,
-            height: 44.r,
-            decoration: BoxDecoration(
-              color: const Color(0xFFFFF3E0),
-              borderRadius: BorderRadius.circular(12.r),
-            ),
-            child: Icon(
-              Icons.description_outlined,
-              color: const Color(0xFFF59E0B),
-              size: 22.r,
-            ),
+          const ColoredIconBadge(
+            icon: Icons.description_outlined,
+            backgroundColor: ColorsManager.warningOrangeBg,
+            iconColor: ColorsManager.warningOrange,
           ),
           SizedBox(width: 14.w),
           Expanded(
@@ -131,9 +104,10 @@ class _RecordTile extends StatelessWidget {
                 if (record.type != null || record.date != null) ...[
                   SizedBox(height: 2.h),
                   Text(
-                    [record.type, record.date]
-                        .where((s) => s != null)
-                        .join(' • '),
+                    [
+                      record.type,
+                      record.date,
+                    ].where((s) => s != null).join(' • '),
                     style: TextStyles.font12GrayRegular,
                   ),
                 ],
@@ -147,59 +121,6 @@ class _RecordTile extends StatelessWidget {
               color: ColorsManager.mainBlue,
             ),
         ],
-      ),
-    );
-  }
-}
-
-class _EmptyState extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.folder_outlined,
-            size: 64.r,
-            color: ColorsManager.lighterGray,
-          ),
-          SizedBox(height: 16.h),
-          Text('No medical records', style: TextStyles.font14GrayRegular),
-        ],
-      ),
-    );
-  }
-}
-
-class _ErrorView extends StatelessWidget {
-  final String message;
-  final VoidCallback onRetry;
-
-  const _ErrorView({required this.message, required this.onRetry});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(24.r),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.error_outline, size: 48.r, color: ColorsManager.gray),
-            SizedBox(height: 16.h),
-            Text(
-              message,
-              style: TextStyles.font14GrayRegular,
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 16.h),
-            TextButton(
-              onPressed: onRetry,
-              child: Text('Retry', style: TextStyles.font14BlueSemiBold),
-            ),
-          ],
-        ),
       ),
     );
   }

@@ -7,12 +7,9 @@ class FirebaseStorageService {
   final FirebaseStorage _storage;
 
   FirebaseStorageService({FirebaseStorage? storage})
-      : _storage = storage ?? FirebaseStorage.instance;
+    : _storage = storage ?? FirebaseStorage.instance;
 
-  Future<String> uploadChatImage(
-    String filePath,
-    String conversationId,
-  ) async {
+  Future<String> uploadChatImage(String filePath, String conversationId) async {
     final file = File(filePath);
     final fileName = path.basename(filePath);
     final timestamp = DateTime.now().millisecondsSinceEpoch;

@@ -8,7 +8,7 @@ class BookingStepper extends StatelessWidget {
   const BookingStepper({super.key, required this.currentStep});
 
   static const List<String> _labels = ['Date & Time', 'Payment', 'Summary'];
-  static const Color _doneColor = Color(0xFF22C55E);
+  static const Color _doneColor = ColorsManager.successGreen;
 
   @override
   Widget build(BuildContext context) {

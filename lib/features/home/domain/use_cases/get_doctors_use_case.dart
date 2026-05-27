@@ -18,8 +18,10 @@ class FilterDoctorsUseCase {
   Future<ApiResult<List<DoctorModel>>> call({
     int? cityId,
     int? specializationId,
-  }) =>
-      _doctorRepo.filterDoctors(cityId: cityId, specializationId: specializationId);
+  }) => _doctorRepo.filterDoctors(
+    cityId: cityId,
+    specializationId: specializationId,
+  );
 }
 
 class SearchDoctorsUseCase {

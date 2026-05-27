@@ -20,9 +20,7 @@ class CancelAppointmentDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.r),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
       child: Padding(
         padding: EdgeInsets.all(24.r),
         child: Column(
@@ -33,19 +31,16 @@ class CancelAppointmentDialog extends StatelessWidget {
               height: 64.r,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: Color(0xFFFFEBEE),
+                color: ColorsManager.dangerRedBg,
               ),
               child: Icon(
                 Icons.calendar_today_outlined,
-                color: const Color(0xFFEF4444),
+                color: ColorsManager.dangerRed,
                 size: 28.r,
               ),
             ),
             SizedBox(height: 20.h),
-            Text(
-              'Cancel Appointment',
-              style: TextStyles.font18DarkBlueBold,
-            ),
+            Text('Cancel Appointment', style: TextStyles.font18DarkBlueBold),
             SizedBox(height: 8.h),
             Text(
               'Are you sure you want to cancel\nyour appointment?',
@@ -76,7 +71,7 @@ class CancelAppointmentDialog extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: onConfirm,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFEF4444),
+                      backgroundColor: ColorsManager.dangerRed,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12.r),
                       ),
@@ -85,8 +80,9 @@ class CancelAppointmentDialog extends StatelessWidget {
                     ),
                     child: Text(
                       'Yes, Cancel',
-                      style: TextStyles.font14DarkBlueMedium
-                          .copyWith(color: Colors.white),
+                      style: TextStyles.font14DarkBlueMedium.copyWith(
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),

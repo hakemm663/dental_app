@@ -31,10 +31,13 @@ class GetHomeDataUseCase {
     final specResult = await _homeRepo.getAllSpecializations();
     if (specResult case Failure(:final errMsg)) return Failure(errMsg);
 
-    return Success(HomeData(
-      governorates: (govResult as Success<List<GovernorateModel>>).data,
-      cities: (cityResult as Success<List<CityModel>>).data,
-      specializations: (specResult as Success<List<SpecializationModel>>).data,
-    ));
+    return Success(
+      HomeData(
+        governorates: (govResult as Success<List<GovernorateModel>>).data,
+        cities: (cityResult as Success<List<CityModel>>).data,
+        specializations:
+            (specResult as Success<List<SpecializationModel>>).data,
+      ),
+    );
   }
 }

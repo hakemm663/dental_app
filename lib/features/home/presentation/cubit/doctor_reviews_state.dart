@@ -12,14 +12,13 @@ class DoctorReviewsState {
   });
 
   const DoctorReviewsState.initial()
-      : this(reviews: const [], isLoading: false);
+    : this(reviews: const [], isLoading: false);
 
-  const DoctorReviewsState.loading()
-      : this(reviews: const [], isLoading: true);
+  const DoctorReviewsState.loading() : this(reviews: const [], isLoading: true);
 
   const DoctorReviewsState.loaded({required List<ReviewModel> reviews})
-      : this(reviews: reviews, isLoading: false);
+    : this(reviews: reviews, isLoading: false);
 
   DoctorReviewsState.error({required String message})
-      : this(reviews: const [], isLoading: false, errorMessage: message);
+    : this(reviews: const [], isLoading: false, errorMessage: message);
 }

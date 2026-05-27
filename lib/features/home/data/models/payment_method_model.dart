@@ -26,12 +26,12 @@ class PaymentMethodModel {
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'label': label,
-        'brand': brand,
-        'last4': last4,
-        'isDefault': isDefault,
-      };
+    'id': id,
+    'label': label,
+    'brand': brand,
+    'last4': last4,
+    'isDefault': isDefault,
+  };
 
   factory PaymentMethodModel.fromJson(Map<String, dynamic> json) {
     return PaymentMethodModel(

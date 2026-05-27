@@ -7,7 +7,11 @@ import 'package:docdoc/features/home/presentation/widgets/upcoming_appointment_c
 import 'package:docdoc/features/home/presentation/widgets/completed_appointment_card.dart';
 import 'package:docdoc/features/home/presentation/widgets/cancelled_appointment_card.dart';
 import 'package:docdoc/features/home/presentation/widgets/cancel_appointment_dialog.dart';
+import 'package:docdoc/features/home/presentation/widgets/home_bottom_nav.dart';
 import 'package:docdoc/core/widgets/app_bar_icon_button.dart';
+import 'package:docdoc/core/widgets/docdoc_app_bar.dart';
+import 'package:docdoc/core/widgets/empty_state_view.dart';
+import 'package:docdoc/core/widgets/error_retry_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -51,10 +55,9 @@ class _AppointmentsScreenState extends State<AppointmentsScreen>
   }
 
   void _onReschedule(AppointmentModel appointment) {
-    Navigator.of(context).pushNamed(
-      Routes.rescheduleAppointment,
-      arguments: appointment,
-    );
+    Navigator.of(
+      context,
+    ).pushNamed(Routes.rescheduleAppointment, arguments: appointment);
   }
 
   void _onChat(AppointmentModel appointment) {
@@ -63,16 +66,25 @@ class _AppointmentsScreenState extends State<AppointmentsScreen>
     Navigator.of(context).pushNamed(Routes.inboxScreen);
   }
 
+  void _onTabSelected(HomeNavTab tab) =>
+      dispatchHomeNavTab(context, tab, active: HomeNavTab.calendar);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
+        bottom: false,
         child: Column(
           children: [
-            _AppointmentsAppBar(
-              onBack: () => Navigator.of(context).pop(),
-              onSearch: () => Navigator.of(context).pushNamed(Routes.search),
+            DocDocAppBar(
+              title: 'My Appointment',
+              actions: [
+                AppBarIconButton(
+                  icon: Icons.search_rounded,
+                  onTap: () => Navigator.of(context).pushNamed(Routes.search),
+                ),
+              ],
             ),
             _buildTabBar(),
             Expanded(
@@ -88,7 +100,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen>
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Appointment cancelled'),
-                        backgroundColor: Color(0xFF22C55E),
+                        backgroundColor: ColorsManager.successGreen,
                       ),
                     );
                   }
@@ -97,8 +109,9 @@ class _AppointmentsScreenState extends State<AppointmentsScreen>
                   if (state.isLoading) {
                     return const Center(child: CircularProgressIndicator());
                   }
-                  if (state.errorMessage != null && state.appointments.isEmpty) {
-                    return _ErrorView(
+                  if (state.errorMessage != null &&
+                      state.appointments.isEmpty) {
+                    return ErrorRetryView(
                       message: state.errorMessage!,
                       onRetry: () =>
                           context.read<AppointmentCubit>().getAllAppointments(),
@@ -112,8 +125,9 @@ class _AppointmentsScreenState extends State<AppointmentsScreen>
                         appointments: _filterByStatus(appointments, 'pending'),
                         emptyMessage: 'No upcoming appointments',
                         emptyIcon: Icons.calendar_today_outlined,
-                        onRefresh: () =>
-                            context.read<AppointmentCubit>().getAllAppointments(),
+                        onRefresh: () => context
+                            .read<AppointmentCubit>()
+                            .getAllAppointments(),
                         itemBuilder: (appointment) => UpcomingAppointmentCard(
                           appointment: appointment,
                           onCancel: () => _onCancel(appointment),
@@ -122,22 +136,28 @@ class _AppointmentsScreenState extends State<AppointmentsScreen>
                         ),
                       ),
                       _AppointmentsList(
-                        appointments:
-                            _filterByStatus(appointments, 'completed'),
+                        appointments: _filterByStatus(
+                          appointments,
+                          'completed',
+                        ),
                         emptyMessage: 'No completed appointments',
                         emptyIcon: Icons.check_circle_outline,
-                        onRefresh: () =>
-                            context.read<AppointmentCubit>().getAllAppointments(),
+                        onRefresh: () => context
+                            .read<AppointmentCubit>()
+                            .getAllAppointments(),
                         itemBuilder: (appointment) =>
                             CompletedAppointmentCard(appointment: appointment),
                       ),
                       _AppointmentsList(
-                        appointments:
-                            _filterByStatus(appointments, 'cancelled'),
+                        appointments: _filterByStatus(
+                          appointments,
+                          'cancelled',
+                        ),
                         emptyMessage: 'No cancelled appointments',
                         emptyIcon: Icons.cancel_outlined,
-                        onRefresh: () =>
-                            context.read<AppointmentCubit>().getAllAppointments(),
+                        onRefresh: () => context
+                            .read<AppointmentCubit>()
+                            .getAllAppointments(),
                         itemBuilder: (appointment) =>
                             CancelledAppointmentCard(appointment: appointment),
                       ),
@@ -145,6 +165,11 @@ class _AppointmentsScreenState extends State<AppointmentsScreen>
                   );
                 },
               ),
+            ),
+            HomeBottomNav(
+              activeTab: HomeNavTab.calendar,
+              onTabSelected: _onTabSelected,
+              onSearchTap: () => Navigator.of(context).pushNamed(Routes.search),
             ),
           ],
         ),
@@ -184,39 +209,6 @@ class _AppointmentsScreenState extends State<AppointmentsScreen>
   }
 }
 
-class _AppointmentsAppBar extends StatelessWidget {
-  final VoidCallback onBack;
-  final VoidCallback? onSearch;
-
-  const _AppointmentsAppBar({required this.onBack, this.onSearch});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-      child: Row(
-        children: [
-          AppBarIconButton(
-            icon: Icons.arrow_back_ios_new_rounded,
-            onTap: onBack,
-          ),
-          Expanded(
-            child: Text(
-              'My Appointment',
-              textAlign: TextAlign.center,
-              style: TextStyles.font18DarkBlueBold,
-            ),
-          ),
-          AppBarIconButton(
-            icon: Icons.search_rounded,
-            onTap: onSearch,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _AppointmentsList extends StatelessWidget {
   final List<AppointmentModel> appointments;
   final String emptyMessage;
@@ -235,7 +227,7 @@ class _AppointmentsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (appointments.isEmpty) {
-      return _EmptyState(message: emptyMessage, icon: emptyIcon);
+      return EmptyStateView(icon: emptyIcon, message: emptyMessage);
     }
     return RefreshIndicator(
       onRefresh: onRefresh,
@@ -244,60 +236,6 @@ class _AppointmentsList extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(24.w, 16.h, 24.w, 24.h),
         itemCount: appointments.length,
         itemBuilder: (_, index) => itemBuilder(appointments[index]),
-      ),
-    );
-  }
-}
-
-class _EmptyState extends StatelessWidget {
-  final String message;
-  final IconData icon;
-
-  const _EmptyState({required this.message, required this.icon});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 64.r, color: ColorsManager.lighterGray),
-          SizedBox(height: 16.h),
-          Text(message, style: TextStyles.font14GrayRegular),
-        ],
-      ),
-    );
-  }
-}
-
-class _ErrorView extends StatelessWidget {
-  final String message;
-  final VoidCallback onRetry;
-
-  const _ErrorView({required this.message, required this.onRetry});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(24.r),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.error_outline, size: 48.r, color: ColorsManager.gray),
-            SizedBox(height: 16.h),
-            Text(
-              message,
-              style: TextStyles.font14GrayRegular,
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 16.h),
-            TextButton(
-              onPressed: onRetry,
-              child: Text('Retry', style: TextStyles.font14BlueSemiBold),
-            ),
-          ],
-        ),
       ),
     );
   }

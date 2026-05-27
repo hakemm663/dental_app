@@ -1,7 +1,9 @@
+import 'package:docdoc/core/widgets/bottom_action_bar.dart';
 import 'package:docdoc/core/theming/colors.dart';
 import 'package:docdoc/core/theming/styles.dart';
-import 'package:docdoc/core/widgets/app_bar_icon_button.dart';
 import 'package:docdoc/core/widgets/app_text_button.dart';
+import 'package:docdoc/core/widgets/docdoc_app_bar.dart';
+import 'package:docdoc/core/widgets/empty_state_view.dart';
 import 'package:docdoc/features/home/data/models/payment_method_model.dart';
 import 'package:docdoc/features/home/presentation/cubit/payment_methods_cubit.dart';
 import 'package:flutter/material.dart';
@@ -45,21 +47,27 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
         bottom: false,
         child: Column(
           children: [
-            _AppBar(onBack: () => Navigator.of(context).pop()),
+            const DocDocAppBar(title: 'Payment Methods'),
             Expanded(
               child: BlocBuilder<PaymentMethodsCubit, PaymentMethodsState>(
+                buildWhen: (p, c) =>
+                    p.isLoading != c.isLoading ||
+                    p.errorMessage != c.errorMessage ||
+                    p.methods != c.methods,
                 builder: (_, state) {
                   if (state.isLoading) {
                     return const Center(child: CircularProgressIndicator());
                   }
                   if (state.methods.isEmpty) {
-                    return _EmptyState();
+                    return const EmptyStateView(
+                      icon: Icons.credit_card_outlined,
+                      message: 'No payment methods saved',
+                    );
                   }
                   return ListView.separated(
                     padding: EdgeInsets.fromLTRB(24.w, 16.h, 24.w, 100.h),
                     itemCount: state.methods.length,
-                    separatorBuilder: (_, _) =>
-                        SizedBox(height: 12.h),
+                    separatorBuilder: (_, _) => SizedBox(height: 12.h),
                     itemBuilder: (_, i) => _CardTile(
                       method: state.methods[i],
                       onSetDefault: () => context
@@ -73,9 +81,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                 },
               ),
             ),
-            Container(
-              color: Colors.white,
-              padding: EdgeInsets.fromLTRB(24.w, 12.h, 24.w, 32.h),
+            BottomActionBar(
               child: AppTextButton(
                 buttonText: 'Add Payment Method',
                 textStyle: TextStyles.font16WhiteSemiBold,
@@ -85,35 +91,6 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _AppBar extends StatelessWidget {
-  final VoidCallback onBack;
-
-  const _AppBar({required this.onBack});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-      child: Row(
-        children: [
-          AppBarIconButton(
-            icon: Icons.arrow_back_ios_new_rounded,
-            onTap: onBack,
-          ),
-          Expanded(
-            child: Text(
-              'Payment Methods',
-              textAlign: TextAlign.center,
-              style: TextStyles.font18DarkBlueBold,
-            ),
-          ),
-          SizedBox(width: 36.w),
-        ],
       ),
     );
   }
@@ -170,16 +147,16 @@ class _CardTile extends StatelessWidget {
           ),
           if (method.isDefault)
             Container(
-              padding:
-                  EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
               decoration: BoxDecoration(
                 color: ColorsManager.mainBlue,
                 borderRadius: BorderRadius.circular(20.r),
               ),
               child: Text(
                 'Default',
-                style: TextStyles.font12BlueRegular
-                    .copyWith(color: Colors.white),
+                style: TextStyles.font12BlueRegular.copyWith(
+                  color: Colors.white,
+                ),
               ),
             )
           else
@@ -190,31 +167,17 @@ class _CardTile extends StatelessWidget {
               },
               itemBuilder: (_) => [
                 const PopupMenuItem(
-                    value: 'default', child: Text('Set as default')),
-                const PopupMenuItem(
-                    value: 'remove', child: Text('Remove')),
+                  value: 'default',
+                  child: Text('Set as default'),
+                ),
+                const PopupMenuItem(value: 'remove', child: Text('Remove')),
               ],
-              icon: Icon(Icons.more_vert, size: 20.r,
-                  color: ColorsManager.gray),
+              icon: Icon(
+                Icons.more_vert,
+                size: 20.r,
+                color: ColorsManager.gray,
+              ),
             ),
-        ],
-      ),
-    );
-  }
-}
-
-class _EmptyState extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(Icons.credit_card_outlined,
-              size: 64.r, color: ColorsManager.lighterGray),
-          SizedBox(height: 16.h),
-          Text('No payment methods saved',
-              style: TextStyles.font14GrayRegular),
         ],
       ),
     );
@@ -243,10 +206,10 @@ class _AddCardSheetState extends State<_AddCardSheet> {
   void _onAdd() {
     if (!_formKey.currentState!.validate()) return;
     context.read<PaymentMethodsCubit>().add(
-          label: _labelController.text.trim(),
-          brand: _brandController.text.trim(),
-          last4: _last4Controller.text.trim(),
-        );
+      label: _labelController.text.trim(),
+      brand: _brandController.text.trim(),
+      last4: _last4Controller.text.trim(),
+    );
     Navigator.of(context).pop();
   }
 
@@ -319,8 +282,7 @@ class _SheetField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: TextStyles.font14LightGrayRegular,
-        contentPadding:
-            EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+        contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
         filled: true,
         fillColor: ColorsManager.moreLighterGray,
         counterText: '',

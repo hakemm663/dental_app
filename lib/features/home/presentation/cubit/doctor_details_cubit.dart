@@ -9,7 +9,7 @@ class DoctorDetailsCubit extends Cubit<DoctorDetailsState> {
   final GetDoctorDetailsUseCase _getDoctorDetailsUseCase;
 
   DoctorDetailsCubit(this._getDoctorDetailsUseCase)
-      : super(const DoctorDetailsState.initial());
+    : super(const DoctorDetailsState.initial());
 
   Future<void> getDoctorDetails(int doctorId) async {
     emit(const DoctorDetailsState.loading());

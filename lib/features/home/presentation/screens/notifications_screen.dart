@@ -1,5 +1,6 @@
 import 'package:docdoc/core/theming/colors.dart';
 import 'package:docdoc/core/theming/styles.dart';
+import 'package:docdoc/core/widgets/docdoc_app_bar.dart';
 import 'package:docdoc/features/home/data/models/notification_model.dart';
 import 'package:docdoc/features/home/presentation/cubit/notifications_cubit.dart';
 import 'package:flutter/material.dart';
@@ -27,12 +28,21 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            BlocBuilder<NotificationsCubit, NotificationsState>(
-              builder: (context, state) =>
-                  _AppBar(unreadCount: state.unreadCount),
+            BlocSelector<NotificationsCubit, NotificationsState, int>(
+              selector: (s) => s.unreadCount,
+              builder: (context, unreadCount) => DocDocAppBar(
+                title: 'Notification',
+                actions: unreadCount > 0
+                    ? [_UnreadCountChip(count: unreadCount)]
+                    : const [],
+              ),
             ),
             Expanded(
               child: BlocBuilder<NotificationsCubit, NotificationsState>(
+                buildWhen: (p, c) =>
+                    p.isLoading != c.isLoading ||
+                    p.errorMessage != c.errorMessage ||
+                    p.notifications != c.notifications,
                 builder: (context, state) {
                   if (state.isLoading) {
                     return const Center(child: CircularProgressIndicator());
@@ -59,66 +69,24 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   }
 }
 
-class _AppBar extends StatelessWidget {
-  final int unreadCount;
+class _UnreadCountChip extends StatelessWidget {
+  final int count;
 
-  const _AppBar({required this.unreadCount});
+  const _UnreadCountChip({required this.count});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-      child: Row(
-        children: [
-          const _BackButton(),
-          Expanded(
-            child: Text(
-              'Notification',
-              textAlign: TextAlign.center,
-              style: TextStyles.font18DarkBlueBold,
-            ),
-          ),
-          if (unreadCount > 0)
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-              decoration: BoxDecoration(
-                color: ColorsManager.mainBlue,
-                borderRadius: BorderRadius.circular(20.r),
-              ),
-              child: Text(
-                '$unreadCount NEW',
-                style: TextStyles.font12GrayMedium.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            )
-          else
-            SizedBox(width: 40.w),
-        ],
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+      decoration: BoxDecoration(
+        color: ColorsManager.mainBlue,
+        borderRadius: BorderRadius.circular(20.r),
       ),
-    );
-  }
-}
-
-class _BackButton extends StatelessWidget {
-  const _BackButton();
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: ColorsManager.white,
-      borderRadius: BorderRadius.circular(10.r),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(10.r),
-        onTap: () => Navigator.of(context).pop(),
-        child: Padding(
-          padding: EdgeInsets.all(8.r),
-          child: Icon(
-            Icons.arrow_back_ios_new_rounded,
-            size: 18.r,
-            color: ColorsManager.darkBlue,
-          ),
+      child: Text(
+        '$count NEW',
+        style: TextStyles.font12GrayMedium.copyWith(
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
         ),
       ),
     );
@@ -146,8 +114,7 @@ class _NotificationList extends StatelessWidget {
         if (today.isNotEmpty) ...[
           _GroupHeader(
             label: 'Today',
-            onMarkAll: () =>
-                context.read<NotificationsCubit>().markAllAsRead(),
+            onMarkAll: () => context.read<NotificationsCubit>().markAllAsRead(),
           ),
           ...today.map((n) => _NotificationTile(notification: n)),
         ],
@@ -210,15 +177,9 @@ class _NotificationTile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  notification.title,
-                  style: TextStyles.font14DarkBlueBold,
-                ),
+                Text(notification.title, style: TextStyles.font14DarkBlueBold),
                 SizedBox(height: 4.h),
-                Text(
-                  notification.body,
-                  style: TextStyles.font13GrayRegular,
-                ),
+                Text(notification.body, style: TextStyles.font13GrayRegular),
               ],
             ),
           ),
@@ -236,7 +197,7 @@ class _NotificationTile extends StatelessWidget {
                   width: 8.r,
                   height: 8.r,
                   decoration: const BoxDecoration(
-                    color: Color(0xFFFF4D6D),
+                    color: ColorsManager.notificationDot,
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -265,29 +226,29 @@ class _NotificationIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     final (icon, bg) = switch (type) {
       NotificationType.appointmentSuccess => (
-          Icons.calendar_today_outlined,
-          const Color(0xFFE8F5E9),
-        ),
+        Icons.calendar_today_outlined,
+        ColorsManager.successGreenBg,
+      ),
       NotificationType.scheduleChanged => (
-          Icons.calendar_month_outlined,
-          ColorsManager.lightBlue,
-        ),
+        Icons.calendar_month_outlined,
+        ColorsManager.lightBlue,
+      ),
       NotificationType.videoCall => (
-          Icons.videocam_outlined,
-          const Color(0xFFE8F5E9),
-        ),
+        Icons.videocam_outlined,
+        ColorsManager.successGreenBg,
+      ),
       NotificationType.appointmentCancelled => (
-          Icons.calendar_today_outlined,
-          const Color(0xFFFFEBEE),
-        ),
+        Icons.calendar_today_outlined,
+        ColorsManager.dangerRedBg,
+      ),
       NotificationType.paymentAdded => (
-          Icons.account_balance_wallet_outlined,
-          ColorsManager.lightBlue,
-        ),
+        Icons.account_balance_wallet_outlined,
+        ColorsManager.lightBlue,
+      ),
       NotificationType.unknown => (
-          Icons.notifications_outlined,
-          ColorsManager.moreLighterGray,
-        ),
+        Icons.notifications_outlined,
+        ColorsManager.moreLighterGray,
+      ),
     };
 
     final iconColor = switch (type) {

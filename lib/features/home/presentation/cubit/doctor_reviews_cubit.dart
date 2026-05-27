@@ -9,7 +9,7 @@ class DoctorReviewsCubit extends Cubit<DoctorReviewsState> {
   final GetDoctorReviewsUseCase _getReviewsUseCase;
 
   DoctorReviewsCubit(this._getReviewsUseCase)
-      : super(const DoctorReviewsState.initial());
+    : super(const DoctorReviewsState.initial());
 
   Future<void> loadReviews(int doctorId) async {
     emit(const DoctorReviewsState.loading());

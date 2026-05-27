@@ -14,12 +14,12 @@ class SecurityPrefsState {
   });
 
   const SecurityPrefsState.initial()
-      : this(
-          rememberPassword: false,
-          faceId: false,
-          pin: false,
-          isLoading: false,
-        );
+    : this(
+        rememberPassword: false,
+        faceId: false,
+        pin: false,
+        isLoading: false,
+      );
 
   SecurityPrefsState copyWith({
     bool? rememberPassword,

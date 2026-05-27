@@ -46,10 +46,7 @@ class DoctorsCubit extends Cubit<DoctorsState> {
     }
   }
 
-  Future<void> applyFilters({
-    int? specializationId,
-    double? minRating,
-  }) async {
+  Future<void> applyFilters({int? specializationId, double? minRating}) async {
     // Fetch from backend when specialization changes
     if (specializationId != null) {
       emit(const DoctorsState.loading());
@@ -79,15 +76,17 @@ class DoctorsCubit extends Cubit<DoctorsState> {
     // Apply rating filter client-side
     final filtered = minRating != null
         ? _allFetched
-            .where((d) => d.rating != null && d.rating! >= minRating)
-            .toList()
+              .where((d) => d.rating != null && d.rating! >= minRating)
+              .toList()
         : _allFetched;
 
-    emit(DoctorsState.success(
-      doctors: filtered,
-      activeSpecializationId: specializationId,
-      activeMinRating: minRating,
-    ));
+    emit(
+      DoctorsState.success(
+        doctors: filtered,
+        activeSpecializationId: specializationId,
+        activeMinRating: minRating,
+      ),
+    );
   }
 
   Future<void> clearFilters() async {

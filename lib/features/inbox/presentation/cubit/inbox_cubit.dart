@@ -31,10 +31,9 @@ class InboxCubit extends Cubit<InboxState> {
     emit(const InboxState.loading());
     _conversationsSub?.cancel();
     _conversationsSub = _getConversationsUseCase().listen(
-      (conversations) => emit(InboxState.loaded(
-        conversations: conversations,
-        doctors: state.doctors,
-      )),
+      (conversations) => emit(
+        InboxState.loaded(conversations: conversations, doctors: state.doctors),
+      ),
       onError: (Object error) =>
           emit(InboxState.error(message: error.toString())),
     );
@@ -64,7 +63,8 @@ class InboxCubit extends Cubit<InboxState> {
   }
 
   Future<ApiResult<ConversationModel>> getOrCreateConversation(
-      DoctorModel doctor) async {
+    DoctorModel doctor,
+  ) async {
     return _getOrCreateConversationUseCase(doctor);
   }
 

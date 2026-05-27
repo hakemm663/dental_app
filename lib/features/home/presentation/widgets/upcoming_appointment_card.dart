@@ -5,6 +5,7 @@ import 'package:docdoc/features/home/data/models/appointment_model.dart';
 import 'package:docdoc/features/home/presentation/widgets/appointment_card_shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class UpcomingAppointmentCard extends StatelessWidget {
   final AppointmentModel appointment;
@@ -68,16 +69,21 @@ class UpcomingAppointmentCard extends StatelessWidget {
                 GestureDetector(
                   onTap: onChat,
                   child: Container(
-                    width: 40.r,
-                    height: 40.r,
+                    width: 22.r,
+                    height: 22.r,
                     decoration: BoxDecoration(
                       color: ColorsManager.lightBlue,
                       borderRadius: BorderRadius.circular(10.r),
                     ),
-                    child: Icon(
-                      Icons.chat_bubble_outline_rounded,
-                      color: ColorsManager.mainBlue,
-                      size: 20.r,
+                    child: SvgPicture.asset(
+                      'assets/svgs/message_icon.svg',
+                      width: 10.r,
+                      height: 10.r,
+                      colorFilter: const ColorFilter.mode(
+                        ColorsManager.mainBlue,
+                        BlendMode.srcIn,
+                      ),
+                      semanticsLabel: 'Chat with doctor',
                     ),
                   ),
                 ),
@@ -118,10 +124,7 @@ class UpcomingAppointmentCard extends StatelessWidget {
                     ),
                     padding: EdgeInsets.symmetric(vertical: 12.h),
                   ),
-                  child: Text(
-                    'Cancel',
-                    style: TextStyles.font13DarkBlueMedium,
-                  ),
+                  child: Text('Cancel', style: TextStyles.font13DarkBlueMedium),
                 ),
               ),
               SizedBox(width: 12.w),
@@ -138,8 +141,9 @@ class UpcomingAppointmentCard extends StatelessWidget {
                   ),
                   child: Text(
                     'Reschedule',
-                    style: TextStyles.font13DarkBlueMedium
-                        .copyWith(color: Colors.white),
+                    style: TextStyles.font13DarkBlueMedium.copyWith(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),

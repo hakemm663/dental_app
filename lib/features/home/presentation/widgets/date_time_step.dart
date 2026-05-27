@@ -45,7 +45,10 @@ class DateTimeStep extends StatelessWidget {
         SizedBox(height: 28.h),
         Text('Appointment Type', style: TextStyles.font18DarkBlueBold),
         SizedBox(height: 12.h),
-        _AppointmentTypeList(selected: selectedType, onSelected: onTypeSelected),
+        _AppointmentTypeList(
+          selected: selectedType,
+          onSelected: onTypeSelected,
+        ),
       ],
     );
   }
@@ -85,9 +88,8 @@ class _DateStrip extends StatelessWidget {
                 SizedBox(width: 4.w),
                 _ArrowBtn(
                   icon: Icons.chevron_right,
-                  onTap: () => onDaySelected(
-                    selectedDay.add(const Duration(days: 7)),
-                  ),
+                  onTap: () =>
+                      onDaySelected(selectedDay.add(const Duration(days: 7))),
                 ),
               ],
             ),
@@ -96,7 +98,8 @@ class _DateStrip extends StatelessWidget {
         SizedBox(height: 16.h),
         Row(
           children: days.map((day) {
-            final isSelected = day.day == selectedDay.day &&
+            final isSelected =
+                day.day == selectedDay.day &&
                 day.month == selectedDay.month &&
                 day.year == selectedDay.year;
             return Expanded(
@@ -200,8 +203,9 @@ class _TimeGrid extends StatelessWidget {
           onTap: () => onTimeSelected(slot),
           child: Container(
             decoration: BoxDecoration(
-              color:
-                  isSelected ? ColorsManager.mainBlue : ColorsManager.lightBlue,
+              color: isSelected
+                  ? ColorsManager.mainBlue
+                  : ColorsManager.lightBlue,
               borderRadius: BorderRadius.circular(10.r),
             ),
             alignment: Alignment.center,
@@ -224,7 +228,10 @@ class _AppointmentTypeList extends StatelessWidget {
   final AppointmentType selected;
   final ValueChanged<AppointmentType> onSelected;
 
-  const _AppointmentTypeList({required this.selected, required this.onSelected});
+  const _AppointmentTypeList({
+    required this.selected,
+    required this.onSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -260,8 +267,9 @@ class _AppointmentTypeList extends StatelessWidget {
                   child: Text(
                     type.label,
                     style: isSelected
-                        ? TextStyles.font14DarkBlueMedium
-                            .copyWith(color: ColorsManager.mainBlue)
+                        ? TextStyles.font14DarkBlueMedium.copyWith(
+                            color: ColorsManager.mainBlue,
+                          )
                         : TextStyles.font14GrayRegular,
                   ),
                 ),
@@ -276,8 +284,7 @@ class _AppointmentTypeList extends StatelessWidget {
                           : ColorsManager.lightGray,
                       width: 2,
                     ),
-                    color:
-                        isSelected ? ColorsManager.mainBlue : Colors.white,
+                    color: isSelected ? ColorsManager.mainBlue : Colors.white,
                   ),
                   child: isSelected
                       ? Icon(Icons.check, color: Colors.white, size: 12.r)

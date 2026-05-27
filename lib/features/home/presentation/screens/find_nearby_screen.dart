@@ -2,6 +2,7 @@ import 'package:docdoc/core/helpers/doctor_display.dart';
 import 'package:docdoc/core/routing/routes.dart';
 import 'package:docdoc/core/theming/colors.dart';
 import 'package:docdoc/core/theming/styles.dart';
+import 'package:docdoc/core/widgets/star_rating.dart';
 import 'package:docdoc/features/home/data/models/doctor_model.dart';
 import 'package:docdoc/features/home/presentation/cubit/doctors_cubit.dart';
 import 'package:flutter/material.dart';
@@ -35,8 +36,9 @@ class _FindNearbyScreenState extends State<FindNearbyScreen> {
   }
 
   DoctorModel? _pickFocus(List<DoctorModel> doctors) {
-    final withCoords =
-        doctors.where((d) => d.latitude != null && d.longitude != null);
+    final withCoords = doctors.where(
+      (d) => d.latitude != null && d.longitude != null,
+    );
     if (withCoords.isEmpty) return null;
     if (widget.focusDoctorId != null) {
       for (final d in withCoords) {
@@ -66,17 +68,16 @@ class _FindNearbyScreenState extends State<FindNearbyScreen> {
           listener: (context, state) {
             final focus = _pickFocus(state.doctors);
             if (focus == null) return;
-            _mapController.move(
-              LatLng(focus.latitude!, focus.longitude!),
-              13,
-            );
-            if (widget.focusDoctorId != null && focus.id == widget.focusDoctorId) {
+            _mapController.move(LatLng(focus.latitude!, focus.longitude!), 13);
+            if (widget.focusDoctorId != null &&
+                focus.id == widget.focusDoctorId) {
               setState(() => _selectedDoctor = focus);
             }
           },
           child: Stack(
             children: [
               BlocBuilder<DoctorsCubit, DoctorsState>(
+                buildWhen: (p, c) => p.doctors != c.doctors,
                 builder: (context, state) {
                   final doctors = state.doctors
                       .where((d) => d.latitude != null && d.longitude != null)
@@ -99,12 +100,10 @@ class _FindNearbyScreenState extends State<FindNearbyScreen> {
                       ),
                       MarkerLayer(
                         markers: doctors.map((doctor) {
-                          final isSelected =
-                              _selectedDoctor?.id == doctor.id;
+                          final isSelected = _selectedDoctor?.id == doctor.id;
                           final size = isSelected ? 40.r : 28.r;
                           return Marker(
-                            point:
-                                LatLng(doctor.latitude!, doctor.longitude!),
+                            point: LatLng(doctor.latitude!, doctor.longitude!),
                             width: size,
                             height: size,
                             child: GestureDetector(
@@ -148,6 +147,8 @@ class _FindNearbyScreenState extends State<FindNearbyScreen> {
 
               // Empty state when no doctors have coords
               BlocBuilder<DoctorsCubit, DoctorsState>(
+                buildWhen: (p, c) =>
+                    p.isLoading != c.isLoading || p.doctors != c.doctors,
                 builder: (context, state) {
                   final hasCoords = state.doctors.any(
                     (d) => d.latitude != null,
@@ -250,11 +251,7 @@ class _DoctorMapMarker extends StatelessWidget {
           width: selected ? 3 : 2,
         ),
         boxShadow: const [
-          BoxShadow(
-            color: Colors.black26,
-            blurRadius: 4,
-            offset: Offset(0, 2),
-          ),
+          BoxShadow(color: Colors.black26, blurRadius: 4, offset: Offset(0, 2)),
         ],
       ),
       child: ClipOval(
@@ -345,22 +342,7 @@ class _SelectedDoctorCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(height: 6.h),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.star_rounded,
-                          color: const Color(0xFFFFB800),
-                          size: 16.r,
-                        ),
-                        SizedBox(width: 4.w),
-                        Text(
-                          doctor.rating != null
-                              ? doctor.rating!.toStringAsFixed(1)
-                              : '—',
-                          style: TextStyles.font14DarkBlueMedium,
-                        ),
-                      ],
-                    ),
+                    StarRating(value: doctor.rating, iconSize: 16),
                   ],
                 ),
               ),

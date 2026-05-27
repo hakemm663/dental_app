@@ -1,13 +1,16 @@
+import 'package:docdoc/core/helpers/user_display.dart';
 import 'package:docdoc/core/networking/api_error_handler.dart';
 import 'package:docdoc/core/networking/api_result.dart';
+import 'package:docdoc/core/services/supabase_storage_service.dart';
 import 'package:docdoc/features/home/data/models/appointment_model.dart';
 import 'package:docdoc/features/home/data/models/user_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AppointmentRepo {
   final SupabaseClient _client;
+  final SupabaseStorageService _storage;
 
-  const AppointmentRepo(this._client);
+  const AppointmentRepo(this._client, this._storage);
 
   // Appointment rows are RLS-scoped to the signed-in user.
   static const _appointmentSelect =
@@ -21,9 +24,7 @@ class AppointmentRepo {
           .from('appointments')
           .select(_appointmentSelect)
           .order('start_time', ascending: false);
-      return Success(
-        data.map((e) => AppointmentModel.fromJson(e)).toList(),
-      );
+      return Success(data.map((e) => AppointmentModel.fromJson(e)).toList());
     } catch (error) {
       return Failure(ApiErrorHandler.handle(error));
     }
@@ -68,7 +69,8 @@ class AppointmentRepo {
     try {
       await _client
           .from('appointments')
-          .update({'status': 'cancelled'}).eq('id', id);
+          .update({'status': 'cancelled'})
+          .eq('id', id);
       return const Success(null);
     } catch (error) {
       return Failure(ApiErrorHandler.handle(error));
@@ -110,19 +112,38 @@ class AppointmentRepo {
           .select()
           .eq('id', user.id)
           .maybeSingle();
-      profile ??= await _client.from('profiles').insert({
-        'id': user.id,
-        'full_name': user.userMetadata?['full_name'],
-        'phone': user.userMetadata?['phone'],
-      }).select().single();
+      profile ??= await _client
+          .from('profiles')
+          .insert({
+            'id': user.id,
+            'full_name': user.userMetadata?['full_name'],
+            'phone': user.userMetadata?['phone'],
+          })
+          .select()
+          .single();
       return Success(_userFrom(profile, user));
     } catch (error) {
       return Failure(ApiErrorHandler.handle(error));
     }
   }
 
+  Future<ApiResult<UserModel>> updateAvatar(String filePath) async {
+    try {
+      final user = _client.auth.currentUser;
+      if (user == null) return const Failure('You are not signed in.');
+      final url = await _storage.uploadAvatar(
+        userId: user.id,
+        filePath: filePath,
+      );
+      return updateProfile({'avatar_url': url});
+    } catch (error) {
+      return Failure(ApiErrorHandler.handle(error));
+    }
+  }
+
   Future<ApiResult<UserModel>> updateProfile(
-      Map<String, dynamic> fields) async {
+    Map<String, dynamic> fields,
+  ) async {
     try {
       final user = _client.auth.currentUser;
       if (user == null) return const Failure('You are not signed in.');
@@ -131,6 +152,7 @@ class AppointmentRepo {
         'full_name': ?name,
         'phone': ?fields['phone'],
         'gender': ?fields['gender'],
+        'avatar_url': ?fields['avatar_url'],
       };
       final updated = await _client
           .from('profiles')
@@ -144,14 +166,29 @@ class AppointmentRepo {
     }
   }
 
-  UserModel _userFrom(Map<String, dynamic> profile, User authUser) => UserModel(
-        id: authUser.id,
-        name: (profile['full_name'] as String?) ?? '',
-        email: authUser.email ?? '',
-        phone: (profile['phone'] as String?) ?? '',
-        gender: profile['gender'] as String?,
-        createdAt: profile['created_at'] as String?,
-      );
+  UserModel _userFrom(Map<String, dynamic> profile, User authUser) {
+    final profileName = (profile['full_name'] as String?)?.trim();
+    final metadataName = authUser.userMetadata?['full_name'] as String?;
+    final name = (profileName?.isNotEmpty ?? false)
+        ? profileName!
+        : resolveDisplayName(
+            fullName: metadataName,
+            email: authUser.email,
+            fallback: '',
+          );
+    final avatar =
+        (profile['avatar_url'] as String?) ??
+        (authUser.userMetadata?['avatar_url'] as String?);
+    return UserModel(
+      id: authUser.id,
+      name: name,
+      email: authUser.email ?? '',
+      phone: (profile['phone'] as String?) ?? '',
+      gender: profile['gender'] as String?,
+      createdAt: profile['created_at'] as String?,
+      avatarUrl: avatar,
+    );
+  }
 
   // The DB allows only 'in_person' | 'video'; map the UI type onto that.
   String _normalizeType(String? type) =>

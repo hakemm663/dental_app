@@ -15,14 +15,16 @@ class MessageBubble extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
       child: Column(
-        crossAxisAlignment:
-            isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        crossAxisAlignment: isMe
+            ? CrossAxisAlignment.end
+            : CrossAxisAlignment.start,
         children: [
           Container(
             constraints: BoxConstraints(maxWidth: 260.w),
             decoration: BoxDecoration(
-              color:
-                  isMe ? ColorsManager.mainBlue : ColorsManager.moreLighterGray,
+              color: isMe
+                  ? ColorsManager.mainBlue
+                  : ColorsManager.moreLighterGray,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(16.r),
                 topRight: Radius.circular(16.r),
@@ -35,10 +37,7 @@ class MessageBubble extends StatelessWidget {
           SizedBox(height: 4.h),
           Text(
             DateFormat('HH:mm').format(message.timestamp),
-            style: TextStyle(
-              fontSize: 11.sp,
-              color: ColorsManager.gray,
-            ),
+            style: TextStyle(fontSize: 11.sp, color: ColorsManager.gray),
           ),
         ],
       ),
@@ -48,25 +47,25 @@ class MessageBubble extends StatelessWidget {
   Widget _buildContent(bool isMe) {
     return switch (message.type) {
       MessageType.image => _ImageContent(
-          imageUrl: message.imageUrl ?? '',
-          isMe: isMe,
-        ),
+        imageUrl: message.imageUrl ?? '',
+        isMe: isMe,
+      ),
       MessageType.attachment => _AttachmentContent(
-          fileName: message.fileName ?? 'File',
-          fileSize: message.fileSize,
-          isMe: isMe,
-        ),
+        fileName: message.fileName ?? 'File',
+        fileSize: message.fileSize,
+        isMe: isMe,
+      ),
       MessageType.text => Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-          child: Text(
-            message.text,
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: isMe ? Colors.white : ColorsManager.darkBlue,
-              height: 1.4,
-            ),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+        child: Text(
+          message.text,
+          style: TextStyle(
+            fontSize: 14.sp,
+            color: isMe ? Colors.white : ColorsManager.darkBlue,
+            height: 1.4,
           ),
         ),
+      ),
     };
   }
 }
@@ -139,8 +138,9 @@ class _AttachmentContent extends StatelessWidget {
             width: 36.r,
             height: 36.r,
             decoration: BoxDecoration(
-              color: (isMe ? Colors.white : ColorsManager.mainBlue)
-                  .withValues(alpha: 0.2),
+              color: (isMe ? Colors.white : ColorsManager.mainBlue).withValues(
+                alpha: 0.2,
+              ),
               borderRadius: BorderRadius.circular(8.r),
             ),
             child: Icon(

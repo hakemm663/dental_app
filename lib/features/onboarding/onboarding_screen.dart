@@ -12,33 +12,42 @@ class OnboardingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.only(top: 30.h, bottom: 30.h),
-            child: Column(
-              children: [
-                const DocLogoAndName(),
-                SizedBox(height: 30.h),
-                const DoctorImageAndText(),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+        // Bottom safe-area is respected so Get Started never sits under the
+        // iPhone home indicator or the Android nav gesture bar.
+        minimum: EdgeInsets.only(bottom: 24.h),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20.h),
                   child: Column(
                     children: [
-                      Text(
-                        'Manage and schedule all of your medical appointments easily with Docdoc to get a new experience.',
-                        style: TextStyles.font13GrayRegular,
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                      const DocLogoAndName(),
+                      SizedBox(height: 24.h),
+                      const DoctorImageAndText(),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Manage and schedule all of your medical appointments easily with Docdoc to get a new experience.',
+                              style: TextStyles.font13GrayRegular,
+                              textAlign: TextAlign.center,
+                              maxLines: 3,
+                            ),
+                            SizedBox(height: 32.h),
+                            const GetStartedButton(),
+                          ],
+                        ),
                       ),
-                      SizedBox(height: 50.h),
-                      const GetStartedButton(),
                     ],
                   ),
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         ),
       ),
     );

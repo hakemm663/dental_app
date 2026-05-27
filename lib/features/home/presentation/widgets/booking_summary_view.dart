@@ -1,11 +1,14 @@
 import 'package:docdoc/core/theming/colors.dart';
 import 'package:docdoc/core/theming/styles.dart';
+import 'package:docdoc/core/widgets/colored_icon_badge.dart';
+import 'package:docdoc/core/widgets/outlined_pill_button.dart';
 import 'package:docdoc/features/home/data/models/doctor_model.dart';
 import 'package:docdoc/features/home/data/models/payment_method.dart';
 import 'package:docdoc/features/home/data/models/appointment_type.dart';
 import 'package:docdoc/features/home/presentation/widgets/doctor_info_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 
 class BookingSummaryView extends StatelessWidget {
@@ -44,8 +47,8 @@ class BookingSummaryView extends StatelessWidget {
         const _ThinDivider(),
         BookingInfoRow(
           icon: Icons.assignment_outlined,
-          iconBg: const Color(0xFFE8F5E9),
-          iconColor: const Color(0xFF22C55E),
+          iconBg: ColorsManager.successGreenBg,
+          iconColor: ColorsManager.successGreen,
           title: 'Appointment Type',
           subtitle: appointmentType.label,
         ),
@@ -56,10 +59,7 @@ class BookingSummaryView extends StatelessWidget {
         SizedBox(height: 28.h),
         Text('Payment Information', style: TextStyles.font18DarkBlueBold),
         SizedBox(height: 16.h),
-        _PaymentRow(
-          method: paymentMethod,
-          onChange: onChangePayment,
-        ),
+        _PaymentRow(method: paymentMethod, onChange: onChangePayment),
       ],
     );
   }
@@ -89,14 +89,10 @@ class BookingInfoRow extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 12.h),
       child: Row(
         children: [
-          Container(
-            width: 44.r,
-            height: 44.r,
-            decoration: BoxDecoration(
-              color: iconBg,
-              borderRadius: BorderRadius.circular(12.r),
-            ),
-            child: Icon(icon, color: iconColor, size: 22.r),
+          ColoredIconBadge(
+            icon: icon,
+            backgroundColor: iconBg,
+            iconColor: iconColor,
           ),
           SizedBox(width: 14.w),
           Expanded(
@@ -137,20 +133,7 @@ class _PaymentRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Container(
-          width: 44.r,
-          height: 44.r,
-          decoration: BoxDecoration(
-            color: const Color(0xFFE3E7EE),
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-          alignment: Alignment.center,
-          child: Icon(
-            _iconFor(method),
-            color: const Color(0xFF1A2B5C),
-            size: 22.r,
-          ),
-        ),
+        _MethodIcon(method: method),
         SizedBox(width: 14.w),
         Expanded(
           child: Column(
@@ -162,24 +145,57 @@ class _PaymentRow extends StatelessWidget {
             ],
           ),
         ),
-        OutlinedButton(
+        OutlinedPillButton(
+          label: 'Change',
           onPressed: onChange,
-          style: OutlinedButton.styleFrom(
-            side: BorderSide(color: ColorsManager.mainBlue),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.r),
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 8.h),
-          ),
-          child: Text('Change', style: TextStyles.font13BlueSemiBold),
+          padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 8.h),
         ),
       ],
     );
   }
+}
 
-  IconData _iconFor(PaymentMethod m) => switch (m) {
-        CreditCardPayment() => Icons.credit_card_rounded,
-        BankTransferPayment() => Icons.account_balance_rounded,
-        PayPalPayment() => Icons.account_balance_wallet_rounded,
-      };
+class _MethodIcon extends StatelessWidget {
+  final PaymentMethod method;
+
+  const _MethodIcon({required this.method});
+
+  String? get _svgAsset => switch (method) {
+    CreditCardPayment(:final brand) => switch (brand) {
+      CardBrand.mastercard => 'assets/svgs/mastercard.svg',
+      CardBrand.amex => 'assets/svgs/american_express.svg',
+      CardBrand.capitalOne => 'assets/svgs/capital_one.svg',
+      CardBrand.barclays => 'assets/svgs/barclays.svg',
+    },
+    _ => null,
+  };
+
+  IconData get _fallbackIcon => switch (method) {
+    CreditCardPayment() => Icons.credit_card_rounded,
+    BankTransferPayment() => Icons.account_balance_rounded,
+    PayPalPayment() => Icons.account_balance_wallet_rounded,
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final svg = _svgAsset;
+    return Container(
+      width: 44.r,
+      height: 44.r,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10.r),
+        border: Border.all(color: ColorsManager.lighterGray),
+      ),
+      alignment: Alignment.center,
+      child: svg != null
+          ? SvgPicture.asset(
+              svg,
+              width: 28.r,
+              height: 28.r,
+              fit: BoxFit.contain,
+            )
+          : Icon(_fallbackIcon, color: ColorsManager.darkBlue, size: 22.r),
+    );
+  }
 }

@@ -18,10 +18,7 @@ class SessionStartDivider extends StatelessWidget {
           ),
           child: Text(
             'Session Start',
-            style: TextStyle(
-              fontSize: 12.sp,
-              color: ColorsManager.gray,
-            ),
+            style: TextStyle(fontSize: 12.sp, color: ColorsManager.gray),
           ),
         ),
       ),

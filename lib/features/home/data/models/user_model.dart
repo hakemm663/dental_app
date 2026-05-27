@@ -5,6 +5,7 @@ class UserModel {
   final String phone;
   final String? gender;
   final String? createdAt;
+  final String? avatarUrl;
 
   const UserModel({
     required this.id,
@@ -13,6 +14,7 @@ class UserModel {
     required this.phone,
     this.gender,
     this.createdAt,
+    this.avatarUrl,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -24,6 +26,7 @@ class UserModel {
       phone: (json['phone'] ?? '') as String,
       gender: rawGender is int ? rawGender.toString() : rawGender as String?,
       createdAt: json['created_at'] as String?,
+      avatarUrl: json['avatar_url'] as String?,
     );
   }
 }

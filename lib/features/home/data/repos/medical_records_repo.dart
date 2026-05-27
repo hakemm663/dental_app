@@ -15,9 +15,7 @@ class MedicalRecordsRepo {
           .from('medical_records')
           .select()
           .order('record_date', ascending: false);
-      return Success(
-        data.map((e) => MedicalRecordModel.fromJson(e)).toList(),
-      );
+      return Success(data.map((e) => MedicalRecordModel.fromJson(e)).toList());
     } catch (error) {
       return Failure(ApiErrorHandler.handle(error));
     }

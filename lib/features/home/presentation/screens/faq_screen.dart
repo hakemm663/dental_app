@@ -66,10 +66,8 @@ class FaqScreen extends StatelessWidget {
                 itemCount: _faqs.length,
                 separatorBuilder: (_, _) =>
                     Divider(height: 1, color: ColorsManager.lighterGray),
-                itemBuilder: (_, i) => _FaqTile(
-                  question: _faqs[i].$1,
-                  answer: _faqs[i].$2,
-                ),
+                itemBuilder: (_, i) =>
+                    _FaqTile(question: _faqs[i].$1, answer: _faqs[i].$2),
               ),
             ),
           ],

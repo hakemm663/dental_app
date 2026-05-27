@@ -1,6 +1,9 @@
 import 'package:docdoc/core/routing/routes.dart';
 import 'package:docdoc/core/theming/colors.dart';
 import 'package:docdoc/core/theming/styles.dart';
+import 'package:docdoc/core/widgets/app_bar_icon_button.dart';
+import 'package:docdoc/core/widgets/docdoc_app_bar.dart';
+import 'package:docdoc/features/home/presentation/widgets/home_bottom_nav.dart';
 import 'package:docdoc/features/inbox/presentation/cubit/inbox_cubit.dart';
 import 'package:docdoc/features/inbox/presentation/widgets/conversation_tile.dart';
 import 'package:docdoc/features/inbox/presentation/widgets/new_message_sheet.dart';
@@ -24,15 +27,26 @@ class _InboxScreenState extends State<InboxScreen> {
     super.dispose();
   }
 
+  void _onTabSelected(HomeNavTab tab) =>
+      dispatchHomeNavTab(context, tab, active: HomeNavTab.chat);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
+        bottom: false,
         child: Column(
           children: [
-            _AppBar(
-              onNewMessage: () => _showNewMessageSheet(context),
+            DocDocAppBar(
+              title: 'Message',
+              actions: [
+                AppBarIconButton(
+                  icon: Icons.add,
+                  iconSize: 20.r,
+                  onTap: () => _showNewMessageSheet(context),
+                ),
+              ],
             ),
             _SearchBar(
               controller: _searchController,
@@ -41,6 +55,10 @@ class _InboxScreenState extends State<InboxScreen> {
             ),
             Expanded(
               child: BlocBuilder<InboxCubit, InboxState>(
+                buildWhen: (p, c) =>
+                    p.isLoading != c.isLoading ||
+                    p.errorMessage != c.errorMessage ||
+                    p.conversations != c.conversations,
                 builder: (context, state) {
                   if (state.isLoading) {
                     return const Center(child: CircularProgressIndicator());
@@ -68,15 +86,19 @@ class _InboxScreenState extends State<InboxScreen> {
                       final conversation = state.conversations[index];
                       return ConversationTile(
                         conversation: conversation,
-                        onTap: () => Navigator.of(context).pushNamed(
-                          Routes.chatScreen,
-                          arguments: conversation,
-                        ),
+                        onTap: () => Navigator.of(
+                          context,
+                        ).pushNamed(Routes.chatScreen, arguments: conversation),
                       );
                     },
                   );
                 },
               ),
+            ),
+            HomeBottomNav(
+              activeTab: HomeNavTab.chat,
+              onTabSelected: _onTabSelected,
+              onSearchTap: () => Navigator.of(context).pushNamed(Routes.search),
             ),
           ],
         ),
@@ -96,90 +118,6 @@ class _InboxScreenState extends State<InboxScreen> {
       builder: (_) => BlocProvider.value(
         value: context.read<InboxCubit>(),
         child: const NewMessageSheet(),
-      ),
-    );
-  }
-}
-
-class _AppBar extends StatelessWidget {
-  final VoidCallback onNewMessage;
-
-  const _AppBar({required this.onNewMessage});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-      child: Row(
-        children: [
-          _BackButton(),
-          Expanded(
-            child: Text(
-              'Message',
-              textAlign: TextAlign.center,
-              style: TextStyles.font18DarkBlueBold,
-            ),
-          ),
-          _NewMessageButton(onTap: onNewMessage),
-        ],
-      ),
-    );
-  }
-}
-
-class _BackButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(10.r),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(10.r),
-        onTap: () => Navigator.of(context).pop(),
-        child: Container(
-          width: 40.r,
-          height: 40.r,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.r),
-            border: Border.all(color: ColorsManager.lighterGray),
-          ),
-          child: Icon(
-            Icons.arrow_back_ios_new_rounded,
-            size: 18.r,
-            color: ColorsManager.darkBlue,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _NewMessageButton extends StatelessWidget {
-  final VoidCallback onTap;
-
-  const _NewMessageButton({required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(10.r),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(10.r),
-        onTap: onTap,
-        child: Container(
-          width: 40.r,
-          height: 40.r,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.r),
-            border: Border.all(color: ColorsManager.lighterGray),
-          ),
-          child: Icon(
-            Icons.add,
-            size: 20.r,
-            color: ColorsManager.darkBlue,
-          ),
-        ),
       ),
     );
   }
@@ -222,11 +160,7 @@ class _SearchBar extends StatelessWidget {
             ),
           ),
           SizedBox(width: 12.w),
-          Icon(
-            Icons.tune_rounded,
-            color: ColorsManager.darkBlue,
-            size: 24.r,
-          ),
+          Icon(Icons.tune_rounded, color: ColorsManager.darkBlue, size: 24.r),
         ],
       ),
     );

@@ -48,10 +48,9 @@ class PasswordChangedScreen extends StatelessWidget {
               AppTextButton(
                 buttonText: 'Back to Login',
                 textStyle: TextStyles.font16WhiteSemiBold,
-                onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
-                  Routes.loginScreen,
-                  (route) => false,
-                ),
+                onPressed: () => Navigator.of(
+                  context,
+                ).pushNamedAndRemoveUntil(Routes.loginScreen, (route) => false),
               ),
             ],
           ),

@@ -30,8 +30,7 @@ class _NotificationSettingsScreenState
         child: Column(
           children: [
             Padding(
-              padding:
-                  EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
               child: Row(
                 children: [
                   AppBarIconButton(
@@ -50,65 +49,64 @@ class _NotificationSettingsScreenState
               ),
             ),
             Expanded(
-              child: BlocBuilder<NotificationPrefsCubit,
-                  NotificationPrefsState>(
-                builder: (context, state) {
-                  if (state.isLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  return ListView(
-                    padding:
-                        EdgeInsets.fromLTRB(24.w, 8.h, 24.w, 24.h),
-                    children: [
-                      _SectionLabel('General'),
-                      _ToggleTile(
-                        title: 'Push Notifications',
-                        subtitle: 'Receive push notifications',
-                        value: state.push,
-                        onChanged: (v) => context
-                            .read<NotificationPrefsCubit>()
-                            .toggle('push', v),
-                      ),
-                      _ToggleTile(
-                        title: 'Sound',
-                        subtitle: 'Play sound for notifications',
-                        value: state.sound,
-                        onChanged: (v) => context
-                            .read<NotificationPrefsCubit>()
-                            .toggle('sound', v),
-                      ),
-                      _ToggleTile(
-                        title: 'Vibration',
-                        subtitle: 'Vibrate for notifications',
-                        value: state.vibrate,
-                        onChanged: (v) => context
-                            .read<NotificationPrefsCubit>()
-                            .toggle('vibrate', v),
-                      ),
-                      SizedBox(height: 8.h),
-                      Divider(height: 1, color: ColorsManager.lighterGray),
-                      SizedBox(height: 8.h),
-                      _SectionLabel('Content'),
-                      _ToggleTile(
-                        title: 'App Updates',
-                        subtitle: 'Get notified about app updates',
-                        value: state.appUpdates,
-                        onChanged: (v) => context
-                            .read<NotificationPrefsCubit>()
-                            .toggle('appUpdates', v),
-                      ),
-                      _ToggleTile(
-                        title: 'Special Offers',
-                        subtitle: 'Receive special offers and promotions',
-                        value: state.specialOffers,
-                        onChanged: (v) => context
-                            .read<NotificationPrefsCubit>()
-                            .toggle('specialOffers', v),
-                      ),
-                    ],
-                  );
-                },
-              ),
+              child:
+                  BlocBuilder<NotificationPrefsCubit, NotificationPrefsState>(
+                    builder: (context, state) {
+                      if (state.isLoading) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      return ListView(
+                        padding: EdgeInsets.fromLTRB(24.w, 8.h, 24.w, 24.h),
+                        children: [
+                          _SectionLabel('General'),
+                          _ToggleTile(
+                            title: 'Push Notifications',
+                            subtitle: 'Receive push notifications',
+                            value: state.push,
+                            onChanged: (v) => context
+                                .read<NotificationPrefsCubit>()
+                                .toggle('push', v),
+                          ),
+                          _ToggleTile(
+                            title: 'Sound',
+                            subtitle: 'Play sound for notifications',
+                            value: state.sound,
+                            onChanged: (v) => context
+                                .read<NotificationPrefsCubit>()
+                                .toggle('sound', v),
+                          ),
+                          _ToggleTile(
+                            title: 'Vibration',
+                            subtitle: 'Vibrate for notifications',
+                            value: state.vibrate,
+                            onChanged: (v) => context
+                                .read<NotificationPrefsCubit>()
+                                .toggle('vibrate', v),
+                          ),
+                          SizedBox(height: 8.h),
+                          Divider(height: 1, color: ColorsManager.lighterGray),
+                          SizedBox(height: 8.h),
+                          _SectionLabel('Content'),
+                          _ToggleTile(
+                            title: 'App Updates',
+                            subtitle: 'Get notified about app updates',
+                            value: state.appUpdates,
+                            onChanged: (v) => context
+                                .read<NotificationPrefsCubit>()
+                                .toggle('appUpdates', v),
+                          ),
+                          _ToggleTile(
+                            title: 'Special Offers',
+                            subtitle: 'Receive special offers and promotions',
+                            value: state.specialOffers,
+                            onChanged: (v) => context
+                                .read<NotificationPrefsCubit>()
+                                .toggle('specialOffers', v),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
             ),
           ],
         ),

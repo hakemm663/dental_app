@@ -11,28 +11,13 @@ class DoctorDetailsState {
     this.errorMessage,
   });
 
-  const DoctorDetailsState.initial()
-      : this(
-          doctor: null,
-          isLoading: false,
-        );
+  const DoctorDetailsState.initial() : this(doctor: null, isLoading: false);
 
-  const DoctorDetailsState.loading()
-      : this(
-          doctor: null,
-          isLoading: true,
-        );
+  const DoctorDetailsState.loading() : this(doctor: null, isLoading: true);
 
   DoctorDetailsState.success({required DoctorModel doctor})
-      : this(
-          doctor: doctor,
-          isLoading: false,
-        );
+    : this(doctor: doctor, isLoading: false);
 
   DoctorDetailsState.error({required String message})
-      : this(
-          doctor: null,
-          isLoading: false,
-          errorMessage: message,
-        );
+    : this(doctor: null, isLoading: false, errorMessage: message);
 }

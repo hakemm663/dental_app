@@ -8,9 +8,13 @@ part 'profile_state.dart';
 class ProfileCubit extends Cubit<ProfileState> {
   final GetUserProfileUseCase _getUserProfileUseCase;
   final UpdateProfileUseCase _updateProfileUseCase;
+  final UpdateAvatarUseCase _updateAvatarUseCase;
 
-  ProfileCubit(this._getUserProfileUseCase, this._updateProfileUseCase)
-      : super(const ProfileState.initial());
+  ProfileCubit(
+    this._getUserProfileUseCase,
+    this._updateProfileUseCase,
+    this._updateAvatarUseCase,
+  ) : super(const ProfileState.initial());
 
   Future<void> getUserProfile() async {
     emit(const ProfileState.loading());
@@ -23,6 +27,17 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
+  Future<void> updateAvatar(String filePath) async {
+    emit(state.copyWith(isUpdating: true));
+    final result = await _updateAvatarUseCase(filePath);
+    switch (result) {
+      case Success(:final data):
+        emit(ProfileState.success(user: data));
+      case Failure(:final errMsg):
+        emit(state.copyWith(isUpdating: false, errorMessage: errMsg));
+    }
+  }
+
   Future<void> updateProfile({
     String? name,
     String? email,
@@ -32,11 +47,11 @@ class ProfileCubit extends Cubit<ProfileState> {
   }) async {
     emit(const ProfileState.updating());
     final fields = <String, dynamic>{
-      if (name != null) 'name': name,
-      if (email != null) 'email': email,
-      if (phone != null) 'phone': phone,
-      if (gender != null) 'gender': gender,
-      if (password != null) 'password': password,
+      'name': ?name,
+      'email': ?email,
+      'phone': ?phone,
+      'gender': ?gender,
+      'password': ?password,
     };
     final result = await _updateProfileUseCase(fields);
     switch (result) {

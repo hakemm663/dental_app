@@ -13,28 +13,25 @@ class ChatState {
     this.sendError,
   });
 
-  const ChatState.initial()
-      : this(messages: const [], isLoading: false);
+  const ChatState.initial() : this(messages: const [], isLoading: false);
 
-  const ChatState.loading()
-      : this(messages: const [], isLoading: true);
+  const ChatState.loading() : this(messages: const [], isLoading: true);
 
   const ChatState.loaded({required List<MessageModel> messages})
-      : this(messages: messages, isLoading: false);
+    : this(messages: messages, isLoading: false);
 
   ChatState.error({required String message})
-      : this(messages: const [], isLoading: false, errorMessage: message);
+    : this(messages: const [], isLoading: false, errorMessage: message);
 
   ChatState copyWith({
     List<MessageModel>? messages,
     bool? isLoading,
     String? errorMessage,
     String? sendError,
-  }) =>
-      ChatState(
-        messages: messages ?? this.messages,
-        isLoading: isLoading ?? this.isLoading,
-        errorMessage: errorMessage,
-        sendError: sendError,
-      );
+  }) => ChatState(
+    messages: messages ?? this.messages,
+    isLoading: isLoading ?? this.isLoading,
+    errorMessage: errorMessage,
+    sendError: sendError,
+  );
 }
