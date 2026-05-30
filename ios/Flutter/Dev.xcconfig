@@ -1,0 +1,6 @@
+// Shared overrides for the `dev` flavor. Included by Debug-dev / Profile-dev
+// / Release-dev. See docs/release_flavors_ci.md for the full setup steps.
+
+APP_DISPLAY_NAME = DocDoc Dev
+PRODUCT_BUNDLE_IDENTIFIER = com.docdoc.app.dev
+FLUTTER_TARGET = lib/main_dev.dart

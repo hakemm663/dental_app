@@ -12,9 +12,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-Future<void> main() async {
+/// Shared startup sequence used by every flavor entrypoint
+/// (`main_dev.dart`, `main_staging.dart`, `main_production.dart`).
+/// The flavor itself is selected at compile time via the `ENV` dart-define
+/// and surfaced through [Env.flavor]; this function is flavor-agnostic.
+Future<void> bootstrap() async {
   final binding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: binding);
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // Route Flutter framework errors and uncaught async errors to Crashlytics.
@@ -38,8 +43,11 @@ Future<void> main() async {
         : AppleProvider.debug,
   );
 
-  // Supabase — domain-data backend (doctors, clinics, catalog, appointments).
   await Supabase.initialize(url: Env.supabaseUrl, anonKey: Env.supabaseAnonKey);
+
+  if (kDebugMode) {
+    debugPrint('[docdoc] booted: ${Env.summary}');
+  }
 
   await setupGetIt();
   final session = Supabase.instance.client.auth.currentSession;

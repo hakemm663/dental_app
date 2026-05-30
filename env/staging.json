@@ -1,0 +1,11 @@
+{
+  "ENV": "staging",
+  "SUPABASE_URL": "https://xtlynstfzipnfbczsohz.supabase.co",
+  "SUPABASE_ANON_KEY": "sb_publishable_8d0ZxhM9IbAW1hrLGJ5eRg_mxIgxXHv",
+  "AGORA_APP_ID": "60000a4b6c3e47c59d1e55ca2e7fd079",
+  "FIREBASE_PROJECT_ID": "docdoc-59d1a",
+  "GOOGLE_MAPS_API_KEY_ANDROID": "",
+  "GOOGLE_MAPS_API_KEY_IOS": "",
+  "PAYMOB_PUBLIC_KEY": "",
+  "PROD_API_BASE_URL": ""
+}

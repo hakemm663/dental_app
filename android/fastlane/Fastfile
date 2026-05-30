@@ -1,0 +1,33 @@
+default_platform(:android)
+
+# Fastlane runs from android/, so `..` is the repo root.
+REPO_ROOT = File.expand_path("..", __dir__)
+
+def flutter_build_apk(flavor, target)
+  sh("cd #{REPO_ROOT} && flutter build apk --flavor #{flavor} " \
+     "-t #{target} --release " \
+     "--dart-define-from-file=env/#{flavor}.json")
+end
+
+def flutter_build_aab(flavor, target)
+  sh("cd #{REPO_ROOT} && flutter build appbundle --flavor #{flavor} " \
+     "-t #{target} --release " \
+     "--dart-define-from-file=env/#{flavor}.json")
+end
+
+platform :android do
+  desc "Assemble a dev release APK → build/app/outputs/flutter-apk/app-dev-release.apk"
+  lane :build_dev do
+    flutter_build_apk("dev", "lib/main_dev.dart")
+  end
+
+  desc "Assemble a staging release APK → build/app/outputs/flutter-apk/app-staging-release.apk"
+  lane :build_staging do
+    flutter_build_apk("staging", "lib/main_staging.dart")
+  end
+
+  desc "Assemble a production release AAB (requires android/key.properties)"
+  lane :build_production do
+    flutter_build_aab("production", "lib/main_production.dart")
+  end
+end

@@ -20,7 +20,69 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "164969170208-10joakh0cp5k92a66eu93n6nb0t54l3d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.docdoc.app"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:164969170208:android:d8424e1e8d4a170c4f0345",
+        "android_client_info": {
+          "package_name": "com.docdoc.app.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCKriWVsgGVWqFF0qgjAJQsJu2IX__wkc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "164969170208-10joakh0cp5k92a66eu93n6nb0t54l3d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.docdoc.app"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:164969170208:android:1384a69dc72c97d14f0345",
+        "android_client_info": {
+          "package_name": "com.docdoc.app.staging"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCKriWVsgGVWqFF0qgjAJQsJu2IX__wkc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "164969170208-10joakh0cp5k92a66eu93n6nb0t54l3d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.docdoc.app"
+              }
+            }
+          ]
         }
       }
     }
