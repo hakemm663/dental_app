@@ -42,15 +42,58 @@ android {
     }
 
     defaultConfig {
+        // Base applicationId is overridden per-flavor via applicationIdSuffix.
         applicationId = "com.docdoc.app"
         minSdk = 24
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        // Default Maps key placeholder so AndroidManifest can reference
+        // ${MAPS_API_KEY} on flavored builds without crashing when no key
+        // is wired. Per-flavor blocks override this.
+        manifestPlaceholders["MAPS_API_KEY"] = ""
+    }
+
+    // Flavor dimensions: a single "env" axis with dev / staging / production.
+    // See https://docs.flutter.dev/deployment/flavors — the Flutter Gradle
+    // plugin reads `--flavor` and matches it to one of these product flavors.
+    flavorDimensions += "env"
+
+    productFlavors {
+        create("dev") {
+            dimension = "env"
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+            resValue("string", "app_name", "DocDoc Dev")
+            // Maps key for Android Maps SDK. Real values come from CI /
+            // ~/.gradle/gradle.properties; empty otherwise so flavored
+            // builds still complete without crashing the manifest merger.
+            manifestPlaceholders["MAPS_API_KEY"] =
+                (project.findProperty("MAPS_API_KEY_DEV") as String?) ?: ""
+        }
+        create("staging") {
+            dimension = "env"
+            applicationIdSuffix = ".staging"
+            versionNameSuffix = "-staging"
+            resValue("string", "app_name", "DocDoc Staging")
+            manifestPlaceholders["MAPS_API_KEY"] =
+                (project.findProperty("MAPS_API_KEY_STAGING") as String?) ?: ""
+        }
+        create("production") {
+            dimension = "env"
+            // No applicationIdSuffix — production keeps the bare applicationId.
+            resValue("string", "app_name", "DocDoc")
+            manifestPlaceholders["MAPS_API_KEY"] =
+                (project.findProperty("MAPS_API_KEY_PROD") as String?) ?: ""
+        }
     }
 
     buildTypes {
         release {
+            // For dev/staging, fall back to debug signing if no keystore is
+            // configured so internal QA builds still install. Production
+            // release is hard-blocked below when key.properties is absent.
             signingConfig = if (keystorePropertiesFile.exists()) {
                 signingConfigs.getByName("release")
             } else {
@@ -62,6 +105,37 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+
+    // Refuse to assemble a production release without a real keystore. Dev /
+    // staging release fall back to debug signing (above) so internal builds
+    // keep working.
+    afterEvaluate {
+        tasks
+            .matching {
+                it.name == "assembleProductionRelease" ||
+                    it.name == "bundleProductionRelease"
+            }
+            .configureEach {
+                doFirst {
+                    if (!keystorePropertiesFile.exists()) {
+                        throw GradleException(
+                            "Refusing to build a production release without " +
+                                "android/key.properties. Provide the keystore " +
+                                "or build dev / staging flavors instead."
+                        )
+                    }
+                }
+            }
+    }
+}
+
+// Pin Gradle's build JDK to 21 (LTS). System JDK can be anything; the
+// toolchain spec + the foojay resolver in settings.gradle.kts make Gradle
+// locate or auto-download a JDK 21 to actually run the build.
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 

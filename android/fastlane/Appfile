@@ -1,0 +1,2 @@
+json_key_file("")           # Path to the Play Console service-account JSON
+package_name("com.docdoc.app") # Production package name

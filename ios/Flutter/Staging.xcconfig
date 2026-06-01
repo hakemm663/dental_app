@@ -1,0 +1,5 @@
+// Shared overrides for the `staging` flavor.
+
+APP_DISPLAY_NAME = DocDoc Staging
+PRODUCT_BUNDLE_IDENTIFIER = com.docdoc.app.staging
+FLUTTER_TARGET = lib/main_staging.dart

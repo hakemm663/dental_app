@@ -55,3 +55,33 @@ functions/.env.local
 
 # Local dev credentials — never commit
 .dev-secrets/
+
+# env/<flavor>.json holds only client-facing identifiers (Supabase URL +
+# publishable anon key, Firebase project ID, Agora app ID, Maps keys,
+# Paymob public key). These ship inside the compiled binary and are not
+# secrets — they're committed. Real secrets (Supabase service role,
+# Paymob HMAC, Agora app certificate, Firebase admin JSON) live on
+# Firebase Functions and never touch the Flutter app.
+
+# Android signing extras
+*.keystore
+key.properties
+
+# Apple signing — never commit
+*.p8
+*.p12
+*.mobileprovision
+*.cer
+
+# Service-account JSONs (Firebase Admin, Play Console, etc.)
+**/service-account*.json
+**/google-services-account*.json
+**/play-store-key.json
+
+# Fastlane local state
+android/fastlane/report.xml
+ios/fastlane/report.xml
+android/fastlane/Preview.html
+ios/fastlane/Preview.html
+**/fastlane/README.md
+

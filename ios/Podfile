@@ -8,6 +8,19 @@ project 'Runner', {
   'Debug' => :debug,
   'Profile' => :release,
   'Release' => :release,
+  # Per-flavor build configurations created via the Xcode GUI. Each maps to
+  # the same CocoaPods build mode as its base — Debug-* are debug, Profile-*
+  # and Release-* are release. CocoaPods uses this map to pick which
+  # `Pods-Runner.*.xcconfig` each Runner configuration inherits.
+  'Debug-dev' => :debug,
+  'Profile-dev' => :release,
+  'Release-dev' => :release,
+  'Debug-staging' => :debug,
+  'Profile-staging' => :release,
+  'Release-staging' => :release,
+  'Debug-production' => :debug,
+  'Profile-production' => :release,
+  'Release-production' => :release,
 }
 
 def flutter_root

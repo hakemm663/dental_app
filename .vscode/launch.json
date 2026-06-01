@@ -1,31 +1,111 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Flutter",
+            "name": "DocDoc · dev (debug)",
             "type": "dart",
             "request": "launch",
-            "program": "lib/main.dart"
+            "program": "lib/main_dev.dart",
+            "args": [
+                "--flavor",
+                "dev",
+                "--dart-define-from-file=env/dev.json"
+            ]
         },
         {
-            "name": "dental_app",
-            "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "dental_app (profile mode)",
-            "request": "launch",
+            "name": "DocDoc · dev (profile)",
             "type": "dart",
-            "flutterMode": "profile"
+            "request": "launch",
+            "program": "lib/main_dev.dart",
+            "flutterMode": "profile",
+            "args": [
+                "--flavor",
+                "dev",
+                "--dart-define-from-file=env/dev.json"
+            ]
         },
         {
-            "name": "dental_app (release mode)",
-            "request": "launch",
+            "name": "DocDoc · dev (release)",
             "type": "dart",
-            "flutterMode": "release"
+            "request": "launch",
+            "program": "lib/main_dev.dart",
+            "flutterMode": "release",
+            "args": [
+                "--flavor",
+                "dev",
+                "--dart-define-from-file=env/dev.json"
+            ]
+        },
+        {
+            "name": "DocDoc · staging (debug)",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main_staging.dart",
+            "args": [
+                "--flavor",
+                "staging",
+                "--dart-define-from-file=env/staging.json"
+            ]
+        },
+        {
+            "name": "DocDoc · staging (profile)",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main_staging.dart",
+            "flutterMode": "profile",
+            "args": [
+                "--flavor",
+                "staging",
+                "--dart-define-from-file=env/staging.json"
+            ]
+        },
+        {
+            "name": "DocDoc · staging (release)",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main_staging.dart",
+            "flutterMode": "release",
+            "args": [
+                "--flavor",
+                "staging",
+                "--dart-define-from-file=env/staging.json"
+            ]
+        },
+        {
+            "name": "DocDoc · production (debug)",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main_production.dart",
+            "args": [
+                "--flavor",
+                "production",
+                "--dart-define-from-file=env/production.json"
+            ]
+        },
+        {
+            "name": "DocDoc · production (profile)",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main_production.dart",
+            "flutterMode": "profile",
+            "args": [
+                "--flavor",
+                "production",
+                "--dart-define-from-file=env/production.json"
+            ]
+        },
+        {
+            "name": "DocDoc · production (release)",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main_production.dart",
+            "flutterMode": "release",
+            "args": [
+                "--flavor",
+                "production",
+                "--dart-define-from-file=env/production.json"
+            ]
         }
-    ]
+    ],
+    "compounds": []
 }
