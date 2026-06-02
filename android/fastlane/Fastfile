@@ -1,21 +1,69 @@
 default_platform(:android)
 
+# To run a lane locally, from repo root:
+#   cd android && bundle exec fastlane <lane>
+# To run from CI: see .github/workflows/flutter-ci.yml
+
 # Fastlane runs from android/, so `..` is the repo root.
 REPO_ROOT = File.expand_path("..", __dir__)
+APK_OUTPUT_DIR = File.join(REPO_ROOT, "build", "app", "outputs", "flutter-apk")
+
+# Firebase App IDs for the Android apps registered in the docdoc-59d1a
+# project. Non-secret — these ship inside google-services.json and the
+# compiled APK. Mapping them here keeps lanes self-describing.
+FIREBASE_ANDROID_APP_IDS = {
+  "dev"        => "1:164969170208:android:d8424e1e8d4a170c4f0345",
+  "staging"    => "1:164969170208:android:1384a69dc72c97d14f0345",
+  "production" => "1:164969170208:android:f1da96ae073a554b4f0345",
+}.freeze
+
+# ── Helpers ──────────────────────────────────────────────────────────────
 
 def flutter_build_apk(flavor, target)
   sh("cd #{REPO_ROOT} && flutter build apk --flavor #{flavor} " \
-     "-t #{target} --release " \
+     "-t #{target} --release --no-tree-shake-icons " \
      "--dart-define-from-file=env/#{flavor}.json")
 end
 
 def flutter_build_aab(flavor, target)
   sh("cd #{REPO_ROOT} && flutter build appbundle --flavor #{flavor} " \
-     "-t #{target} --release " \
+     "-t #{target} --release --no-tree-shake-icons " \
      "--dart-define-from-file=env/#{flavor}.json")
 end
 
+def head_release_notes
+  subject = `git -C #{REPO_ROOT} log -1 --pretty=%s`.strip
+  sha     = `git -C #{REPO_ROOT} log -1 --pretty=%h`.strip
+  "#{subject} (#{sha})"
+rescue StandardError
+  "Internal build via Fastlane."
+end
+
+def upload_to_firebase(flavor:, apk_filename:)
+  token = ENV["FIREBASE_CLI_TOKEN"]
+  UI.user_error!("FIREBASE_CLI_TOKEN env var not set") if token.nil? || token.empty?
+
+  # Distribution recipients. Configure via env vars; defaults distribute to
+  # the project owner so the lane works on first push without dashboard
+  # setup. Promote to a tester group in Firebase Console and set
+  # FIREBASE_GROUPS once more than a couple of testers are involved.
+  testers = ENV["FIREBASE_TESTERS"] || "hakemm663@gmail.com"
+  groups  = ENV["FIREBASE_GROUPS"]
+
+  firebase_app_distribution(
+    app: FIREBASE_ANDROID_APP_IDS.fetch(flavor),
+    firebase_cli_token: token,
+    android_artifact_type: "APK",
+    android_artifact_path: File.join(APK_OUTPUT_DIR, apk_filename),
+    testers: testers,
+    groups: groups,
+    release_notes: head_release_notes
+  )
+end
+
 platform :android do
+  # ── Build lanes (local use; CI builds inline) ──────────────────────────
+
   desc "Assemble a dev release APK → build/app/outputs/flutter-apk/app-dev-release.apk"
   lane :build_dev do
     flutter_build_apk("dev", "lib/main_dev.dart")
@@ -29,5 +77,18 @@ platform :android do
   desc "Assemble a production release AAB (requires android/key.properties)"
   lane :build_production do
     flutter_build_aab("production", "lib/main_production.dart")
+  end
+
+  # ── Distribute lane (Firebase App Distribution) ────────────────────────
+
+  desc "Build the staging APK and ship it to Firebase App Distribution. " \
+       "Triggered automatically on push to development; runnable locally with " \
+       "FIREBASE_CLI_TOKEN exported."
+  lane :firebase_distribution do
+    flutter_build_apk("staging", "lib/main_staging.dart")
+    upload_to_firebase(
+      flavor: "staging",
+      apk_filename: "app-staging-release.apk"
+    )
   end
 end
