@@ -97,7 +97,7 @@ class _ImageContent extends StatelessWidget {
             child: const Center(child: CircularProgressIndicator()),
           );
         },
-        errorBuilder: (_, __, ___) => SizedBox(
+        errorBuilder: (_, _, _) => SizedBox(
           width: 200.w,
           height: 150.h,
           child: Center(

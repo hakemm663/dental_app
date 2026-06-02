@@ -3,7 +3,6 @@ import 'package:docdoc/core/di/dependency_injection.dart';
 import 'package:docdoc/core/routing/app_router.dart';
 import 'package:docdoc/core/routing/routes.dart';
 import 'package:docdoc/doc_app.dart';
-import 'package:docdoc/firebase_options.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -20,7 +19,12 @@ Future<void> bootstrap() async {
   final binding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: binding);
 
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // No `options:` — each flavor links its own google-services.json (Android)
+  // and GoogleService-Info.plist (iOS) at build time, and the Firebase SDK
+  // picks up that native config automatically. Passing the generated
+  // DefaultFirebaseOptions would force every flavor onto the production
+  // Firebase app and silently break dev/staging Auth + App Check.
+  await Firebase.initializeApp();
 
   // Route Flutter framework errors and uncaught async errors to Crashlytics.
   // Collection is disabled in debug so local crashes surface in the console

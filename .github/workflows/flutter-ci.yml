@@ -1,4 +1,4 @@
-name: Flutter CI
+name: Android Fastlane with Firebase App Distribution Workflow
 
 on:
   pull_request:
@@ -19,8 +19,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
+      - name: Checkout my repo code
+        uses: actions/checkout@v4
+      - name: install Flutter
+        uses: subosito/flutter-action@v2
         with:
           channel: ${{ env.FLUTTER_CHANNEL }}
           cache: true
@@ -31,27 +33,39 @@ jobs:
       - name: Static analysis
         run: flutter analyze
 
-  android-staging:
-    name: Build Android staging APK
-    runs-on: ubuntu-latest
+  distribute_to_firebase:
+    name: Distribute staging to Firebase App Distribution
+    if: github.event_name == 'push' && github.ref == 'refs/heads/development'
     needs: analyze
+    runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+        with:
+          # Fastlane derives release notes from the last commit — need full
+          # history rather than the shallow default.
+          fetch-depth: 0
+      - name: Setup Java
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '21'
-      - uses: subosito/flutter-action@v2
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
         with:
           channel: ${{ env.FLUTTER_CHANNEL }}
           cache: true
-      - name: Install dependencies
-        run: flutter pub get
-      - name: Build staging APK
-        run: flutter build apk --flavor staging -t lib/main_staging.dart --dart-define-from-file=env/staging.json
-      - uses: actions/upload-artifact@v4
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
         with:
-          name: docdoc-staging-apk
-          path: build/app/outputs/flutter-apk/app-staging-release.apk
-          retention-days: 7
+          ruby-version: '4.0.5'
+          bundler-cache: true
+          working-directory: android
+      - name: Install Flutter dependencies
+        run: flutter pub get
+      - name: Build and Distribute App
+        env:
+         FIREBASE_CLI_TOKEN: ${{ secrets.FIREBASE_CLI_TOKEN }}
+        run: |
+          bundle exec fastlane android firebase_distribution
+        working-directory: android

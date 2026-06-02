@@ -11,7 +11,6 @@
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		64F7D1DBE66ACDCFEF387732 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FD028FB5CD75BAD404DD08E /* Pods_Runner.framework */; };
-		6D1916ED191F4E136F608E60 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BA3CD08C46806DFDA33B78B0 /* GoogleService-Info.plist */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		7884E8682EC3CC0700C636F2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7884E8672EC3CC0400C636F2 /* SceneDelegate.swift */; };
 		911E7DE95BC511C0BF0418FB /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9730038A356503CF749B3905 /* Pods_RunnerTests.framework */; };
@@ -256,6 +255,7 @@
 				97C146EA1CF9000F007C117D /* Sources */,
 				97C146EB1CF9000F007C117D /* Frameworks */,
 				97C146EC1CF9000F007C117D /* Resources */,
+				D216B7BAE2E6E38BBBC8C05F /* Copy Firebase config */,
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				F00A515C8C95371166669253 /* [CP] Embed Pods Frameworks */,
@@ -326,7 +326,6 @@
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
-				6D1916ED191F4E136F608E60 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -455,6 +454,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ -d \"${SRCROOT}/build/native_assets/ios\" ]; then\n  xattr -cr \"${SRCROOT}/build/native_assets/ios\" || true\nfi\nif [ -d \"${BUILT_PRODUCTS_DIR}/Flutter.framework\" ]; then\n  xattr -cr \"${BUILT_PRODUCTS_DIR}/Flutter.framework\" || true\nfi\nif [ -d \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/Flutter.framework\" ]; then\n  xattr -cr \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/Flutter.framework\" || true\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		D216B7BAE2E6E38BBBC8C05F /* Copy Firebase config */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/scripts/copy_google_service_info.sh",
+			);
+			name = "Copy Firebase config";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(PRODUCT_NAME).app/GoogleService-Info.plist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/scripts/copy_google_service_info.sh\"";
 			showEnvVarsInLog = 0;
 		};
 		F00A515C8C95371166669253 /* [CP] Embed Pods Frameworks */ = {
