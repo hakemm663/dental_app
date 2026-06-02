@@ -34,7 +34,7 @@ jobs:
         run: flutter analyze
 
   distribute_to_firebase:
-    name: Distribute staging to Firebase App Distribution
+    name: Distribute production to Firebase App Distribution
     if: github.event_name == 'push' && github.ref == 'refs/heads/development'
     needs: analyze
     runs-on: ubuntu-latest
