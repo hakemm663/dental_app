@@ -5,6 +5,10 @@ on:
     branches: [main, development]
   push:
     branches: [main, development]
+  # Manual trigger for the distribute job. Used to verify the Firebase
+  # upload from a feature branch BEFORE merging to development.
+  # GitHub → Actions → this workflow → "Run workflow".
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -34,8 +38,13 @@ jobs:
         run: flutter analyze
 
   distribute_to_firebase:
-    name: Distribute staging to Firebase App Distribution
-    if: github.event_name == 'push' && github.ref == 'refs/heads/development'
+    name: Distribute production to Firebase App Distribution
+    # Run on (a) merges/pushes to development OR (b) manual dispatch from
+    # any branch. PR-trigger paths are intentionally excluded so random
+    # PR-branch builds don't get shipped to testers.
+    if: |
+      (github.event_name == 'push' && github.ref == 'refs/heads/development')
+      || github.event_name == 'workflow_dispatch'
     needs: analyze
     runs-on: ubuntu-latest
     timeout-minutes: 30

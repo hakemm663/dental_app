@@ -91,9 +91,10 @@ android {
 
     buildTypes {
         release {
-            // For dev/staging, fall back to debug signing if no keystore is
-            // configured so internal QA builds still install. Production
-            // release is hard-blocked below when key.properties is absent.
+            // Fall back to debug signing when no keystore is configured.
+            // APK builds (App Distribution, side-loading) work fine debug-signed.
+            // The Play Store path is separately gated below — it refuses to
+            // produce a production AAB without a real keystore.
             signingConfig = if (keystorePropertiesFile.exists()) {
                 signingConfigs.getByName("release")
             } else {
@@ -107,22 +108,22 @@ android {
         }
     }
 
-    // Refuse to assemble a production release without a real keystore. Dev /
-    // staging release fall back to debug signing (above) so internal builds
-    // keep working.
+    // The Play Store-bound production AAB requires a real keystore (so the
+    // app's signing identity stays stable across releases). APK builds
+    // (`assembleProductionRelease`) are deliberately not gated — they're
+    // used for Firebase App Distribution and side-loading, where debug
+    // signing is fine.
     afterEvaluate {
         tasks
-            .matching {
-                it.name == "assembleProductionRelease" ||
-                    it.name == "bundleProductionRelease"
-            }
+            .matching { it.name == "bundleProductionRelease" }
             .configureEach {
                 doFirst {
                     if (!keystorePropertiesFile.exists()) {
                         throw GradleException(
-                            "Refusing to build a production release without " +
-                                "android/key.properties. Provide the keystore " +
-                                "or build dev / staging flavors instead."
+                            "Refusing to build a production AAB for Play Store " +
+                                "upload without android/key.properties. Provide " +
+                                "the keystore, or use `assembleProductionRelease` " +
+                                "/ App Distribution which falls back to debug signing."
                         )
                     }
                 }
