@@ -4,7 +4,7 @@
 
 <p align="left">
   <img alt="CI" src="https://github.com/hakemm663/dental_app/actions/workflows/flutter-ci.yml/badge.svg?branch=development" />
-  <img alt="License" src="https://img.shields.io/badge/license-portfolio-blue" />
+  <img alt="License" src="https://img.shields.io/badge/license-MIT-green" />
 </p>
 
 DocDoc is a cross-platform Flutter app focused on a realistic healthcare booking experience: doctor discovery, search and filtering, doctor details, maps, appointment booking, payment flow, appointment management, notifications, and patient profile screens.
@@ -282,7 +282,7 @@ Contributions, feedback, and code review comments are welcome.
 
 ## License
 
-This repository is shared for portfolio and technical-review purposes. For reuse, add a `LICENSE` file (e.g. MIT) and update the badge above.
+MIT © 2026 [Mohamed Hakem](https://github.com/hakemm663) — see [LICENSE](LICENSE) for details.
 
 ---
 
