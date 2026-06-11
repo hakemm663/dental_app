@@ -229,17 +229,17 @@ Test coverage targets:
 
 <table>
   <tr>
-    <td align="center"><img src="assets/screenshot/Screenshot%202026-06-11%20at%2011.16.03%20PM.png" width="180"/><br/><sub>Home</sub></td>
-    <td align="center"><img src="assets/screenshot/Screenshot%202026-06-11%20at%209.35.46%20PM.png" width="180"/><br/><sub>Doctor Details</sub></td>
-    <td align="center"><img src="assets/screenshot/Screenshot%202026-06-11%20at%209.36.28%20PM.png" width="180"/><br/><sub>Booking — Date & Time</sub></td>
+    <td align="center"><img src="assets/screenshot/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-06-11%20at%2023.38.27.png" width="180"/><br/><sub>Home</sub></td>
+    <td align="center"><img src="assets/screenshot/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-06-11%20at%2023.38.30.png" width="180"/><br/><sub>Doctor Details</sub></td>
+    <td align="center"><img src="assets/screenshot/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-06-11%20at%2023.38.41.png" width="180"/><br/><sub>Booking — Date & Time</sub></td>
   </tr>
   <tr>
-    <td align="center"><img src="assets/screenshot/Screenshot%202026-06-11%20at%209.36.41%20PM.png" width="180"/><br/><sub>Booking — Payment</sub></td>
-    <td align="center"><img src="assets/screenshot/Screenshot%202026-06-11%20at%209.37.07%20PM.png" width="180"/><br/><sub>Booking — Summary</sub></td>
-    <td align="center"><img src="assets/screenshot/Screenshot%202026-06-11%20at%209.37.19%20PM.png" width="180"/><br/><sub>Booking Confirmed</sub></td>
+    <td align="center"><img src="assets/screenshot/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-06-11%20at%2023.38.52.png" width="180"/><br/><sub>Booking — Payment</sub></td>
+    <td align="center"><img src="assets/screenshot/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-06-11%20at%2023.38.59.png" width="180"/><br/><sub>Booking — Summary</sub></td>
+    <td align="center"><img src="assets/screenshot/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-06-11%20at%2023.39.02.png" width="180"/><br/><sub>Booking Confirmed</sub></td>
   </tr>
   <tr>
-    <td align="center"><img src="assets/screenshot/Screenshot%202026-06-11%20at%209.31.42%20PM.png" width="180"/><br/><sub>My Appointments</sub></td>
+    <td align="center"><img src="assets/screenshot/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-06-11%20at%2023.39.44.png" width="180"/><br/><sub>My Appointments</sub></td>
     <td align="center"><img src="assets/screenshot/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-05-27%20at%2002.45.40.png" width="180"/><br/><sub>Messages</sub></td>
     <td align="center"><img src="assets/screenshot/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-05-27%20at%2002.45.47.png" width="180"/><br/><sub>In-app Chat (Agora)</sub></td>
   </tr>
