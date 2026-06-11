@@ -1,4 +1,4 @@
-# DocDoc
+# 🦷 DocDoc
 
 > A production-style Flutter mobile app for discovering dentists, viewing doctor profiles and locations, and booking appointments end-to-end.
 
@@ -11,17 +11,17 @@ DocDoc is a cross-platform Flutter app focused on a realistic healthcare booking
 
 ---
 
-## Highlights
+## ✨ Highlights
 
-- **End-to-end patient journey** from discovery to confirmed booking
-- **Feature-first Flutter structure** with `lib/core` and `lib/features`
-- **Production-minded integrations** — secure storage, crash reporting, and Firebase App Check
-- **Cloud-ready backend** using Firebase (auth, storage, functions, Crashlytics) and Supabase (DB / API)
-- **Automated delivery** with GitHub Actions + Fastlane + Firebase App Distribution
+- 🧭 **End-to-end patient journey** from discovery to confirmed booking
+- 🧱 **Feature-first Flutter structure** with `lib/core` and `lib/features`
+- 🔐 **Production-minded integrations** such as secure storage, crash reporting, and App Check
+- ☁️ **Cloud-ready backend approach** using Firebase / Supabase workflows
+- 🚀 **Portfolio-friendly delivery** with room for CI/CD, badges, beta distribution, and release artefacts
 
 ---
 
-## Features
+## 🩺 Features
 
 ### Patient experience
 
@@ -48,7 +48,7 @@ DocDoc is a cross-platform Flutter app focused on a realistic healthcare booking
 
 ---
 
-## Tech stack
+## 🧰 Tech stack
 
 | Layer | Technology |
 |---|---|
@@ -64,7 +64,7 @@ DocDoc is a cross-platform Flutter app focused on a realistic healthcare booking
 
 ---
 
-## Architecture overview
+## 🏗️ Architecture overview
 
 ```
 dental_app/
@@ -120,7 +120,7 @@ UI Layer  →  State Layer (Cubit)  →  Domain Layer (use cases)  →  Data Lay
 
 ---
 
-## Setup and run
+## ⚙️ Setup and run
 
 ### Prerequisites
 
@@ -183,7 +183,7 @@ flutter build ipa --flavor production -t lib/main.dart
 
 ---
 
-## CI/CD
+## 🔁 CI/CD
 
 The single workflow `.github/workflows/flutter-ci.yml` runs on every push and PR to `development`:
 
@@ -211,7 +211,7 @@ bundle exec fastlane android firebase_distribution
 
 ---
 
-## Testing
+## 🧪  Testing
 
 ```bash
 flutter test
@@ -225,7 +225,7 @@ Test coverage targets:
 
 ---
 
-## Screenshots
+## 📸Screenshots
 
 <table>
   <tr>
@@ -251,9 +251,9 @@ Test coverage targets:
 
 | Resource | Link |
 |---|---|
-| Demo video | _coming soon_ |
-| Android APK (Firebase App Distribution) | [Install via Firebase](https://appdistribution.firebase.google.com/i/09343374ca772584) |
-| TestFlight invite | _coming soon_ |
+| 🎥Demo video | _coming soon_ |
+| 📱Android APK (Firebase App Distribution) | [Install via Firebase](https://appdistribution.firebase.google.com/i/09343374ca772584) |
+| 🍎TestFlight invite | _coming soon_ |
 
 Recommended demo flow (45–90 s): Home → Doctor details → Booking flow → Payment → Confirmation → Appointments → Messages → In-app chat
 
